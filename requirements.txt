@@ -1,0 +1,9 @@
+requests
+beautifulsoup4
+lxml
+rank_bm25
+chromadb
+sentence-transformers
+streamlit
+python-dotenv
+numpy
