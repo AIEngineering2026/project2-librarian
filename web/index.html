@@ -249,7 +249,10 @@
           </span>
           <span id="passages-chevron" class="material-symbols-outlined text-[22px] transition-transform" aria-hidden="true">expand_more</span>
         </button>
-        <div id="passages" class="hidden p-4 sm:p-5 space-y-3"></div>
+        <div id="passages" class="hidden p-4 sm:p-5 space-y-3">
+          <div id="searched-for" class="flex flex-wrap items-center gap-2 pb-1"></div>
+          <div id="passages-list" class="space-y-3"></div>
+        </div>
       </section>
     </section>
 
@@ -272,6 +275,7 @@
         <p class="relative mt-2.5 text-[15px] text-slate-600 max-w-lg mx-auto leading-relaxed">
           The Librarian only answers from the official W3C accessibility documentation. Try rephrasing, or ask about a specific success criterion.
         </p>
+        <div id="idk-searched" class="relative mt-4 flex flex-wrap justify-center items-center gap-2"></div>
         <div class="relative my-6 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
         <p class="relative text-[12px] font-semibold text-slate-500 uppercase tracking-wider">Or try one of these</p>
         <div id="idk-chips" class="relative mt-4 flex flex-wrap justify-center gap-2.5"></div>
@@ -427,8 +431,16 @@ async function ask(question) {
   }
 }
 
+/* ---------- "Searched for" chips (the rewritten search queries) ---------- */
+function searchedForHtml(queries) {
+  if (!queries || !queries.length) return "";
+  return '<span class="text-[12px] font-semibold text-slate-500">Searched for:</span>' +
+    queries.map((q) => `<span class="text-[12px] px-2.5 py-1 rounded-full bg-emerald-50 text-[#047857] border border-emerald-200">${escapeHtml(q)}</span>`).join("");
+}
+
 /* ---------- Render: "I don't know" ---------- */
 function renderIdk() {
+  $("idk-searched").innerHTML = searchedForHtml(lastResult && lastResult.searched_for);
   show("view-idk");
   $("idk-heading").focus();
   $("status").textContent = "No answer found in the WCAG 2.2 documents.";
@@ -522,7 +534,8 @@ function renderAnswer(data) {
     : '<li class="text-[13px] text-slate-500">No specific passage was cited.</li>';
 
   $("passages-count").textContent = data.passages.length;
-  $("passages").innerHTML = data.passages.map(passageHtml).join("");
+  $("passages-list").innerHTML = data.passages.map(passageHtml).join("");
+  $("searched-for").innerHTML = searchedForHtml(data.searched_for);
   setPassagesOpen(false);
 
   $("vote-thanks").classList.add("hidden");

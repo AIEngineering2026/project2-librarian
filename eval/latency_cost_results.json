@@ -1,0 +1,183 @@
+{
+  "summary": {
+    "model": "openai/gpt-oss-120b",
+    "n_requests": 20,
+    "p50_seconds": 4.29,
+    "p95_seconds": 11.47,
+    "avg_prompt_tokens": 1143,
+    "avg_completion_tokens": 229,
+    "idk_count": 5,
+    "cost_per_request_usd": 0.000522,
+    "cost_per_1000_requests_usd": 0.522,
+    "monthly_cost_today_usd": 0.78,
+    "monthly_cost_at_100x_usd": 78.35,
+    "prices_per_million": {
+      "answer_in": 0.15,
+      "answer_out": 0.75,
+      "rewrite_in": 0.075,
+      "rewrite_out": 0.3
+    }
+  },
+  "requests": [
+    {
+      "question": "What is the minimum contrast ratio for normal text at level AA?",
+      "seconds": 2.392,
+      "idk": false,
+      "prompt_tokens": 1521,
+      "completion_tokens": 171,
+      "cost_usd": 0.000445125
+    },
+    {
+      "question": "What is the capital of Tunisia?",
+      "seconds": 3.841,
+      "idk": true,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "cost_usd": 0.000636675
+    },
+    {
+      "question": "What is the minimum contrast for normal text?",
+      "seconds": 4.302,
+      "idk": false,
+      "prompt_tokens": 1722,
+      "completion_tokens": 328,
+      "cost_usd": 0.000588525
+    },
+    {
+      "question": "What is the minimum target size in WCAG 2.2?",
+      "seconds": 2.418,
+      "idk": false,
+      "prompt_tokens": 1130,
+      "completion_tokens": 168,
+      "cost_usd": 0.0003915
+    },
+    {
+      "question": "Does an icon-only button need a label?",
+      "seconds": 3.754,
+      "idk": false,
+      "prompt_tokens": 1160,
+      "completion_tokens": 516,
+      "cost_usd": 0.0007589249999999999
+    },
+    {
+      "question": "Do form inputs need visible labels?",
+      "seconds": 3.871,
+      "idk": false,
+      "prompt_tokens": 1320,
+      "completion_tokens": 324,
+      "cost_usd": 0.000536775
+    },
+    {
+      "question": "What contrast do user interface components need?",
+      "seconds": 3.52,
+      "idk": false,
+      "prompt_tokens": 1168,
+      "completion_tokens": 171,
+      "cost_usd": 0.000423
+    },
+    {
+      "question": "Can content flash more than three times per second?",
+      "seconds": 4.279,
+      "idk": false,
+      "prompt_tokens": 1009,
+      "completion_tokens": 244,
+      "cost_usd": 0.00047775
+    },
+    {
+      "question": "Do videos need captions?",
+      "seconds": 2.663,
+      "idk": false,
+      "prompt_tokens": 856,
+      "completion_tokens": 215,
+      "cost_usd": 0.000371175
+    },
+    {
+      "question": "Must all functionality be available from a keyboard?",
+      "seconds": 4.651,
+      "idk": false,
+      "prompt_tokens": 1217,
+      "completion_tokens": 566,
+      "cost_usd": 0.0006840749999999999
+    },
+    {
+      "question": "What is a focus indicator and when must it be visible?",
+      "seconds": 2.926,
+      "idk": false,
+      "prompt_tokens": 1523,
+      "completion_tokens": 381,
+      "cost_usd": 0.0005971500000000001
+    },
+    {
+      "question": "Do pages need a title?",
+      "seconds": 7.706,
+      "idk": false,
+      "prompt_tokens": 1161,
+      "completion_tokens": 126,
+      "cost_usd": 0.00039164999999999995
+    },
+    {
+      "question": "What does reflow mean in WCAG?",
+      "seconds": 4.583,
+      "idk": true,
+      "prompt_tokens": 874,
+      "completion_tokens": 104,
+      "cost_usd": 0.000286425
+    },
+    {
+      "question": "Is dragging allowed without an alternative?",
+      "seconds": 11.453,
+      "idk": false,
+      "prompt_tokens": 1434,
+      "completion_tokens": 257,
+      "cost_usd": 0.0005246249999999999
+    },
+    {
+      "question": "What is the purpose of the lang attribute?",
+      "seconds": 3.244,
+      "idk": false,
+      "prompt_tokens": 974,
+      "completion_tokens": 252,
+      "cost_usd": 0.00044332499999999995
+    },
+    {
+      "question": "How long should users have to read content with a time limit?",
+      "seconds": 7.928,
+      "idk": true,
+      "prompt_tokens": 968,
+      "completion_tokens": 183,
+      "cost_usd": 0.0005361750000000001
+    },
+    {
+      "question": "What is consistent help in WCAG 2.2?",
+      "seconds": 9.059,
+      "idk": false,
+      "prompt_tokens": 1138,
+      "completion_tokens": 250,
+      "cost_usd": 0.0005245499999999999
+    },
+    {
+      "question": "What is the best pizza in Tunis?",
+      "seconds": 11.714,
+      "idk": true,
+      "prompt_tokens": 1422,
+      "completion_tokens": 55,
+      "cost_usd": 0.0005964
+    },
+    {
+      "question": "How do I build a Kubernetes cluster?",
+      "seconds": 5.724,
+      "idk": true,
+      "prompt_tokens": 1244,
+      "completion_tokens": 74,
+      "cost_usd": 0.0007825499999999999
+    },
+    {
+      "question": "Do images need alternative text?",
+      "seconds": 6.392,
+      "idk": false,
+      "prompt_tokens": 1011,
+      "completion_tokens": 203,
+      "cost_usd": 0.0004496999999999999
+    }
+  ]
+}
