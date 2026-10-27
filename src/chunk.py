@@ -1,7 +1,7 @@
 """Turn data/raw/*.html into data/chunks.jsonl, split by heading.
 Size is in WORDS (~0.75 words per token, so 375 words ~ 500 tokens). Test several sizes!
 Run: python -m src.chunk [--words 375] [--overlap 50]"""
-import json, sys, pathlib
+import json, re, sys, pathlib
 from bs4 import BeautifulSoup
 
 RAW = pathlib.Path("data/raw"); OUT = pathlib.Path("data/chunks.jsonl")
@@ -36,10 +36,14 @@ def main():
     size, overlap = arg("--words", 375), arg("--overlap", 50)
     urls = json.loads((RAW / "_urls.json").read_text())
     n = 0
+    seen = set()
     with OUT.open("w", encoding="utf-8") as out:
         for fname, url in urls.items():
             f = RAW / fname
             if not f.exists(): continue
+            url = re.sub(r"\.html$", "", url).rstrip("/")   # same page can appear with and without .html
+            if url in seen: continue
+            seen.add(url)
             soup = BeautifulSoup(f.read_text(encoding="utf-8"), "lxml")
             for title, sec, text in sections(soup):
                 if len(text.split()) < 15: continue
