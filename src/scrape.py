@@ -1,47 +1,67 @@
 """Download WCAG 2.2 pages to data/raw/. Polite: caches files, sleeps between requests.
-Run: python -m src.scrape [--limit N]"""
+Crawls each index page up to 2 levels deep, staying under the given URL prefix.
+Run: python -m src.scrape [--limit N]   (N = max pages per index, for quick tests)"""
 import json, re, sys, time, pathlib, requests
 from bs4 import BeautifulSoup
-from urllib.parse import urljoin, urldefrag
+from urllib.parse import urljoin, urldefrag, urlparse
 
 RAW = pathlib.Path("data/raw"); RAW.mkdir(parents=True, exist_ok=True)
 HEADERS = {"User-Agent": "CS496-student-project (educational RAG)"}
 SPEC = "https://www.w3.org/TR/WCAG22/"
-INDEXES = {
-    "https://www.w3.org/WAI/WCAG22/Understanding/": "/WAI/WCAG22/Understanding/",
-    "https://www.w3.org/WAI/WCAG22/Techniques/": "/WAI/WCAG22/Techniques/",
-}
+SEEDS = [
+    "https://www.w3.org/WAI/WCAG22/Understanding/",
+    "https://www.w3.org/WAI/WCAG22/Techniques/",
+]
+SKIP_EXT = (".css", ".js", ".png", ".jpg", ".jpeg", ".gif", ".svg", ".pdf", ".zip", ".xml", ".json", ".ico", ".woff", ".woff2")
+MAX_DEPTH = 2
 
 def slug(url):
     return re.sub(r"[^a-z0-9]+", "-", url.replace("https://www.w3.org/", "").lower()).strip("-")[:120]
 
-def get(url):
-    r = requests.get(url, headers=HEADERS, timeout=30); r.raise_for_status(); return r.text
+def fetch(url):
+    f = RAW / (slug(url) + ".html")
+    if f.exists():
+        return f.read_text(encoding="utf-8")
+    try:
+        r = requests.get(url, headers=HEADERS, timeout=30); r.raise_for_status()
+    except Exception as e:
+        print("FAIL", url, e); return None
+    f.write_text(r.text, encoding="utf-8"); time.sleep(0.3)
+    return r.text
 
-def links_from(index_url, prefix):
-    soup = BeautifulSoup(get(index_url), "lxml")
+def links_under(html, base, prefix):
     out = set()
-    for a in soup.find_all("a", href=True):
-        u = urldefrag(urljoin(index_url, a["href"]))[0]
-        if u.startswith("https://www.w3.org" + prefix) and u.endswith(".html"):
+    for a in BeautifulSoup(html, "lxml").find_all("a", href=True):
+        u = urldefrag(urljoin(base, a["href"]))[0].split("?")[0]
+        if u.startswith(prefix) and not urlparse(u).path.lower().endswith(SKIP_EXT):
             out.add(u)
-    return sorted(out)
+    return out
+
+def crawl(seed, limit=None):
+    seen, frontier, pages = {seed}, [seed], []
+    for depth in range(MAX_DEPTH + 1):
+        nxt = []
+        for u in frontier:
+            html = fetch(u)
+            if html is None: continue
+            if u != seed: pages.append(u)
+            if limit and len(pages) >= limit: return pages
+            if depth < MAX_DEPTH:
+                for l in sorted(links_under(html, u, seed)):
+                    if l not in seen: seen.add(l); nxt.append(l)
+            if len(pages) and len(pages) % 25 == 0: print(f"  {seed.split('/')[-2]}: {len(pages)} pages")
+        frontier = nxt
+    return pages
 
 def main():
     limit = int(sys.argv[sys.argv.index("--limit") + 1]) if "--limit" in sys.argv else None
-    urls = [SPEC]
-    for idx, prefix in INDEXES.items():
-        found = links_from(idx, prefix); print(idx, "->", len(found), "links")
-        urls += found[:limit] if limit else found
-    mapping = {}
-    for i, u in enumerate(urls, 1):
-        f = RAW / (slug(u) + ".html"); mapping[f.name] = u
-        if not f.exists():
-            try: f.write_text(get(u), encoding="utf-8"); time.sleep(0.3)
-            except Exception as e: print("FAIL", u, e); continue
-        if i % 25 == 0: print(i, "/", len(urls))
+    urls = [SPEC]; fetch(SPEC)
+    for seed in SEEDS:
+        found = crawl(seed, limit); print(seed, "->", len(found), "pages")
+        urls += found
+    mapping = {slug(u) + ".html": u for u in urls}
     (RAW / "_urls.json").write_text(json.dumps(mapping, indent=1))
-    print("done:", len(mapping), "pages")
+    print("done:", len(mapping), "pages total")
 
 if __name__ == "__main__":
     main()
