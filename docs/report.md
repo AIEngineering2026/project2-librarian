@@ -175,7 +175,7 @@ alternative CAPTCHA) but misses **SC 3.3.8 Accessible Authentication**, so it is
 ## 5. Week 8: cheaper and faster
 
 **Target:** cut cost per request or p95 latency by 50%, losing at most 2 accuracy points.
-**Method:** `eval/experiment.py`, one change at a time on the same data and the same 20 questions
+**Method:** `eval/experiment.py`, one change at a time on the same data and the same 20 questions (the first 20 of `data/eval.jsonl`)
 (speed + cost) plus the 15 hard questions (accuracy proxy).
 
 | Version | Change | p50 | p95 | Cost / request | Hard set | Decision |

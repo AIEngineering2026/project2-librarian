@@ -28,7 +28,7 @@ load_dotenv()  # reads the API keys (and optional overrides) from .env
 PROVIDER = os.getenv("LLM_PROVIDER", "openai").lower()
 PROVIDERS = {
     #           API key variable   base URL                          answer model           rewrite model          temperature
-    "openai": ("OPENAI_API_KEY", None,                             "gpt-5-mini",          "gpt-5-nano",          None),
+    "openai": ("OPENAI_API_KEY", None,                             "gpt-6-luna",          "gpt-5-nano",          None),
     "groq":   ("GROQ_API_KEY",   "https://api.groq.com/openai/v1", "openai/gpt-oss-120b", "openai/gpt-oss-20b",  0),
 }
 _key_var, _base_url, _answer_default, _rewrite_default, TEMPERATURE = PROVIDERS[PROVIDER]
