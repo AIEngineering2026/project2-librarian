@@ -46,13 +46,16 @@ def llm(prompt):
     if not key: sys.exit("Set GROQ_API_KEY in your .env file first.")
     payload = {"model": os.getenv("GROQ_MODEL", "openai/gpt-oss-120b"), "temperature": 0.3, "max_tokens": 2000,
                "reasoning_effort": "low", "messages": [{"role": "user", "content": prompt}]}
-    for attempt in range(6):
-        r = requests.post(API, headers={"Authorization": f"Bearer {key}"}, json=payload, timeout=90)
-        if r.status_code == 429: time.sleep(5 * (attempt + 1)); continue
+    for attempt in range(8):
+        try:
+            r = requests.post(API, headers={"Authorization": f"Bearer {key}"}, json=payload, timeout=90)
+        except requests.RequestException as e:   # internet blip: wait and retry
+            print("  network problem, retrying...", type(e).__name__); time.sleep(5 * (attempt + 1)); continue
+        if r.status_code == 429 or r.status_code >= 500: time.sleep(5 * (attempt + 1)); continue
         if r.status_code == 400 and "reasoning" in r.text.lower(): payload.pop("reasoning_effort", None); continue
         r.raise_for_status()
         return r.json()["choices"][0]["message"]["content"] or ""
-    raise RuntimeError("Groq kept refusing (rate limit?). Try again in a minute.")
+    raise RuntimeError("Groq did not answer (rate limit or no internet). Run the same command again with --resume.")
 
 def parse(text):
     m = re.search(r"\{.*\}", text, re.S)
@@ -74,24 +77,43 @@ def main():
         if kind(url) == "spec": pools["spec"] += cs
         else: pools[kind(url)].append(rng.choice(cs))   # at most one question per page
     quota = {k: round(n * q) for k, q in QUOTA.items()}; quota["spec"] = n - sum(quota.values())
-    rows, tried = [], 0
+    partial = pathlib.Path(out + ".partial")
+    rows = []
+    if "--resume" in sys.argv and partial.exists():
+        rows = [json.loads(l) for l in open(partial, encoding="utf-8") if l.strip()]
+        print("resuming: already have", len(rows), "questions")
+    done = {r["_cid"] for r in rows}
+    pf = open(partial, "a" if rows else "w", encoding="utf-8")
+    tried, stop = 0, False
+    quota = {k: round(n * q) for k, q in QUOTA.items()}; quota["spec"] = n - sum(quota.values())
     for k, pool in pools.items():
-        rng.shuffle(pool); got = 0
+        if stop: break
+        rng.shuffle(pool); got = sum(1 for r in rows if kind(r["source_url"]) == k)
         for c in pool:
             if got >= quota[k]: break
+            if c["id"] in done: continue
             tried += 1
-            d = parse(llm(PROMPT.format(title=c["title"], section=c["section"], body=body(c))))
+            try:
+                d = parse(llm(PROMPT.format(title=c["title"], section=c["section"], body=body(c))))
+            except (RuntimeError, KeyboardInterrupt) as e:   # keep what we already have
+                print("\nSTOPPED EARLY:", e or "interrupted"); stop = True; break
             if not d or norm(d["evidence"]) not in norm(body(c)):   # drop hallucinated evidence
                 print("  skipped (bad output)", c["url"].split("/")[-1]); continue
-            rows.append({"question": d["question"].strip(), "answer": d["answer"].strip(), "source_url": c["url"],
-                         "source_passage": d["evidence"].strip(), "answerable": True}); got += 1
+            row = {"question": d["question"].strip(), "answer": d["answer"].strip(), "source_url": c["url"],
+                   "source_passage": d["evidence"].strip(), "answerable": True, "_cid": c["id"]}
+            rows.append(row); got += 1
+            pf.write(json.dumps(row, ensure_ascii=False) + "\n"); pf.flush()   # saved after every question
             print(f"[{k}] {len(rows)}/{n}  {d['question'][:70]}")
             time.sleep(0.4)
-    rows += [{"question": q, "answer": "I don't know", "source_url": "", "source_passage": "", "answerable": False} for q in UNANSWERABLE]
-    rng.shuffle(rows)
+    pf.close()
+    final = [{a: b for a, b in r.items() if a != "_cid"} for r in rows]
+    final += [{"question": q, "answer": "I don't know", "source_url": "", "source_passage": "", "answerable": False} for q in UNANSWERABLE]
+    rng.shuffle(final)
     with open(out, "w", encoding="utf-8") as f:
-        for r in rows: f.write(json.dumps(r, ensure_ascii=False) + "\n")
-    print(f"\nwrote {len(rows)} draft rows ({len(rows) - len(UNANSWERABLE)} answerable) -> {out}  ({tried} LLM calls)")
+        for r in final: f.write(json.dumps(r, ensure_ascii=False) + "\n")
+    print(f"\nwrote {len(final)} draft rows ({len(rows)} answerable) -> {out}")
+    if stop: print("Not finished. Run the same command again with --resume to continue where it stopped.")
+    else: partial.unlink(missing_ok=True)
 
 if __name__ == "__main__":
     main()
