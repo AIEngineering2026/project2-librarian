@@ -1,0 +1,165 @@
+{
+ "summary": {
+  "version": "baseline",
+  "settings": {
+   "MODEL": "openai/gpt-oss-120b",
+   "REWRITE_MODEL": "openai/gpt-oss-20b",
+   "RERANKER": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+   "CANDIDATES": 20,
+   "PER_QUERY": 10,
+   "TOP_K": 5,
+   "MIN_SCORE": 0.0,
+   "REWRITE_EFFORT": null,
+   "ANSWER_EFFORT": null
+  },
+  "n_questions": 30,
+  "n_answerable": 26,
+  "n_unanswerable": 4,
+  "accuracy": 0.9,
+  "accuracy_lenient": 0.9333333333333333,
+  "correctness_answerable": {
+   "correct": 23,
+   "partial": 2,
+   "incorrect": 0,
+   "refused": 1
+  },
+  "correct_rate_answerable": 0.8846153846153846,
+  "idk_accuracy": 0.9666666666666667,
+  "false_idk": 1,
+  "false_idk_low_score": 0,
+  "false_answer_unanswerable": 0,
+  "faithfulness": 0.7233333333333334,
+  "fully_faithful_answers": 0.52,
+  "uncited_factual_claims": 10,
+  "citation_accuracy": 0.9491525423728814,
+  "n_citations": 59,
+  "answers_without_citation": 0,
+  "rewrite_failures": 0,
+  "latency_p50_s": 5.48,
+  "latency_p95_s": 21.84,
+  "cost_per_request_usd": 0.000584,
+  "judge_tokens": 33343,
+  "judge_model": "openai/gpt-oss-20b"
+ },
+ "examples": {
+  "incorrect_or_partial": [
+   {
+    "q": "How does Technique C17 relate to the Resize Text success criterion?",
+    "verdict": "partial",
+    "why": "The answer adds extra detail not present in the reference, so it is not fully correct.",
+    "answer": "Technique C17 is an advisory technique that helps satisfy WCAG success criterion 1.4.4 Resize Text (a Level AA requirement) by ensuring that text‑based form controls scale when the user enlarges text size[3].",
+    "reference": "It is an advisory technique for SC 1.4.4 Resize Text."
+   },
+   {
+    "q": "What does Technique G219 address regarding drag interactions?",
+    "verdict": "partial",
+    "why": "The answer correctly describes what G219 addresses but omits the key fact that it is a sufficient technique for SC 2.5.7.",
+    "answer": "Technique G219 addresses the need to provide an alternative to dragging movements—offering a single‑pointer activation (e.g., a tap or click that reveals controls) that performs the same function without requiring a drag gesture, to support users with motor impairments[1][3].",
+    "reference": "It is a sufficient technique for SC 2.5.7 Dragging Movements."
+   }
+  ],
+  "false_idk": [
+   {
+    "q": "How is a general flash defined for WCAG 2.2 compliance?",
+    "reason": "llm_said_idk",
+    "top_score": 8.51974105834961
+   }
+  ],
+  "answered_out_of_scope": [],
+  "unsupported_claims": [
+   {
+    "q": "When should ariaNotify be used for a progress bar?",
+    "claim": "Use ariaNotify only as a progressive‑enhancement supplement—i.e., after you’ve already provided a reliable technique such as the ARIA live region method (ARIA 25).",
+    "cites": []
+   },
+   {
+    "q": "Why must text language and direction be identified for assistive technology to function properly?",
+    "claim": "Assistive technologies need to know the language (and thus the script direction) of each passage so they can apply the correct pronunciation, voice‑language pack, and rendering rules—for example, switching between left‑to‑right and right‑to‑left scripts or different alphabets.",
+    "cites": []
+   },
+   {
+    "q": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+    "claim": "Verify that the link’s purpose can be determined from the link text itself—or from the link text together with its programmatically‑determined context—after the script runs.",
+    "cites": []
+   },
+   {
+    "q": "How can an online auction be designed to comply with the no‑time‑limit requirement of Technique G5?",
+    "claim": "Design the auction so that the bidding period is long (for example, open for a full day) and each bidder can submit a single bid at any time, eliminating any need for rapid, timed actions.",
+    "cites": []
+   },
+   {
+    "q": "How does SC 2.5.2 allow users to cancel a click‑like activation before the pointer is released?",
+    "claim": "This built‑in abort mechanism lets users avoid unintended clicks.",
+    "cites": []
+   },
+   {
+    "q": "Why are headings crucial for screen reader users when navigating a page?",
+    "claim": "Because headings convey the logical hierarchy of the page, they help users understand the overall organization and skip repeated blocks of information [3].",
+    "cites": [
+     3
+    ]
+   },
+   {
+    "q": "Why are headings crucial for screen reader users when navigating a page?",
+    "claim": "Screen readers announce each heading and its level, enabling users to navigate quickly from one heading to the next [4].",
+    "cites": [
+     4
+    ]
+   },
+   {
+    "q": "Why are headings crucial for screen reader users when navigating a page?",
+    "claim": "Descriptive headings also aid memory and prediction of what each section contains, benefiting users who read slowly or have limited short‑term memory [5].",
+    "cites": [
+     5
+    ]
+   },
+   {
+    "q": "How does the technique verify that an undersized target has enough spacing from other targets?",
+    "claim": "If no intersections occur, the target is considered to have sufficient spacing.",
+    "cites": []
+   },
+   {
+    "q": "How can I provide an alternative for time‑based media that is immediately next to the non‑text content?",
+    "claim": "Use Technique G58: add a link to the collated captions‑and‑audio‑description document immediately before or after the non‑text (e.g., video or audio) content, so the link is adjacent to the media.",
+    "cites": []
+   },
+   {
+    "q": "How can I provide an alternative for time‑based media that is immediately next to the non‑text content?",
+    "claim": "The link must point directly to the alternative for that specific synchronized media, and you should also provide a back‑link or function that returns the user to the original media location [2][4].",
+    "cites": [
+     2,
+     4
+    ]
+   },
+   {
+    "q": "How can I provide an alternative for time‑based media that is immediately next to the non‑text content?",
+    "claim": "This satisfies SC 1.2.3 Audio Description (Prerecorded) and SC 1.2.8 Media Alternative (Prerecorded) when used with G69 [1].",
+    "cites": [
+     1
+    ]
+   },
+   {
+    "q": "How does Technique G112 help with the 3.1.3 Unusual Words criterion?",
+    "claim": "It applies to any technology that contains text, allowing the meaning of unusual or restricted terms to be clarified directly in the content.",
+    "cites": []
+   },
+   {
+    "q": "Can a web application use mouse input in addition to keyboard for the same functionality while still meeting WCAG 2.2 2.1.1?",
+    "claim": "Yes.",
+    "cites": []
+   },
+   {
+    "q": "How does Technique C17 relate to the Resize Text success criterion?",
+    "claim": "Technique C17 is an advisory technique that helps satisfy WCAG success criterion 1.4.4 Resize Text (a Level AA requirement) by ensuring that text‑based form controls scale when the user enlarges text size[3].",
+    "cites": [
+     3
+    ]
+   },
+   {
+    "q": "Why is an error message shown in a dialog not considered a status message under SC 4.1.3?",
+    "claim": "An error message displayed in a dialog takes focus, which means it creates a change of context.",
+    "cites": []
+   }
+  ]
+ }
+}

@@ -53,8 +53,11 @@ latency. `POST /api/feedback` with `{"question", "answer", "helpful"}` saves �
 | Hybrid | 0.56 | 0.87 | 0.96 | 0.69 | 24 ms |
 | **Hybrid + reranker** | **0.72** | **0.93** | **0.96** | **0.80** | 803 ms |
 
-**Generation** (LLM judge, subset of [30] questions): see `eval/results/generation_*.md` and the report.
-[accuracy / faithfulness / citation accuracy]
+**Generation** (LLM judge gpt-oss-20b, first 30 questions of `data/eval.jsonl`, final version):
+
+| Accuracy | Faithfulness | Citation accuracy | "I don't know" accuracy | Out-of-scope answered |
+|---|---|---|---|---|
+| 96.7% | 86.4% | 97.8% | 96.7% | 0 / 4 |
 
 **Week 8 optimisation** ("low" reasoning effort for both LLMs):
 
@@ -63,6 +66,7 @@ latency. `POST /api/feedback` with `{"question", "answer", "helpful"}` saves �
 | Cost per request | $0.000574 | **$0.000268 (−53%)** |
 | p50 / p95 latency | 6.43 s / 11.64 s | 3.28 s / 10.49 s |
 | Hard test set (15 questions) | 14/15 | 14/15 |
+| Generation accuracy (30 questions, LLM judge) | 90.0% | 96.7% (no loss ✅) |
 | Monthly LLM cost at 100× (5,000 requests/day) | ≈ $86 | ≈ $40 |
 
 Details: `docs/optimisation.md` · failure cases: `docs/postmortem.md` · report: `docs/report.md`.
@@ -99,26 +103,28 @@ docs/       report.md, design.md, optimisation.md, postmortem.md
 
 ## Contributions
 
-- **Mayssa (data & index):** document ingestion and preprocessing, text chunking, index construction,
-  implementation of the core `retrieve()` function, evaluation tooling (question generation and
-  retrieval ablation), retrieval experiments comparing keyword, vector, hybrid, and reranked retrieval,
-  and chunk-size evaluation.
-- **Khadija (pipeline, UI & optimisation):** answer pipeline (question rewriting, reranking, generation
-  with citations, two-layer "I don't know"), FastAPI server and web interface, hard test set,
-  latency/cost measurement and Week 8 experiment runner and optimisation (−53% cost), review of all
-  eval questions, postmortem, optimisation report.
-- **Maya (evaluation & documentation):**
-  - `eval/retrieval_eval.py`: recall@1/3/5/10, MRR@10 and search latency (p50/p95). A hit means a
-    retrieved chunk contains the gold source passage, not just the same URL (the whole WCAG 2.2 spec is
-    one URL, so URL matching inflates the score; the URL-only number is reported separately and labelled).
-    Boilerplate passages that W3C repeats on many pages only count on their own page.
-  - `eval/ablation.py`: BM25 only / vector only / hybrid / hybrid + reranker (+ optional full pipeline
-    with question rewriting); report table in `eval/results/ablation.md`.
-  - `eval/generation_eval.py`: LLM judge (gpt-oss-20b) for correctness vs the reference answer,
-    faithfulness (claims supported by the chunks they cite), citation accuracy and "I don't know"
-    accuracy. Answers are saved first and judged from the file; both steps resume after Groq's daily
-    limit. Includes the Week 8 before/after comparison (`compare`, 2-point rule) and an "I don't know"
-    threshold sweep.
-  - `eval/feedback_summary.py`: summary of the website's 👍/👎 votes for the report.
-  - Eval set: question drafting and review (`data/review/maya.jsonl`).
-- **All:** eval question review, report, postmortem.
+**Mayssa (data & index)**
+- Document ingestion and preprocessing: scraping the 557 W3C pages with title, section and URL.
+- Cleaning and text chunking: URL-variant deduplication, removal of repeated sections (4,065 chunks).
+- Index construction: BM25 + Chroma (`src/index.py`).
+- Core `retrieve()` function with keyword, vector and hybrid search (`src/retrieve.py`).
+- Evaluation tooling (question generation, retrieval ablation), retrieval experiments and chunk-size evaluation.
+
+**Khadija (pipeline, interface & optimisation)**
+- Answer pipeline (`src/pipeline.py`): question rewriting, reranking, generation with citations,
+  two-layer "I don't know".
+- FastAPI server and web interface (`src/server.py`, `web/index.html`).
+- Hard test set, latency/cost measurement and Week 8 experiment runner (`eval/experiment.py`).
+- Week 8 optimisation: −52% cost per request with no accuracy lost.
+- Review of all eval questions; postmortem and optimisation report.
+
+**Maya (evaluation & documentation)**
+- Retrieval eval (`eval/retrieval_eval.py`): recall@k, MRR@10 and search latency, with passage-level
+  matching instead of URL matching.
+- Ablation (`eval/ablation.py`): BM25 / vector / hybrid / hybrid + reranker.
+- Generation eval with an LLM judge (`eval/generation_eval.py`): correctness, faithfulness, citation
+  accuracy, "I don't know" accuracy, Week 8 before/after comparison.
+- User feedback summary (`eval/feedback_summary.py`).
+- Eval question drafting and review.
+
+**All:** eval question review, report, postmortem.

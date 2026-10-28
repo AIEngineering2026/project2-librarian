@@ -1,0 +1,139 @@
+{
+ "summary": {
+  "version": "optimised",
+  "settings": {
+   "MODEL": "openai/gpt-oss-120b",
+   "REWRITE_MODEL": "openai/gpt-oss-20b",
+   "RERANKER": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+   "CANDIDATES": 20,
+   "PER_QUERY": 10,
+   "TOP_K": 5,
+   "MIN_SCORE": 0.0,
+   "REWRITE_EFFORT": "low",
+   "ANSWER_EFFORT": "low"
+  },
+  "n_questions": 30,
+  "n_answerable": 26,
+  "n_unanswerable": 4,
+  "accuracy": 0.9666666666666667,
+  "accuracy_lenient": 0.9666666666666667,
+  "correctness_answerable": {
+   "correct": 25,
+   "partial": 0,
+   "incorrect": 0,
+   "refused": 1
+  },
+  "correct_rate_answerable": 0.9615384615384616,
+  "idk_accuracy": 0.9666666666666667,
+  "false_idk": 1,
+  "false_idk_low_score": 0,
+  "false_answer_unanswerable": 0,
+  "faithfulness": 0.8636363636363636,
+  "fully_faithful_answers": 0.76,
+  "uncited_factual_claims": 15,
+  "citation_accuracy": 0.9782608695652174,
+  "n_citations": 46,
+  "answers_without_citation": 0,
+  "rewrite_failures": 0,
+  "latency_p50_s": 6.54,
+  "latency_p95_s": 13.56,
+  "cost_per_request_usd": 0.000283,
+  "judge_tokens": 30121,
+  "judge_model": "openai/gpt-oss-20b"
+ },
+ "examples": {
+  "incorrect_or_partial": [],
+  "false_idk": [
+   {
+    "q": "Why is SC 2.4.10 about section headings placed at Level AAA?",
+    "reason": "llm_said_idk",
+    "top_score": 9.720209121704102
+   }
+  ],
+  "answered_out_of_scope": [],
+  "unsupported_claims": [
+   {
+    "q": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+    "claim": "To verify that the link’s purpose is clear after a script changes its text, follow the steps in Technique SCR30:",
+    "cites": []
+   },
+   {
+    "q": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+    "claim": "1.",
+    "cites": []
+   },
+   {
+    "q": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+    "claim": "Locate a link near the top of the page that expands other links.",
+    "cites": []
+   },
+   {
+    "q": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+    "claim": "2.",
+    "cites": []
+   },
+   {
+    "q": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+    "claim": "Confirm that the link can already be identified from its text alone.",
+    "cites": []
+   },
+   {
+    "q": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+    "claim": "3.",
+    "cites": []
+   },
+   {
+    "q": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+    "claim": "Find any links on the page whose purpose cannot be identified from the link text alone.",
+    "cites": []
+   },
+   {
+    "q": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+    "claim": "4.",
+    "cites": []
+   },
+   {
+    "q": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+    "claim": "Activate the expanding link (the script).",
+    "cites": []
+   },
+   {
+    "q": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+    "claim": "5.",
+    "cites": []
+   },
+   {
+    "q": "How should a heading be formatted to be recognized by screen readers according to Technique T3?",
+    "claim": "This spacing lets screen‑reader software detect the heading as a separate structural element.",
+    "cites": []
+   },
+   {
+    "q": "How can I provide an alternative for time‑based media that is immediately next to the non‑text content?",
+    "claim": "Place a link to the collated document that contains captions, audio description, or a full transcript immediately before or after the synchronized media (the non‑text content).",
+    "cites": []
+   },
+   {
+    "q": "How can I provide an alternative for time‑based media that is immediately next to the non‑text content?",
+    "claim": "This satisfies Success Criterion 1.2.3 Audio Description or Media Alternative (Prerecorded) and 1.2.8 Media Alternative (Prerecorded) when used with Technique G69 [5].",
+    "cites": [
+     5
+    ]
+   },
+   {
+    "q": "Can a web application use mouse input in addition to keyboard for the same functionality while still meeting WCAG 2.2 2.1.1?",
+    "claim": "Yes.",
+    "cites": []
+   },
+   {
+    "q": "What does it mean for a web technology to be \"accessibility supported\" according to WCAG 2.2?",
+    "claim": "A web technology is “accessibility supported” when **both** of the following are true:",
+    "cites": []
+   },
+   {
+    "q": "How can I indicate the current item in a set using ARIA?",
+    "claim": "Use the aria‑current attribute on the element that is visually highlighted to programmatically mark it as the current item, choosing a suitable value such as \"page\", \"step\", \"time\", etc.",
+    "cites": []
+   }
+  ]
+ }
+}

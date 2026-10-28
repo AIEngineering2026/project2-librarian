@@ -3,7 +3,11 @@
 **CS496 AI Engineering · Project 2 · Dr Abdeldjalil Labed · MedTech · Fall 2026**
 **Team:** Mayssa (data & index) · Khadija (pipeline, UI & optimisation) · Maya (evaluation & documentation)
 
-> *Text in [brackets] is a placeholder to fill in before handing in.*
+**Summary.** A RAG assistant over 557 W3C pages that answers only from the documents, cites every claim
+and refuses when it cannot answer. Hybrid search + reranker finds the right passage in the top 5 for
+**93%** of questions. On the generation eval (LLM judge, 30 questions) the final version reaches
+**96.7% accuracy**, **98% citation accuracy** and answers **no out-of-scope question**. Week 8 cut the
+**cost per request by 52%** with no accuracy lost.
 
 ---
 
@@ -37,8 +41,8 @@ question → rewrite (gpt-oss-20b) → hybrid search (BM25 + vector) → rerank 
 
 ### 2.1 Chunking and index (offline)
 - **Scraping:** requests + BeautifulSoup. We keep title, section and URL as metadata for every chunk.
-- **Chunking:** split by heading first, about 500 tokens with a small overlap.
-  [Mayssa: confirm the final rules in `src/chunk.py`, e.g. sentence boundaries, and the 300/500/800 size test.]
+- **Chunking:** split by heading first, about 500 tokens with a small overlap, keeping text boundaries;
+  the chunk size was chosen after comparing several sizes on retrieval.
 - **Cleaning:** two problems found during testing and fixed:
   1. The same page existed under two URLs (`…/non-text-contrast` and `…/non-text-contrast.html`), so we deduplicated the URL variants.
   2. Repeated boilerplate sections such as *Key Terms* (identical glossary text on many pages) flooded the results for common words, so the duplicates were removed (4,749 → 4,522 → **4,065 chunks**).
@@ -85,7 +89,7 @@ these interactions are not possible in Streamlit, and the API is also used by th
 
 ## 3. Retrieval results and ablation
 
-**Eval set:** `data/eval.jsonl` has **[124] questions: 112 answerable + [12] unanswerable**. Each
+**Eval set:** `data/eval.jsonl` has **112 answerable questions plus unanswerable ones (≈ 10%)**. Each
 question has a gold answer and a gold source passage. They were drafted from the corpus and **reviewed
 by hand**: duplicates, answers not supported by their passage, and test-rule fragments were dropped or fixed.
 
@@ -126,23 +130,45 @@ against the gold answer, **faithfulness** (share of claims supported by the chun
 **citation accuracy** (does chunk `[n]` say what the sentence claims?) and **"I don't know" accuracy**.
 
 ⚠️ **Subset.** Because of Groq's free-tier limit (§6.3), the generation eval was run on the **first
-[30] questions** of `data/eval.jsonl` ([N] answerable, [N] unanswerable), the same questions for both
-versions.
+30 questions** of `data/eval.jsonl` (26 answerable, 4 unanswerable), the same questions for both
+versions. With 30 questions, one question = 3.3 accuracy points.
 
-| Metric | Baseline | Optimised (Week 8) |
-|---|---|---|
-| Accuracy (headline) | [ ] | [ ] |
-| Correctness: correct / partial / incorrect / refused | [ ] | [ ] |
-| Faithfulness (claims supported) | [ ] | [ ] |
-| Fully faithful answers | [ ] | [ ] |
-| Citation accuracy | [ ] | [ ] |
-| "I don't know" accuracy | [ ] | [ ] |
+| Metric | Baseline | Optimised (Week 8) | Change |
+|---|---|---|---|
+| **Accuracy** (correct answers + correct "I don't know", all 30) | **90.0%** | **96.7%** | +6.7 pts |
+| Accuracy, partial = 0.5 | 93.3% | 96.7% | +3.3 pts |
+| Answerable: correct / partial / incorrect / refused (of 26) | 23 / 2 / 0 / 1 | 25 / 0 / 0 / 1 | |
+| "I don't know" accuracy | 96.7% | 96.7% | 0 |
+| Out-of-scope questions answered anyway | 0 / 4 | 0 / 4 | |
+| Faithfulness (claims supported by their cited chunks) | 72.3% | 86.4% | +14.0 pts |
+| Fully faithful answers | 52.0% | 76.0% | +24 pts |
+| Citation accuracy | 94.9% (59 citations) | 97.8% (46 citations) | +2.9 pts |
+| Factual claims with no citation | 10 | 15 | |
+| Latency p50 / p95 | 5.48 s / 21.84 s | 6.54 s / 13.56 s | +19% / −38% |
+| **Cost per request** | $0.000584 | **$0.000283** | **−52%** |
+
+**Reading the results.**
+- **Correctness is high in both versions:** no incorrect answer, and **no out-of-scope question was
+  answered**. The baseline's 2 partial answers were on "which criterion does Technique X relate to" questions.
+- **Citations are accurate** (95–98%): when the model cites a chunk, the chunk says it.
+- **Faithfulness is the weak point**, mostly because of **claims with no citation**: the model adds a
+  concluding sentence without `[n]` (e.g. *"This built-in abort mechanism lets users avoid unintended
+  clicks."*), which the judge counts as unsupported. In the optimised run, most uncited "claims" come from
+  one numbered list where the judge also counted the list numbers ("1.", "2.") as claims, so faithfulness
+  is slightly understated. **Next step:** require a citation on every sentence, or drop uncited sentences.
+- **False "I don't know":** one per version, on different questions (baseline: *"How is a general flash
+  defined?"*; optimised: *"Why is SC 2.4.10 placed at Level AAA?"*), both refused by the LLM although
+  relevant chunks were retrieved (rerank score > 8).
+- **The optimised version scores higher, but we do not claim it is more accurate.** On 30 questions one
+  question = 3.3 points, so +6.7 points is two questions. The safe conclusion is **no accuracy lost**.
+  Shorter reasoning may make answers stick closer to the sources (higher faithfulness), but this needs the
+  full eval to confirm.
+- **Latency** in this run reflects Groq free-tier queueing after hours of experiments (p95 21.8 s in the
+  baseline) more than the pipeline itself.
 
 **Hard test set (15 questions written to break the system, auto-scored):** 14/15 in both versions. The
 remaining failure: *"Can I use a puzzle CAPTCHA on my login page?"* is answered from SC 1.1.1 (offer an
 alternative CAPTCHA) but misses **SC 3.3.8 Accessible Authentication**, so it is correct but incomplete.
-
-[Comment on the judge results: main error types, examples of unfaithful answers.]
 
 ---
 
@@ -159,8 +185,9 @@ alternative CAPTCHA) but misses **SC 3.3.8 Accessible Authentication**, so it is
 | **E1 + E6** | + Answer model: reasoning effort "low" | **3.28 s** | 10.49 s | **$0.000268** | 14/15 | ✅ **final** |
 | E1 + E6 + E3 | + 3 chunks instead of 5 | 4.23 s | 9.65 s | $0.000269 | 14/15 | ❌ no saving |
 
-**Result: cost per request −53%** (target met), typical wait (p50) **−49%**, no accuracy lost on the
-hard set. [Official accuracy before/after on the eval subset: see §4. The 2-point rule is (met / not met).]
+**Result: cost per request −53%** on the speed set and **−52%** in the official eval (target met),
+typical wait (p50) **−49%** on the speed set, no accuracy lost on the hard set.
+**Official before/after (§4, 30 questions, LLM judge): accuracy 90.0% → 96.7%, so the 2-point rule is met ✅.**
 
 **What we learned:**
 - **The hidden cost was reasoning ("thinking") tokens.** gpt-oss models generate reasoning tokens
