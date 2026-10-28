@@ -1,4 +1,4 @@
-# Optimisation report 
+# Optimisation report — Week 8
 
 **Target (from the brief):** cut cost per request **or** p95 latency by **50%**, losing at most
 **2 points** of accuracy on our own eval. Every change is measured before and after with the same test set.
@@ -48,7 +48,9 @@ rewritten query → cross-encoder rerank (ms-marco-MiniLM-L-6-v2) → top 5 chun
 | p50 latency | 6.43 s | 3.28 s | −49% |
 | p95 latency | 11.64 s | 10.49 s | −10% |
 | Hard-set accuracy (proxy) | 14/15 | 14/15 | 0 points |
-| Official accuracy (124-question eval) | *(Maya)* | *(Maya)* | *(must be ≥ −2 points)* |
+| **Official accuracy** (LLM judge, 30 questions of `data/eval.jsonl`) | 90.0% | 96.7% | **+6.7 pts ✅ (rule: ≥ −2)** |
+| Official cost per request (same 30 questions) | $0.000584 | $0.000283 | −52% |
+| Faithfulness / citation accuracy | 72.3% / 94.9% | 86.4% / 97.8% | +14.0 / +2.9 pts |
 
 ---
 
@@ -74,9 +76,10 @@ rewritten query → cross-encoder rerank (ms-marco-MiniLM-L-6-v2) → top 5 chun
 
 ## 5. Limitations
 
-- The accuracy check here is a **proxy** on 15 hard questions: one question ≈ 7 points, so the
-  "max 2 points" rule can only be confirmed with the **full eval (`data/eval.jsonl`, ~124 questions)**,
-  run by Maya on both versions.
+- The experiments used a **proxy** accuracy check on 15 hard questions (one question ≈ 7 points). The
+  official before/after used the LLM-judged eval, but only on its **first 30 questions** because of the
+  Groq daily limit (one question = 3.3 points): +6.7 points is two questions, so we claim **no accuracy
+  lost**, not an improvement.
 - Latency comes from **20 requests on the Groq free tier**, so p95 is noisy (shared queue).
 - Results vary between runs even at temperature 0 (the rewritten queries differ slightly).
 - **Free-tier limit:** 200,000 tokens/day for gpt-oss-120b. Each experiment used ≈ 50,000 tokens, so

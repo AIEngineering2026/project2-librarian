@@ -1,0 +1,2438 @@
+{
+ "n_questions": 112,
+ "gold_in_corpus": 112,
+ "boilerplate_passages": 17,
+ "not_in_corpus": [],
+ "systems": {
+  "bm25": {
+   "n": 112,
+   "recall@1": 0.5892857142857143,
+   "recall@3": 0.7589285714285714,
+   "recall@5": 0.8482142857142857,
+   "recall@10": 0.9196428571428571,
+   "url_recall@1": 0.7053571428571429,
+   "url_recall@3": 0.8482142857142857,
+   "url_recall@5": 0.8928571428571429,
+   "url_recall@10": 0.9553571428571429,
+   "mrr@10": 0.6929634353741497,
+   "ms_mean": 13.84954018742844,
+   "ms_p50": 13.251900032628328,
+   "ms_p95": 22.010685014538467,
+   "misses": [
+    {
+     "question": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR30",
+     "passage": "Activate the control identified in step 1\nCheck that the purpose of the links identified in step 3 can now be identified from link text alone",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-pdf-pdf11-03830 | Procedure",
+      "wai-wcag22-techniques-pdf-pdf11-03821 | Description",
+      "wai-wcag22-understanding-on-input-01083 | Intent"
+     ]
+    },
+    {
+     "question": "Why are headings crucial for screen reader users when navigating a page?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/navigable",
+     "passage": "Headings are particularly important mechanisms for helping users orient themselves within content and navigate through it.",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-html-h42-03555 | Description",
+      "wai-wcag22-techniques-html-h69-03655 | Description",
+      "wai-wcag22-techniques-general-g1-02530 | Description"
+     ]
+    },
+    {
+     "question": "Why is SC 2.4.10 about section headings placed at Level AAA?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/section-headings",
+     "passage": "This provision is included at Level AAA because it cannot be applied to all types of content and it may not always be possible to insert headings.",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-section-headings-01259 | In Brief",
+      "wai-wcag22-understanding-section-headings-01264 | Sufficient Techniques",
+      "wai-wcag22-understanding-section-headings-01260 | Success Criterion (SC)"
+     ]
+    },
+    {
+     "question": "What happens if a web page specifies a text color but omits a background color?",
+     "gold_url": "https://www.w3.org/TR/WCAG22",
+     "passage": "It is a failure if no background color is specified when the text color is specified, because the user's default background color is unknown and cannot be evalu",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-failures-f24-02182 | Description",
+      "wai-wcag22-techniques-general-g148-02755 | Example 1",
+      "wai-wcag22-techniques-general-g175-02905 | Description"
+     ]
+    },
+    {
+     "question": "How can I indicate the current item in a set using ARIA?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships",
+     "passage": "ARIA26: Using aria-current to identify the current item in a set",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-aria-aria26-01614 | Description",
+      "wai-wcag22-techniques-aria-aria26-01620 | Procedure",
+      "wai-wcag22-techniques-aria-aria26-01618 | Related Resources"
+     ]
+    },
+    {
+     "question": "What is a recommended technique for clarifying the purpose of a link that uses both an image and text?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context",
+     "passage": "Combining adjacent image and text links for the same resource",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-failures-f89-02466 | Description",
+      "wai-wcag22-techniques-failures-f89-02467 | Example 1: Search Results",
+      "wai-wcag22-techniques-html-h30-03508 | Description"
+     ]
+    },
+    {
+     "question": "What must an author do to ensure text can be scaled to 200% under WCAG 2.2 SC 1.4.4?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text",
+     "passage": "Content satisfies the success criterion if it can be scaled up to 200% using at least one text scaling mechanism supported by user agents.",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-resize-text-01246 | Intent",
+      "wai-wcag22-understanding-resize-text-01247 | Intent",
+      "wai-wcag22-understanding-reflow-01230 | Resize Text"
+     ]
+    },
+    {
+     "question": "Why should developers avoid fully justified text for users with cognitive disabilities?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/visual-presentation",
+     "passage": "People with certain cognitive disabilities have problems reading text that is both left and right justified. The uneven spacing between words in fully justified",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-general-g169-02864 | Description",
+      "wai-wcag22-techniques-failures-f88-02460 | Description",
+      "wai-wcag22-understanding-help-00699 | In Brief"
+     ]
+    },
+    {
+     "question": "Can a web page replace a drag‑and‑drop interaction with a single‑click action?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements",
+     "passage": "All functionality that uses a dragging movement for operation can be achieved by a single pointer without dragging, unless dragging is essential or the function",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-pointer-cancellation-01138 | Up-Event Abort or Undo",
+      "wai-wcag22-understanding-pointer-cancellation-01142 | Examples",
+      "wai-wcag22-techniques-general-g210-03101 | Procedure"
+     ]
+    },
+    {
+     "question": "How should a developer cite a WCAG 2.2 technique from a support document?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/refer-to-wcag",
+     "passage": "Techniques can be cited based on the individual Technique document or on the master WCAG 2.2 Techniques document.",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-refer-to-wcag-01207 | Examples",
+      "wai-wcag22-techniques-general-g115-02613 | Example 2: Using cite and blockquote to reference a book and a quotation from it",
+      "wai-wcag22-understanding-refer-to-wcag-01204 | When referring to WCAG 2.2 from another standard with a \"should\" statement"
+     ]
+    },
+    {
+     "question": "How does SC 2.5.6 allow a user to switch between input devices on the same device?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/concurrent-input-mechanisms",
+     "passage": "A user starts interacting with a page using a desktop keyboard, and then attaches a secondary touch-enabled monitor. Content can be operated using this newly ad",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-concurrent-input-mechanisms-00374 | Intent",
+      "wai-wcag22-understanding-orientation-01091 | Locking a device to an orientation",
+      "wai-wcag22-understanding-motion-actuation-00945 | Examples"
+     ]
+    },
+    {
+     "question": "What does WCAG 2.2 define as a \"section\" in web content?",
+     "gold_url": "https://www.w3.org/TR/WCAG22",
+     "passage": "\"a self-contained portion of written content that deals with one or more related topics or thoughts\"",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-meaningful-sequence-00921 | Intent",
+      "wai-wcag22-techniques-general-g59-03248 | About this Technique",
+      "tr-wcag22-00166 | 6. Glossary"
+     ]
+    },
+    {
+     "question": "Which disability categories are covered by WCAG 2.2?",
+     "gold_url": "https://www.w3.org/TR/WCAG22",
+     "passage": "Accessibility involves a wide range of disabilities, including visual, auditory, physical, speech, cognitive, language, learning, and neurological disabilities.",
+     "in_corpus": true,
+     "got": [
+      "tr-wcag22-00006 | WCAG 2 Layers of Guidance",
+      "wai-wcag22-understanding-location-00904 | Examples",
+      "wai-wcag22-techniques-html-h48-03581 | Example 5: Using lists to group links"
+     ]
+    },
+    {
+     "question": "How should the HTML be structured to provide a tooltip that appears on focus or hover and can be dismissed?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR39",
+     "passage": "<a class=\"a-and-tooltip\" id=\"parent\" href=\"index.html\"> trigger <span id=\"popup\" role=\"tooltip\"> And this additional text gives additional context on the trigge",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-content-on-hover-or-focus-00483 | Example 1: Dismissible Tooltip",
+      "wai-wcag22-understanding-content-on-hover-or-focus-00481 | Additional Notes",
+      "tr-wcag22-00048 | Success Criterion 1.4.13 Content on Hover or Focus"
+     ]
+    },
+    {
+     "question": "What does Level AAA add for synchronized media in WCAG 2.2?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/time-based-media",
+     "passage": "This guideline also includes (at Level AAA) sign language interpretation for synchronized media as well as an approach called extended audio description.",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-failures-f75-02405 | Procedure",
+      "tr-wcag22-00024 | Success Criterion 1.2.6 Sign Language (Prerecorded)",
+      "tr-wcag22-00026 | Success Criterion 1.2.8 Media Alternative (Prerecorded)"
+     ]
+    },
+    {
+     "question": "What is a common failure when using CSS background images for conveying information under SC 1.1.1?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-content",
+     "passage": "F3: Failure of Success Criterion 1.1.1 due to conveying information exclusively using CSS background images",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-failures-f3-02200 | Description",
+      "wai-wcag22-techniques-css-c30-01931 | Related Techniques",
+      "wai-wcag22-techniques-failures-f3-02205 | Expected Results"
+     ]
+    },
+    {
+     "question": "What is the maximum number of flashes allowed per second on a web page to comply with WCAG 2.2?",
+     "gold_url": "https://www.w3.org/TR/WCAG22",
+     "passage": "Web pages do not contain anything that flashes more than three times in any one second period, or the flash is below the general flash and red flash thresholds.",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-three-flashes-01362 | Intent",
+      "wai-wcag22-understanding-three-flashes-or-below-threshold-01376 | Intent",
+      "wai-wcag22-understanding-pause-stop-hide-01120 | Intent"
+     ]
+    }
+   ],
+   "per_question": [
+    {
+     "question": "When should ariaNotify be used for a progress bar?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Why is offering multiple navigation methods beneficial for users with visual or cognitive impairments?",
+     "rank": 5,
+     "url_rank": 5
+    },
+    {
+     "question": "Why must text language and direction be identified for assistive technology to function properly?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "How can an online auction be designed to comply with the no‑time‑limit requirement of Technique G5?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How is a general flash defined for WCAG 2.2 compliance?",
+     "rank": 1,
+     "url_rank": 2
+    },
+    {
+     "question": "How does SC 2.5.2 allow users to cancel a click‑like activation before the pointer is released?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How many flashes per second are allowed by Technique G19 to avoid seizure risk?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How does Technique G225 keep each panel of a horizontally scrolling section readable in a 320 CSS pixel viewport?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Why are headings crucial for screen reader users when navigating a page?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "How does the technique verify that an undersized target has enough spacing from other targets?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How should a heading be formatted to be recognized by screen readers according to Technique T3?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Why is SC 2.4.10 about section headings placed at Level AAA?",
+     "rank": 7,
+     "url_rank": 1
+    },
+    {
+     "question": "How can I provide an alternative for time‑based media that is immediately next to the non‑text content?",
+     "rank": 1,
+     "url_rank": 9
+    },
+    {
+     "question": "How does Technique G112 help with the 3.1.3 Unusual Words criterion?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Can a web application use mouse input in addition to keyboard for the same functionality while still meeting WCAG 2.2 2.1.1?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How does Technique C17 relate to the Resize Text success criterion?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What technique can I use to allow users to skip a block of repeated content on a page?",
+     "rank": 3,
+     "url_rank": 3
+    },
+    {
+     "question": "What happens if a web page specifies a text color but omits a background color?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "Why should a website avoid forcing a specific screen orientation?",
+     "rank": 5,
+     "url_rank": 1
+    },
+    {
+     "question": "What does it mean for a web technology to be \"accessibility supported\" according to WCAG 2.2?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "At 400% zoom, what starting viewport width is 320 CSS pixels equivalent to (SC 1.4.10 Reflow)?",
+     "rank": 1,
+     "url_rank": 2
+    },
+    {
+     "question": "How can I indicate the current item in a set using ARIA?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "Which success criterion was removed in WCAG 2.2?",
+     "rank": 3,
+     "url_rank": 1
+    },
+    {
+     "question": "Why is an error message shown in a dialog not considered a status message under SC 4.1.3?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What does Technique G219 address regarding drag interactions?",
+     "rank": 4,
+     "url_rank": 1
+    },
+    {
+     "question": "When are the character key shortcuts for components active?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What WCAG success criterion does Technique G212 address?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What type of flashing content should be avoided to prevent seizures according to WCAG 2.2?",
+     "rank": 3,
+     "url_rank": 3
+    },
+    {
+     "question": "What contrast ratio is required for large-scale text under WCAG 2.2 SC 1.4.3?",
+     "rank": 1,
+     "url_rank": 2
+    },
+    {
+     "question": "What is a common failure when captions omit dialogue or sound effects?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How does Technique C27 help satisfy WCAG 2.2 success criterion 1.3.2?",
+     "rank": 2,
+     "url_rank": 2
+    },
+    {
+     "question": "Why must non-text content be provided in electronic text form according to WCAG 2.2?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What minimum contrast ratio is required for a keyboard focus indicator under WCAG 2.2 Success Criterion 2.4.13 at Level AAA?",
+     "rank": 3,
+     "url_rank": 8
+    },
+    {
+     "question": "What is a recommended technique for clarifying the purpose of a link that uses both an image and text?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "How can you create tagged bookmarks in a PDF after conversion using Adobe Acrobat Pro?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What type of captioning service is required for live audio to meet WCAG 2.2 SC 1.2.9?",
+     "rank": 5,
+     "url_rank": 1
+    },
+    {
+     "question": "What qualifies a resource as a web page for WCAG 2.2 conformance?",
+     "rank": 4,
+     "url_rank": 4
+    },
+    {
+     "question": "Which sites does failure F12 (SC 2.2.5 Re-authenticating) apply to?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What must an author do to ensure text can be scaled to 200% under WCAG 2.2 SC 1.4.4?",
+     "rank": 6,
+     "url_rank": 1
+    },
+    {
+     "question": "What does Technique G11 address regarding blinking content?",
+     "rank": 3,
+     "url_rank": 1
+    },
+    {
+     "question": "How does Technique ARIA25 make screen readers announce progress bar updates?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Why should developers avoid fully justified text for users with cognitive disabilities?",
+     "rank": null,
+     "url_rank": 7
+    },
+    {
+     "question": "What happens if only the foreground color is set in CSS and the background color is omitted?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Why is it important for repeated navigation elements to appear in the same order across pages?",
+     "rank": 2,
+     "url_rank": 2
+    },
+    {
+     "question": "What does Technique G144 address in relation to CAPTCHA accessibility?",
+     "rank": 4,
+     "url_rank": 1
+    },
+    {
+     "question": "How does ARIA5 help assistive technology understand a custom widget?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What happens if a plug‑in or applet blinks content for more than five seconds without a pause mechanism?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Under SC 2.2.1 Timing Adjustable, how long is enough for a user to respond to a 'hit any key' prompt?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How does Technique G142 ensure that zooming preserves spatial relationships and functionality?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What contrast ratio is required for text for users with 20/40 visual acuity according to WCAG 2.2 SC 1.4.6?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "How can a keyboard user activate an image that acts as a link using scripting?",
+     "rank": 5,
+     "url_rank": 5
+    },
+    {
+     "question": "Which success criterion does Technique G80 relate to?",
+     "rank": 2,
+     "url_rank": 2
+    },
+    {
+     "question": "How can a script warn users 20 seconds before a time limit expires and allow them to request more time?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What must be done when a CAPTCHA is used to confirm human access?",
+     "rank": 3,
+     "url_rank": 3
+    },
+    {
+     "question": "What is the main goal of Guideline 1.4 Distinguishable for visual presentations?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What must accompany role=\"heading\" to indicate the heading level?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can a web developer allow users to toggle diacritical marks on a page?",
+     "rank": 3,
+     "url_rank": 1
+    },
+    {
+     "question": "Can a web page replace a drag‑and‑drop interaction with a single‑click action?",
+     "rank": null,
+     "url_rank": 9
+    },
+    {
+     "question": "What happens when a keyboard user tabs past a field that triggers a help dialog, according to SC 3.2.1?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How should a developer cite a WCAG 2.2 technique from a support document?",
+     "rank": 7,
+     "url_rank": 1
+    },
+    {
+     "question": "Under SC 2.5.5 Target Size (Enhanced), how big must a target be if it is a full sentence that is not in a block of text?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "What is the main goal of WCAG 2.2 Guideline 1.3 Adaptable?",
+     "rank": 2,
+     "url_rank": 2
+    },
+    {
+     "question": "How does Technique C9 help meet the 1.1.1 Non‑text Content requirement?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can an online test be calibrated to avoid timing affecting scores?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What must be true for a target to meet the 24 × 24 CSS‑pixel minimum size requirement?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How does SC 2.5.6 allow a user to switch between input devices on the same device?",
+     "rank": 7,
+     "url_rank": 1
+    },
+    {
+     "question": "What contrast ratio is required for large-scale text under SC 1.4.6?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What is the main goal of WCAG 2.2 Guideline 2.2 regarding time constraints?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What does Technique SCR38 remove from a page, and is that required for conformance?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What qualifies a collection of web pages as a \"set\" according to WCAG 2.2?",
+     "rank": 2,
+     "url_rank": 2
+    },
+    {
+     "question": "When should the sup and sub elements be used in HTML?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can I inform users about a context change before a form control updates?",
+     "rank": 1,
+     "url_rank": 5
+    },
+    {
+     "question": "What are the three types of guidance provided in the WCAG 2.2 Techniques document?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can I insert a left-to-right or right-to-left mark in HTML to control text direction?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "What must be provided for prerecorded audio-only content to meet WCAG 2.2 success criterion 1.2.1?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can clipped or overlapped content occur when a user adjusts text spacing?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What are two common failure types for SC 1.2.1 regarding audio-only and video-only content?",
+     "rank": 3,
+     "url_rank": 1
+    },
+    {
+     "question": "How can a control slider be made operable for users who cannot perform path-based gestures?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What must a web page do to meet WCAG 2.2 Success Criterion 3.3.6 for error prevention at AAA level?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Under SC 3.3.9 Accessible Authentication (Enhanced), when is a cognitive function test allowed in an authentication step?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "When should a form use a single set of text instructions at the top instead of repeating format guidance for each field?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What conditions allow a new cognitive function test in an authentication step under WCAG 2.2 Success Criterion 3.3.8?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Are WCAG 2 techniques mandatory for conformance?",
+     "rank": 2,
+     "url_rank": 3
+    },
+    {
+     "question": "What WCAG 2.2 success criteria can be violated when a script removes focus immediately after it is received?",
+     "rank": 4,
+     "url_rank": 1
+    },
+    {
+     "question": "How can metadata help users find a conforming version of a web page when they land on a non‑conforming page?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What does the WCAG glossary define as a \"user interface component\"?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What is a key benefit of limiting animation triggered by user interactions for people with vestibular disorders?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "Why does using different text labels for identical search buttons cause a failure of SC 3.2.4?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What does WCAG 2.2 success criterion 1.4.8 require for text presentation at AAA level?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How does SC 2.4.2 help users with visual disabilities when multiple pages are open?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What does WCAG 2.2 define as a \"section\" in web content?",
+     "rank": 10,
+     "url_rank": 3
+    },
+    {
+     "question": "Why is consistent placement of navigation bars important for users of screen magnifiers?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What does tel-country-code mean in the WCAG 2.2 list of input purposes?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Which disability categories are covered by WCAG 2.2?",
+     "rank": null,
+     "url_rank": 1
+    },
+    {
+     "question": "How should the HTML be structured to provide a tooltip that appears on focus or hover and can be dismissed?",
+     "rank": 6,
+     "url_rank": 6
+    },
+    {
+     "question": "How can you change a link’s background color when it receives focus and revert it when it loses focus using JavaScript?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Does SC 3.2.6 require help to be provided on PDFs downloaded from a website?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Under SC 2.1.2 No Keyboard Trap, what must a page allow when keyboard focus can be moved to a component with a keyboard interface?",
+     "rank": 1,
+     "url_rank": 2
+    },
+    {
+     "question": "What does Level AAA add for synchronized media in WCAG 2.2?",
+     "rank": 6,
+     "url_rank": 6
+    },
+    {
+     "question": "Why must a site allow users to re-authenticate during a transaction if they are logged out due to inactivity?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "When is supplemental content required under WCAG 2.2 Success Criterion 3.1.5?",
+     "rank": 5,
+     "url_rank": 2
+    },
+    {
+     "question": "What is a common failure when using CSS background images for conveying information under SC 1.1.1?",
+     "rank": 6,
+     "url_rank": 6
+    },
+    {
+     "question": "What is the maximum number of flashes allowed per second on a web page to comply with WCAG 2.2?",
+     "rank": null,
+     "url_rank": 5
+    },
+    {
+     "question": "What contrast ratio is required for visual cues that identify a control and its state in UI components?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Can content that requires path-dependent input conform to SC 2.1.3 Keyboard (No Exception)?",
+     "rank": 4,
+     "url_rank": 3
+    },
+    {
+     "question": "How can I fix a PDF list that is only separated by line breaks so screen readers can interpret it correctly?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "What frequency of flashing is disallowed by WCAG 2.2 Success Criterion 2.3.2 at Level AAA?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can a social security number input be grouped for accessibility?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What is a common failure of WCAG 2.2 Success Criterion 2.1.1 involving event handlers?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What are the two common failure types for WCAG 2.2 Success Criterion 1.4.2 regarding audio control?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How does Guideline 4.1 help ensure future compatibility with assistive technologies?",
+     "rank": 1,
+     "url_rank": 1
+    }
+   ]
+  },
+  "vector": {
+   "n": 112,
+   "recall@1": 0.4732142857142857,
+   "recall@3": 0.6875,
+   "recall@5": 0.7232142857142857,
+   "recall@10": 0.8035714285714286,
+   "url_recall@1": 0.625,
+   "url_recall@3": 0.7410714285714286,
+   "url_recall@5": 0.7946428571428571,
+   "url_recall@10": 0.8482142857142857,
+   "mrr@10": 0.5840490362811791,
+   "ms_mean": 10.69458838693598,
+   "ms_p50": 10.487299994565547,
+   "ms_p95": 13.635814998997375,
+   "misses": [
+    {
+     "question": "Why must text language and direction be identified for assistive technology to function properly?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/readable",
+     "passage": "User agents, including speech-enabled as well as graphical applications, may be unable to present text correctly unless the language and direction of the text a",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-language-of-parts-00849 | Intent",
+      "wai-wcag22-understanding-language-of-parts-00847 | In Brief",
+      "wai-wcag22-understanding-headings-and-labels-00694 | Key Terms"
+     ]
+    },
+    {
+     "question": "How does the technique verify that an undersized target has enough spacing from other targets?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Techniques/css/C42",
+     "passage": "Draw a 24px diameter circle centered on the target's bounding box. Check that the circle from #1 does not intersect any other target. Check that the circle from",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-target-size-minimum-01325 | Spacing",
+      "wai-wcag22-understanding-target-size-minimum-01326 | Spacing",
+      "wai-wcag22-understanding-target-size-minimum-01328 | Spacing"
+     ]
+    },
+    {
+     "question": "How can I provide an alternative for time‑based media that is immediately next to the non‑text content?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/audio-description-or-media-alternative-prerecorded",
+     "passage": "G69: Providing an alternative for time based media using one of the following techniques: G58: Placing a link to the alternative for time-based media immediatel",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-general-g58-03246 | Related Techniques",
+      "wai-wcag22-techniques-general-g69-03295 | About this Technique",
+      "wai-wcag22-understanding-media-alternative-prerecorded-00930 | Intent"
+     ]
+    },
+    {
+     "question": "How does Technique C17 relate to the Resize Text success criterion?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Techniques/css/C17",
+     "passage": "This technique relates to 1.4.4 Resize Text ( Advisory ).",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-resize-text-01244 | Success Criterion (SC)",
+      "wai-wcag22-techniques-failures-f94-02500 | Related Techniques",
+      "wai-wcag22-techniques-failures-f94-02496 | About this Technique"
+     ]
+    },
+    {
+     "question": "What technique can I use to allow users to skip a block of repeated content on a page?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/bypass-blocks",
+     "passage": "G123: Adding a link at the beginning of a block of repeated content to go to the end of the block",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-bypass-blocks-00301 | In Brief",
+      "wai-wcag22-understanding-bypass-blocks-00303 | Intent",
+      "wai-wcag22-techniques-general-g123-02636 | Example 1: Skip navigation links"
+     ]
+    },
+    {
+     "question": "What happens if a web page specifies a text color but omits a background color?",
+     "gold_url": "https://www.w3.org/TR/WCAG22",
+     "passage": "It is a failure if no background color is specified when the text color is specified, because the user's default background color is unknown and cannot be evalu",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-general-g156-02791 | Description",
+      "wai-wcag22-techniques-css-c23-01877 | Description",
+      "wai-wcag22-techniques-general-g148-02754 | Description"
+     ]
+    },
+    {
+     "question": "How can I indicate the current item in a set using ARIA?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships",
+     "passage": "ARIA26: Using aria-current to identify the current item in a set",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-aria-aria26-01614 | Description",
+      "wai-wcag22-techniques-aria-aria26-01620 | Procedure",
+      "wai-wcag22-techniques-aria-aria26-01618 | Related Resources"
+     ]
+    },
+    {
+     "question": "Which success criterion was removed in WCAG 2.2?",
+     "gold_url": "https://www.w3.org/TR/WCAG22",
+     "passage": "WCAG 2.2 has removed one success criterion, 4.1.1 Parsing .",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-intro-00785 | Sufficient Techniques, Advisory Techniques, and Failures",
+      "wai-wcag22-understanding-understanding-techniques-01432 | Using the Techniques",
+      "wai-wcag22-understanding-understanding-techniques-01421 | Techniques are Informative"
+     ]
+    },
+    {
+     "question": "What WCAG success criterion does Technique G212 address?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G212",
+     "passage": "This technique relates to 2.5.2 Pointer Cancellation ( Sufficient ).",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-general-g219-03152 | Expected Results",
+      "wai-wcag22-understanding-intro-00785 | Sufficient Techniques, Advisory Techniques, and Failures",
+      "wai-wcag22-techniques-general-g21-03096 | Test Rules"
+     ]
+    },
+    {
+     "question": "How does Technique C27 help satisfy WCAG 2.2 success criterion 1.3.2?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Techniques/css/C27",
+     "passage": "This technique relates to: 1.3.2 Meaningful Sequence ( Sufficient )",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-understanding-techniques-01421 | Techniques are Informative",
+      "wai-wcag22-understanding-understanding-techniques-01432 | Using the Techniques",
+      "wai-wcag22-understanding-intro-00785 | Sufficient Techniques, Advisory Techniques, and Failures"
+     ]
+    },
+    {
+     "question": "Why must non-text content be provided in electronic text form according to WCAG 2.2?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/text-alternatives",
+     "passage": "Electronic text has the unique advantage that it is presentation neutral. That is, it can be rendered visually, auditorily, tactilely, or by any combination.",
+     "in_corpus": true,
+     "got": [
+      "tr-wcag22-00017 | Guideline 1.1 Text Alternatives",
+      "wai-wcag22-techniques-general-g85-03373 | About this Technique",
+      "tr-wcag22-00018 | Success Criterion 1.1.1 Non-text Content"
+     ]
+    },
+    {
+     "question": "What is a recommended technique for clarifying the purpose of a link that uses both an image and text?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context",
+     "passage": "Combining adjacent image and text links for the same resource",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-html-h2-03487 | Related Resources",
+      "wai-wcag22-techniques-html-h30-03508 | Description",
+      "wai-wcag22-techniques-html-h2-03488 | Related Techniques"
+     ]
+    },
+    {
+     "question": "What type of captioning service is required for live audio to meet WCAG 2.2 SC 1.2.9?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/audio-only-live",
+     "passage": "A live text caption service will enable live audio to be accessible to people who are deaf or hard of hearing, or who cannot otherwise hear the audio. Such serv",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-general-g9-03404 | About this Technique",
+      "wai-wcag22-understanding-captions-live-00314 | Intent",
+      "tr-wcag22-00021 | Success Criterion 1.2.2 Captions (Prerecorded)"
+     ]
+    },
+    {
+     "question": "What qualifies a resource as a web page for WCAG 2.2 conformance?",
+     "gold_url": "https://www.w3.org/TR/WCAG22",
+     "passage": "For the purposes of conformance with these guidelines, a resource must be \"non‑embedded\" within the scope of conformance to be considered a web page.",
+     "in_corpus": true,
+     "got": [
+      "tr-wcag22-00108 | 5.2 Conformance Requirements",
+      "tr-wcag22-00106 | 5. Conformance",
+      "tr-wcag22-00114 | 5.3 Conformance Claims (Optional)"
+     ]
+    },
+    {
+     "question": "What must an author do to ensure text can be scaled to 200% under WCAG 2.2 SC 1.4.4?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text",
+     "passage": "Content satisfies the success criterion if it can be scaled up to 200% using at least one text scaling mechanism supported by user agents.",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-css-c12-01806 | About this Technique",
+      "tr-wcag22-00039 | Success Criterion 1.4.4 Resize Text",
+      "wai-wcag22-techniques-css-c17-01823 | About this Technique"
+     ]
+    },
+    {
+     "question": "Why should developers avoid fully justified text for users with cognitive disabilities?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/visual-presentation",
+     "passage": "People with certain cognitive disabilities have problems reading text that is both left and right justified. The uneven spacing between words in fully justified",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-conformance-00427 | Understanding \"Text Alternatives\"",
+      "wai-wcag22-understanding-visual-presentation-01465 | Benefits",
+      "wai-wcag22-techniques-failures-f88-02460 | Description"
+     ]
+    },
+    {
+     "question": "Which success criterion does Technique G80 relate to?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G80",
+     "passage": "This technique relates to 3.2.2 On Input ( Sufficient using a more specific technique).",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-general-g219-03152 | Expected Results",
+      "wai-wcag22-techniques-general-g98-03454 | Related Techniques",
+      "wai-wcag22-techniques-failures-f105-02083 | Procedure"
+     ]
+    },
+    {
+     "question": "What must be done when a CAPTCHA is used to confirm human access?",
+     "gold_url": "https://www.w3.org/TR/WCAG22",
+     "passage": "If the purpose of non-text content is to confirm that content is being accessed by a person rather than a computer, then text alternatives that identify and des",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-general-g143-02736 | Procedure",
+      "wai-wcag22-techniques-general-g143-02734 | Examples",
+      "wai-wcag22-understanding-accessible-authentication-minimum-00222 | Cognitive Function Tests"
+     ]
+    },
+    {
+     "question": "What must accompany role=\"heading\" to indicate the heading level?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA12",
+     "passage": "The role=\"heading\" property must be paired with the aria-level property to define the heading level.",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-aria-aria12-01515 | Example 2: Additional heading levels",
+      "wai-wcag22-techniques-aria-aria12-01514 | Example 1: Simple headings",
+      "wai-wcag22-techniques-aria-aria12-01518 | Procedure"
+     ]
+    },
+    {
+     "question": "What is the main goal of WCAG 2.2 Guideline 1.3 Adaptable?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/adaptable",
+     "passage": "The purpose of this guideline is to ensure that all information is available in a form that can be perceived by all users, for example, spoken aloud, or present",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-intro-00786 | Key Terms",
+      "wai-wcag22-understanding-intro-00783 | The Guidelines",
+      "wai-wcag22-understanding-intro-00779 | Intro"
+     ]
+    },
+    {
+     "question": "What contrast ratio is required for large-scale text under SC 1.4.6?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-enhanced",
+     "passage": "Large Scale Text and images of large-scale text have a contrast ratio of at least 4.5:1;",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-contrast-enhanced-00506 | Situation B: text is as least 18 point if not bold and at least 14 point if bold",
+      "wai-wcag22-understanding-contrast-enhanced-00505 | Situation A: text is less than 18 point if not bold and less than 14 point if bold",
+      "wai-wcag22-techniques-general-g145-02747 | Expected Results"
+     ]
+    },
+    {
+     "question": "What is the main goal of WCAG 2.2 Guideline 2.2 regarding time constraints?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/enough-time",
+     "passage": "This guideline focuses on ensuring that users are able to complete the tasks required by the content with their own individual response times. The primary appro",
+     "in_corpus": true,
+     "got": [
+      "tr-wcag22-00053 | Success Criterion 2.2.1 Timing Adjustable",
+      "wai-wcag22-techniques-general-g180-02937 | About this Technique",
+      "wai-wcag22-understanding-intro-00786 | Key Terms"
+     ]
+    },
+    {
+     "question": "What are the three types of guidance provided in the WCAG 2.2 Techniques document?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/understanding-techniques",
+     "passage": "The three types of guidance in Techniques for WCAG 2.2 are explained below: Sufficient techniques Advisory techniques Failures",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-intro-00783 | The Guidelines",
+      "wai-wcag22-understanding-intro-00779 | Intro",
+      "wai-wcag22-understanding-intro-00780 | Intro"
+     ]
+    },
+    {
+     "question": "How can I insert a left-to-right or right-to-left mark in HTML to control text direction?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Techniques/html/H34",
+     "passage": "left-to-right mark: &lrm; or &#x200e; ( U+200E ) right-to-left mark: &rlm; or &#x200f; ( U+200F )",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-css-c22-01854 | The HTML component",
+      "wai-wcag22-techniques-html-h34-03533 | Procedure",
+      "wai-wcag22-techniques-css-c19-01838 | Example 2: Aligning text to the right"
+     ]
+    },
+    {
+     "question": "What does WCAG 2.2 success criterion 1.4.8 require for text presentation at AAA level?",
+     "gold_url": "https://www.w3.org/TR/WCAG22",
+     "passage": "For the visual presentation of blocks of text , a mechanism is available to achieve the following: Foreground and background colors can be selected by the user.",
+     "in_corpus": true,
+     "got": [
+      "tr-wcag22-00086 | Success Criterion 3.1.4 Abbreviations",
+      "tr-wcag22-00087 | Success Criterion 3.1.5 Reading Level",
+      "wai-wcag22-techniques-failures-f88-02459 | About this Technique"
+     ]
+    },
+    {
+     "question": "What does WCAG 2.2 define as a \"section\" in web content?",
+     "gold_url": "https://www.w3.org/TR/WCAG22",
+     "passage": "\"a self-contained portion of written content that deals with one or more related topics or thoughts\"",
+     "in_corpus": true,
+     "got": [
+      "tr-wcag22-00071 | Success Criterion 2.4.10 Section Headings",
+      "tr-wcag22-00028 | Guideline 1.3 Adaptable",
+      "tr-wcag22-00108 | 5.2 Conformance Requirements"
+     ]
+    },
+    {
+     "question": "Why is consistent placement of navigation bars important for users of screen magnifiers?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/predictable",
+     "passage": "a consistent layout makes it easier for them to find navigation bars and other components.",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-consistent-navigation-00466 | Intent",
+      "wai-wcag22-understanding-focus-order-00668 | Benefits",
+      "wai-wcag22-understanding-bypass-blocks-00304 | Benefits"
+     ]
+    },
+    {
+     "question": "What does Level AAA add for synchronized media in WCAG 2.2?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/time-based-media",
+     "passage": "This guideline also includes (at Level AAA) sign language interpretation for synchronized media as well as an approach called extended audio description.",
+     "in_corpus": true,
+     "got": [
+      "tr-wcag22-00026 | Success Criterion 1.2.8 Media Alternative (Prerecorded)",
+      "wai-wcag22-understanding-media-alternative-prerecorded-00935 | Situation A: If the content is prerecorded synchronized media:",
+      "tr-wcag22-00023 | Success Criterion 1.2.5 Audio Description (Prerecorded)"
+     ]
+    },
+    {
+     "question": "When is supplemental content required under WCAG 2.2 Success Criterion 3.1.5?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/reading-level",
+     "passage": "Supplemental content is required when text demands reading ability more advanced than the lower secondary education level—that is, more than nine years of schoo",
+     "in_corpus": true,
+     "got": [
+      "tr-wcag22-00099 | Success Criterion 3.3.7 Redundant Entry",
+      "tr-wcag22-00022 | Success Criterion 1.2.3 Audio Description or Media Alternative (Prerecorded)",
+      "tr-wcag22-00087 | Success Criterion 3.1.5 Reading Level"
+     ]
+    },
+    {
+     "question": "What frequency of flashing is disallowed by WCAG 2.2 Success Criterion 2.3.2 at Level AAA?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/three-flashes",
+     "passage": "This criterion does not allow any flashing that occurs at a frequency greater than 3 per second, regardless of brightness or size.",
+     "in_corpus": true,
+     "got": [
+      "tr-wcag22-00062 | Success Criterion 2.3.2 Three Flashes",
+      "tr-wcag22-00061 | Success Criterion 2.3.1 Three Flashes or Below Threshold",
+      "wai-wcag22-techniques-failures-f7-02378 | About this Technique"
+     ]
+    },
+    {
+     "question": "What are the two common failure types for WCAG 2.2 Success Criterion 1.4.2 regarding audio control?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/audio-control",
+     "passage": "F23: Failure of 1.4.2 due to playing a sound longer than 3 seconds where there is no mechanism to turn it off\nF93: Failure of Success Criterion 1.4.2 for absenc",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-failures-f23-02177 | About this Technique",
+      "wai-wcag22-techniques-failures-f113-02122 | About this Technique",
+      "wai-wcag22-techniques-failures-f93-02491 | About this Technique"
+     ]
+    }
+   ],
+   "per_question": [
+    {
+     "question": "When should ariaNotify be used for a progress bar?",
+     "rank": 3,
+     "url_rank": 2
+    },
+    {
+     "question": "Why is offering multiple navigation methods beneficial for users with visual or cognitive impairments?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Why must text language and direction be identified for assistive technology to function properly?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "How can an online auction be designed to comply with the no‑time‑limit requirement of Technique G5?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How is a general flash defined for WCAG 2.2 compliance?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How does SC 2.5.2 allow users to cancel a click‑like activation before the pointer is released?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "How many flashes per second are allowed by Technique G19 to avoid seizure risk?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How does Technique G225 keep each panel of a horizontally scrolling section readable in a 320 CSS pixel viewport?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Why are headings crucial for screen reader users when navigating a page?",
+     "rank": 3,
+     "url_rank": 3
+    },
+    {
+     "question": "How does the technique verify that an undersized target has enough spacing from other targets?",
+     "rank": 7,
+     "url_rank": 4
+    },
+    {
+     "question": "How should a heading be formatted to be recognized by screen readers according to Technique T3?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Why is SC 2.4.10 about section headings placed at Level AAA?",
+     "rank": 5,
+     "url_rank": 1
+    },
+    {
+     "question": "How can I provide an alternative for time‑based media that is immediately next to the non‑text content?",
+     "rank": 9,
+     "url_rank": null
+    },
+    {
+     "question": "How does Technique G112 help with the 3.1.3 Unusual Words criterion?",
+     "rank": 3,
+     "url_rank": 3
+    },
+    {
+     "question": "Can a web application use mouse input in addition to keyboard for the same functionality while still meeting WCAG 2.2 2.1.1?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How does Technique C17 relate to the Resize Text success criterion?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "What technique can I use to allow users to skip a block of repeated content on a page?",
+     "rank": 10,
+     "url_rank": 1
+    },
+    {
+     "question": "What happens if a web page specifies a text color but omits a background color?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "Why should a website avoid forcing a specific screen orientation?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What does it mean for a web technology to be \"accessibility supported\" according to WCAG 2.2?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "At 400% zoom, what starting viewport width is 320 CSS pixels equivalent to (SC 1.4.10 Reflow)?",
+     "rank": 3,
+     "url_rank": 9
+    },
+    {
+     "question": "How can I indicate the current item in a set using ARIA?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "Which success criterion was removed in WCAG 2.2?",
+     "rank": null,
+     "url_rank": 4
+    },
+    {
+     "question": "Why is an error message shown in a dialog not considered a status message under SC 4.1.3?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "What does Technique G219 address regarding drag interactions?",
+     "rank": 4,
+     "url_rank": 1
+    },
+    {
+     "question": "When are the character key shortcuts for components active?",
+     "rank": 2,
+     "url_rank": 2
+    },
+    {
+     "question": "What WCAG success criterion does Technique G212 address?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "What type of flashing content should be avoided to prevent seizures according to WCAG 2.2?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What contrast ratio is required for large-scale text under WCAG 2.2 SC 1.4.3?",
+     "rank": 1,
+     "url_rank": 8
+    },
+    {
+     "question": "What is a common failure when captions omit dialogue or sound effects?",
+     "rank": 1,
+     "url_rank": 3
+    },
+    {
+     "question": "How does Technique C27 help satisfy WCAG 2.2 success criterion 1.3.2?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "Why must non-text content be provided in electronic text form according to WCAG 2.2?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "What minimum contrast ratio is required for a keyboard focus indicator under WCAG 2.2 Success Criterion 2.4.13 at Level AAA?",
+     "rank": 3,
+     "url_rank": 1
+    },
+    {
+     "question": "What is a recommended technique for clarifying the purpose of a link that uses both an image and text?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "How can you create tagged bookmarks in a PDF after conversion using Adobe Acrobat Pro?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What type of captioning service is required for live audio to meet WCAG 2.2 SC 1.2.9?",
+     "rank": 10,
+     "url_rank": 8
+    },
+    {
+     "question": "What qualifies a resource as a web page for WCAG 2.2 conformance?",
+     "rank": null,
+     "url_rank": 1
+    },
+    {
+     "question": "Which sites does failure F12 (SC 2.2.5 Re-authenticating) apply to?",
+     "rank": 2,
+     "url_rank": 2
+    },
+    {
+     "question": "What must an author do to ensure text can be scaled to 200% under WCAG 2.2 SC 1.4.4?",
+     "rank": null,
+     "url_rank": 4
+    },
+    {
+     "question": "What does Technique G11 address regarding blinking content?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "How does Technique ARIA25 make screen readers announce progress bar updates?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "Why should developers avoid fully justified text for users with cognitive disabilities?",
+     "rank": null,
+     "url_rank": 2
+    },
+    {
+     "question": "What happens if only the foreground color is set in CSS and the background color is omitted?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Why is it important for repeated navigation elements to appear in the same order across pages?",
+     "rank": 2,
+     "url_rank": 2
+    },
+    {
+     "question": "What does Technique G144 address in relation to CAPTCHA accessibility?",
+     "rank": 3,
+     "url_rank": 3
+    },
+    {
+     "question": "How does ARIA5 help assistive technology understand a custom widget?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What happens if a plug‑in or applet blinks content for more than five seconds without a pause mechanism?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Under SC 2.2.1 Timing Adjustable, how long is enough for a user to respond to a 'hit any key' prompt?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How does Technique G142 ensure that zooming preserves spatial relationships and functionality?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What contrast ratio is required for text for users with 20/40 visual acuity according to WCAG 2.2 SC 1.4.6?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can a keyboard user activate an image that acts as a link using scripting?",
+     "rank": 2,
+     "url_rank": 2
+    },
+    {
+     "question": "Which success criterion does Technique G80 relate to?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "How can a script warn users 20 seconds before a time limit expires and allow them to request more time?",
+     "rank": 3,
+     "url_rank": 1
+    },
+    {
+     "question": "What must be done when a CAPTCHA is used to confirm human access?",
+     "rank": 6,
+     "url_rank": 6
+    },
+    {
+     "question": "What is the main goal of Guideline 1.4 Distinguishable for visual presentations?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What must accompany role=\"heading\" to indicate the heading level?",
+     "rank": null,
+     "url_rank": 1
+    },
+    {
+     "question": "How can a web developer allow users to toggle diacritical marks on a page?",
+     "rank": 3,
+     "url_rank": 1
+    },
+    {
+     "question": "Can a web page replace a drag‑and‑drop interaction with a single‑click action?",
+     "rank": 1,
+     "url_rank": 2
+    },
+    {
+     "question": "What happens when a keyboard user tabs past a field that triggers a help dialog, according to SC 3.2.1?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How should a developer cite a WCAG 2.2 technique from a support document?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "Under SC 2.5.5 Target Size (Enhanced), how big must a target be if it is a full sentence that is not in a block of text?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What is the main goal of WCAG 2.2 Guideline 1.3 Adaptable?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "How does Technique C9 help meet the 1.1.1 Non‑text Content requirement?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can an online test be calibrated to avoid timing affecting scores?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What must be true for a target to meet the 24 × 24 CSS‑pixel minimum size requirement?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How does SC 2.5.6 allow a user to switch between input devices on the same device?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What contrast ratio is required for large-scale text under SC 1.4.6?",
+     "rank": 6,
+     "url_rank": 1
+    },
+    {
+     "question": "What is the main goal of WCAG 2.2 Guideline 2.2 regarding time constraints?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "What does Technique SCR38 remove from a page, and is that required for conformance?",
+     "rank": 3,
+     "url_rank": 1
+    },
+    {
+     "question": "What qualifies a collection of web pages as a \"set\" according to WCAG 2.2?",
+     "rank": 4,
+     "url_rank": 1
+    },
+    {
+     "question": "When should the sup and sub elements be used in HTML?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can I inform users about a context change before a form control updates?",
+     "rank": 1,
+     "url_rank": null
+    },
+    {
+     "question": "What are the three types of guidance provided in the WCAG 2.2 Techniques document?",
+     "rank": null,
+     "url_rank": 4
+    },
+    {
+     "question": "How can I insert a left-to-right or right-to-left mark in HTML to control text direction?",
+     "rank": 8,
+     "url_rank": 2
+    },
+    {
+     "question": "What must be provided for prerecorded audio-only content to meet WCAG 2.2 success criterion 1.2.1?",
+     "rank": 3,
+     "url_rank": 1
+    },
+    {
+     "question": "How can clipped or overlapped content occur when a user adjusts text spacing?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What are two common failure types for SC 1.2.1 regarding audio-only and video-only content?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can a control slider be made operable for users who cannot perform path-based gestures?",
+     "rank": 2,
+     "url_rank": 2
+    },
+    {
+     "question": "What must a web page do to meet WCAG 2.2 Success Criterion 3.3.6 for error prevention at AAA level?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Under SC 3.3.9 Accessible Authentication (Enhanced), when is a cognitive function test allowed in an authentication step?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "When should a form use a single set of text instructions at the top instead of repeating format guidance for each field?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What conditions allow a new cognitive function test in an authentication step under WCAG 2.2 Success Criterion 3.3.8?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Are WCAG 2 techniques mandatory for conformance?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What WCAG 2.2 success criteria can be violated when a script removes focus immediately after it is received?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can metadata help users find a conforming version of a web page when they land on a non‑conforming page?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What does the WCAG glossary define as a \"user interface component\"?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What is a key benefit of limiting animation triggered by user interactions for people with vestibular disorders?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Why does using different text labels for identical search buttons cause a failure of SC 3.2.4?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What does WCAG 2.2 success criterion 1.4.8 require for text presentation at AAA level?",
+     "rank": null,
+     "url_rank": 1
+    },
+    {
+     "question": "How does SC 2.4.2 help users with visual disabilities when multiple pages are open?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What does WCAG 2.2 define as a \"section\" in web content?",
+     "rank": null,
+     "url_rank": 1
+    },
+    {
+     "question": "Why is consistent placement of navigation bars important for users of screen magnifiers?",
+     "rank": 7,
+     "url_rank": 7
+    },
+    {
+     "question": "What does tel-country-code mean in the WCAG 2.2 list of input purposes?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Which disability categories are covered by WCAG 2.2?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "How should the HTML be structured to provide a tooltip that appears on focus or hover and can be dismissed?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can you change a link’s background color when it receives focus and revert it when it loses focus using JavaScript?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Does SC 3.2.6 require help to be provided on PDFs downloaded from a website?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Under SC 2.1.2 No Keyboard Trap, what must a page allow when keyboard focus can be moved to a component with a keyboard interface?",
+     "rank": 1,
+     "url_rank": 4
+    },
+    {
+     "question": "What does Level AAA add for synchronized media in WCAG 2.2?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "Why must a site allow users to re-authenticate during a transaction if they are logged out due to inactivity?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "When is supplemental content required under WCAG 2.2 Success Criterion 3.1.5?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "What is a common failure when using CSS background images for conveying information under SC 1.1.1?",
+     "rank": 5,
+     "url_rank": 5
+    },
+    {
+     "question": "What is the maximum number of flashes allowed per second on a web page to comply with WCAG 2.2?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "What contrast ratio is required for visual cues that identify a control and its state in UI components?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Can content that requires path-dependent input conform to SC 2.1.3 Keyboard (No Exception)?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can I fix a PDF list that is only separated by line breaks so screen readers can interpret it correctly?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What frequency of flashing is disallowed by WCAG 2.2 Success Criterion 2.3.2 at Level AAA?",
+     "rank": 8,
+     "url_rank": 6
+    },
+    {
+     "question": "How can a social security number input be grouped for accessibility?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What is a common failure of WCAG 2.2 Success Criterion 2.1.1 involving event handlers?",
+     "rank": 1,
+     "url_rank": null
+    },
+    {
+     "question": "What are the two common failure types for WCAG 2.2 Success Criterion 1.4.2 regarding audio control?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "How does Guideline 4.1 help ensure future compatibility with assistive technologies?",
+     "rank": 1,
+     "url_rank": 1
+    }
+   ]
+  },
+  "hybrid": {
+   "n": 112,
+   "recall@1": 0.5625,
+   "recall@3": 0.7857142857142857,
+   "recall@5": 0.8660714285714286,
+   "recall@10": 0.9642857142857143,
+   "url_recall@1": 0.6964285714285714,
+   "url_recall@3": 0.8482142857142857,
+   "url_recall@5": 0.9107142857142857,
+   "url_recall@10": 0.9732142857142857,
+   "mrr@10": 0.6914257369614513,
+   "ms_mean": 28.18815356918744,
+   "ms_p50": 28.183499991428107,
+   "ms_p95": 36.91262002103031,
+   "misses": [
+    {
+     "question": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR30",
+     "passage": "Activate the control identified in step 1\nCheck that the purpose of the links identified in step 3 can now be identified from link text alone",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-client-side-script-scr30-01738 | Example 1",
+      "wai-wcag22-understanding-link-purpose-in-context-00870 | Sufficient Techniques",
+      "wai-wcag22-techniques-client-side-script-scr30-01736 | Description"
+     ]
+    },
+    {
+     "question": "Why is SC 2.4.10 about section headings placed at Level AAA?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/section-headings",
+     "passage": "This provision is included at Level AAA because it cannot be applied to all types of content and it may not always be possible to insert headings.",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-section-headings-01259 | In Brief",
+      "wai-wcag22-understanding-section-headings-01264 | Sufficient Techniques",
+      "wai-wcag22-understanding-section-headings-01263 | Examples"
+     ]
+    },
+    {
+     "question": "What happens if a web page specifies a text color but omits a background color?",
+     "gold_url": "https://www.w3.org/TR/WCAG22",
+     "passage": "It is a failure if no background color is specified when the text color is specified, because the user's default background color is unknown and cannot be evalu",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-general-g148-02755 | Example 1",
+      "wai-wcag22-techniques-general-g175-02905 | Description",
+      "wai-wcag22-techniques-failures-f24-02182 | Description"
+     ]
+    },
+    {
+     "question": "How can I indicate the current item in a set using ARIA?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/info-and-relationships",
+     "passage": "ARIA26: Using aria-current to identify the current item in a set",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-aria-aria26-01614 | Description",
+      "wai-wcag22-techniques-aria-aria26-01620 | Procedure",
+      "wai-wcag22-techniques-aria-aria26-01618 | Related Resources"
+     ]
+    },
+    {
+     "question": "Which success criterion was removed in WCAG 2.2?",
+     "gold_url": "https://www.w3.org/TR/WCAG22",
+     "passage": "WCAG 2.2 has removed one success criterion, 4.1.1 Parsing .",
+     "in_corpus": true,
+     "got": [
+      "tr-wcag22-00013 | Numbering in WCAG 2.2",
+      "tr-wcag22-00103 | Success Criterion 4.1.1 Parsing (Obsolete and removed)",
+      "wai-wcag22-understanding-intro-00785 | Sufficient Techniques, Advisory Techniques, and Failures"
+     ]
+    },
+    {
+     "question": "What WCAG success criterion does Technique G212 address?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Techniques/general/G212",
+     "passage": "This technique relates to 2.5.2 Pointer Cancellation ( Sufficient ).",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-understanding-techniques-01429 | Testing Techniques",
+      "wai-wcag22-understanding-intro-00780 | Intro",
+      "wai-wcag22-techniques-failures-f22-02169 | About this Technique"
+     ]
+    },
+    {
+     "question": "How does Technique C27 help satisfy WCAG 2.2 success criterion 1.3.2?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Techniques/css/C27",
+     "passage": "This technique relates to: 1.3.2 Meaningful Sequence ( Sufficient )",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-failures-f14-02136 | About this Technique",
+      "wai-wcag22-techniques-failures-f49-02294 | About this Technique",
+      "wai-wcag22-techniques-failures-f71-02383 | About this Technique"
+     ]
+    },
+    {
+     "question": "What is a recommended technique for clarifying the purpose of a link that uses both an image and text?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/link-purpose-in-context",
+     "passage": "Combining adjacent image and text links for the same resource",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-html-h30-03508 | Description",
+      "wai-wcag22-techniques-html-h2-03488 | Related Techniques",
+      "wai-wcag22-techniques-html-h30-03516 | Procedure"
+     ]
+    },
+    {
+     "question": "Why should developers avoid fully justified text for users with cognitive disabilities?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/visual-presentation",
+     "passage": "People with certain cognitive disabilities have problems reading text that is both left and right justified. The uneven spacing between words in fully justified",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-failures-f88-02460 | Description",
+      "wai-wcag22-understanding-visual-presentation-01460 | In Brief",
+      "wai-wcag22-techniques-general-g169-02864 | Description"
+     ]
+    },
+    {
+     "question": "Can a web page replace a drag‑and‑drop interaction with a single‑click action?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements",
+     "passage": "All functionality that uses a dragging movement for operation can be achieved by a single pointer without dragging, unless dragging is essential or the function",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-techniques-general-g210-03098 | Description",
+      "wai-wcag22-techniques-general-g219-03149 | Description",
+      "wai-wcag22-techniques-general-g210-03101 | Procedure"
+     ]
+    },
+    {
+     "question": "What is the main goal of WCAG 2.2 Guideline 1.3 Adaptable?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/adaptable",
+     "passage": "The purpose of this guideline is to ensure that all information is available in a form that can be perceived by all users, for example, spoken aloud, or present",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-intro-00779 | Intro",
+      "tr-wcag22-00028 | Guideline 1.3 Adaptable",
+      "wai-wcag22-understanding-intro-00780 | Intro"
+     ]
+    },
+    {
+     "question": "What is the main goal of WCAG 2.2 Guideline 2.2 regarding time constraints?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/enough-time",
+     "passage": "This guideline focuses on ensuring that users are able to complete the tasks required by the content with their own individual response times. The primary appro",
+     "in_corpus": true,
+     "got": [
+      "wai-wcag22-understanding-intro-00779 | Intro",
+      "tr-wcag22-00053 | Success Criterion 2.2.1 Timing Adjustable",
+      "wai-wcag22-understanding-intro-00786 | Key Terms"
+     ]
+    },
+    {
+     "question": "What does WCAG 2.2 define as a \"section\" in web content?",
+     "gold_url": "https://www.w3.org/TR/WCAG22",
+     "passage": "\"a self-contained portion of written content that deals with one or more related topics or thoughts\"",
+     "in_corpus": true,
+     "got": [
+      "tr-wcag22-00166 | 6. Glossary",
+      "tr-wcag22-00071 | Success Criterion 2.4.10 Section Headings",
+      "wai-wcag22-understanding-intro-00779 | Intro"
+     ]
+    },
+    {
+     "question": "What does Level AAA add for synchronized media in WCAG 2.2?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/time-based-media",
+     "passage": "This guideline also includes (at Level AAA) sign language interpretation for synchronized media as well as an approach called extended audio description.",
+     "in_corpus": true,
+     "got": [
+      "tr-wcag22-00026 | Success Criterion 1.2.8 Media Alternative (Prerecorded)",
+      "tr-wcag22-00025 | Success Criterion 1.2.7 Extended Audio Description (Prerecorded)",
+      "tr-wcag22-00024 | Success Criterion 1.2.6 Sign Language (Prerecorded)"
+     ]
+    },
+    {
+     "question": "When is supplemental content required under WCAG 2.2 Success Criterion 3.1.5?",
+     "gold_url": "https://www.w3.org/WAI/WCAG22/Understanding/reading-level",
+     "passage": "Supplemental content is required when text demands reading ability more advanced than the lower secondary education level—that is, more than nine years of schoo",
+     "in_corpus": true,
+     "got": [
+      "tr-wcag22-00087 | Success Criterion 3.1.5 Reading Level",
+      "tr-wcag22-00099 | Success Criterion 3.3.7 Redundant Entry",
+      "tr-wcag22-00023 | Success Criterion 1.2.5 Audio Description (Prerecorded)"
+     ]
+    }
+   ],
+   "per_question": [
+    {
+     "question": "When should ariaNotify be used for a progress bar?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Why is offering multiple navigation methods beneficial for users with visual or cognitive impairments?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Why must text language and direction be identified for assistive technology to function properly?",
+     "rank": 3,
+     "url_rank": 3
+    },
+    {
+     "question": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+     "rank": 9,
+     "url_rank": 1
+    },
+    {
+     "question": "How can an online auction be designed to comply with the no‑time‑limit requirement of Technique G5?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How is a general flash defined for WCAG 2.2 compliance?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How does SC 2.5.2 allow users to cancel a click‑like activation before the pointer is released?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How many flashes per second are allowed by Technique G19 to avoid seizure risk?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How does Technique G225 keep each panel of a horizontally scrolling section readable in a 320 CSS pixel viewport?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Why are headings crucial for screen reader users when navigating a page?",
+     "rank": 3,
+     "url_rank": 3
+    },
+    {
+     "question": "How does the technique verify that an undersized target has enough spacing from other targets?",
+     "rank": 3,
+     "url_rank": 3
+    },
+    {
+     "question": "How should a heading be formatted to be recognized by screen readers according to Technique T3?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Why is SC 2.4.10 about section headings placed at Level AAA?",
+     "rank": 6,
+     "url_rank": 1
+    },
+    {
+     "question": "How can I provide an alternative for time‑based media that is immediately next to the non‑text content?",
+     "rank": 2,
+     "url_rank": 9
+    },
+    {
+     "question": "How does Technique G112 help with the 3.1.3 Unusual Words criterion?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Can a web application use mouse input in addition to keyboard for the same functionality while still meeting WCAG 2.2 2.1.1?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How does Technique C17 relate to the Resize Text success criterion?",
+     "rank": 4,
+     "url_rank": 4
+    },
+    {
+     "question": "What technique can I use to allow users to skip a block of repeated content on a page?",
+     "rank": 5,
+     "url_rank": 5
+    },
+    {
+     "question": "What happens if a web page specifies a text color but omits a background color?",
+     "rank": 7,
+     "url_rank": 7
+    },
+    {
+     "question": "Why should a website avoid forcing a specific screen orientation?",
+     "rank": 3,
+     "url_rank": 1
+    },
+    {
+     "question": "What does it mean for a web technology to be \"accessibility supported\" according to WCAG 2.2?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "At 400% zoom, what starting viewport width is 320 CSS pixels equivalent to (SC 1.4.10 Reflow)?",
+     "rank": 1,
+     "url_rank": 5
+    },
+    {
+     "question": "How can I indicate the current item in a set using ARIA?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "Which success criterion was removed in WCAG 2.2?",
+     "rank": 6,
+     "url_rank": 1
+    },
+    {
+     "question": "Why is an error message shown in a dialog not considered a status message under SC 4.1.3?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What does Technique G219 address regarding drag interactions?",
+     "rank": 3,
+     "url_rank": 1
+    },
+    {
+     "question": "When are the character key shortcuts for components active?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What WCAG success criterion does Technique G212 address?",
+     "rank": 7,
+     "url_rank": 7
+    },
+    {
+     "question": "What type of flashing content should be avoided to prevent seizures according to WCAG 2.2?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What contrast ratio is required for large-scale text under WCAG 2.2 SC 1.4.3?",
+     "rank": 1,
+     "url_rank": 3
+    },
+    {
+     "question": "What is a common failure when captions omit dialogue or sound effects?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How does Technique C27 help satisfy WCAG 2.2 success criterion 1.3.2?",
+     "rank": 8,
+     "url_rank": 8
+    },
+    {
+     "question": "Why must non-text content be provided in electronic text form according to WCAG 2.2?",
+     "rank": 2,
+     "url_rank": 2
+    },
+    {
+     "question": "What minimum contrast ratio is required for a keyboard focus indicator under WCAG 2.2 Success Criterion 2.4.13 at Level AAA?",
+     "rank": 2,
+     "url_rank": 4
+    },
+    {
+     "question": "What is a recommended technique for clarifying the purpose of a link that uses both an image and text?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "How can you create tagged bookmarks in a PDF after conversion using Adobe Acrobat Pro?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What type of captioning service is required for live audio to meet WCAG 2.2 SC 1.2.9?",
+     "rank": 4,
+     "url_rank": 2
+    },
+    {
+     "question": "What qualifies a resource as a web page for WCAG 2.2 conformance?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Which sites does failure F12 (SC 2.2.5 Re-authenticating) apply to?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What must an author do to ensure text can be scaled to 200% under WCAG 2.2 SC 1.4.4?",
+     "rank": 3,
+     "url_rank": 1
+    },
+    {
+     "question": "What does Technique G11 address regarding blinking content?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "How does Technique ARIA25 make screen readers announce progress bar updates?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Why should developers avoid fully justified text for users with cognitive disabilities?",
+     "rank": null,
+     "url_rank": 2
+    },
+    {
+     "question": "What happens if only the foreground color is set in CSS and the background color is omitted?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Why is it important for repeated navigation elements to appear in the same order across pages?",
+     "rank": 2,
+     "url_rank": 2
+    },
+    {
+     "question": "What does Technique G144 address in relation to CAPTCHA accessibility?",
+     "rank": 4,
+     "url_rank": 2
+    },
+    {
+     "question": "How does ARIA5 help assistive technology understand a custom widget?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What happens if a plug‑in or applet blinks content for more than five seconds without a pause mechanism?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Under SC 2.2.1 Timing Adjustable, how long is enough for a user to respond to a 'hit any key' prompt?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How does Technique G142 ensure that zooming preserves spatial relationships and functionality?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What contrast ratio is required for text for users with 20/40 visual acuity according to WCAG 2.2 SC 1.4.6?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can a keyboard user activate an image that acts as a link using scripting?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Which success criterion does Technique G80 relate to?",
+     "rank": 5,
+     "url_rank": 1
+    },
+    {
+     "question": "How can a script warn users 20 seconds before a time limit expires and allow them to request more time?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "What must be done when a CAPTCHA is used to confirm human access?",
+     "rank": 3,
+     "url_rank": 3
+    },
+    {
+     "question": "What is the main goal of Guideline 1.4 Distinguishable for visual presentations?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What must accompany role=\"heading\" to indicate the heading level?",
+     "rank": 4,
+     "url_rank": 1
+    },
+    {
+     "question": "How can a web developer allow users to toggle diacritical marks on a page?",
+     "rank": 3,
+     "url_rank": 1
+    },
+    {
+     "question": "Can a web page replace a drag‑and‑drop interaction with a single‑click action?",
+     "rank": 8,
+     "url_rank": 5
+    },
+    {
+     "question": "What happens when a keyboard user tabs past a field that triggers a help dialog, according to SC 3.2.1?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How should a developer cite a WCAG 2.2 technique from a support document?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Under SC 2.5.5 Target Size (Enhanced), how big must a target be if it is a full sentence that is not in a block of text?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "What is the main goal of WCAG 2.2 Guideline 1.3 Adaptable?",
+     "rank": 7,
+     "url_rank": 7
+    },
+    {
+     "question": "How does Technique C9 help meet the 1.1.1 Non‑text Content requirement?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can an online test be calibrated to avoid timing affecting scores?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What must be true for a target to meet the 24 × 24 CSS‑pixel minimum size requirement?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How does SC 2.5.6 allow a user to switch between input devices on the same device?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "What contrast ratio is required for large-scale text under SC 1.4.6?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What is the main goal of WCAG 2.2 Guideline 2.2 regarding time constraints?",
+     "rank": 6,
+     "url_rank": 6
+    },
+    {
+     "question": "What does Technique SCR38 remove from a page, and is that required for conformance?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "What qualifies a collection of web pages as a \"set\" according to WCAG 2.2?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "When should the sup and sub elements be used in HTML?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can I inform users about a context change before a form control updates?",
+     "rank": 1,
+     "url_rank": 6
+    },
+    {
+     "question": "What are the three types of guidance provided in the WCAG 2.2 Techniques document?",
+     "rank": 5,
+     "url_rank": 3
+    },
+    {
+     "question": "How can I insert a left-to-right or right-to-left mark in HTML to control text direction?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "What must be provided for prerecorded audio-only content to meet WCAG 2.2 success criterion 1.2.1?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can clipped or overlapped content occur when a user adjusts text spacing?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What are two common failure types for SC 1.2.1 regarding audio-only and video-only content?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "How can a control slider be made operable for users who cannot perform path-based gestures?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What must a web page do to meet WCAG 2.2 Success Criterion 3.3.6 for error prevention at AAA level?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Under SC 3.3.9 Accessible Authentication (Enhanced), when is a cognitive function test allowed in an authentication step?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "When should a form use a single set of text instructions at the top instead of repeating format guidance for each field?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What conditions allow a new cognitive function test in an authentication step under WCAG 2.2 Success Criterion 3.3.8?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Are WCAG 2 techniques mandatory for conformance?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What WCAG 2.2 success criteria can be violated when a script removes focus immediately after it is received?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can metadata help users find a conforming version of a web page when they land on a non‑conforming page?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What does the WCAG glossary define as a \"user interface component\"?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What is a key benefit of limiting animation triggered by user interactions for people with vestibular disorders?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "Why does using different text labels for identical search buttons cause a failure of SC 3.2.4?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What does WCAG 2.2 success criterion 1.4.8 require for text presentation at AAA level?",
+     "rank": 5,
+     "url_rank": 2
+    },
+    {
+     "question": "How does SC 2.4.2 help users with visual disabilities when multiple pages are open?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What does WCAG 2.2 define as a \"section\" in web content?",
+     "rank": 6,
+     "url_rank": 1
+    },
+    {
+     "question": "Why is consistent placement of navigation bars important for users of screen magnifiers?",
+     "rank": 2,
+     "url_rank": 2
+    },
+    {
+     "question": "What does tel-country-code mean in the WCAG 2.2 list of input purposes?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Which disability categories are covered by WCAG 2.2?",
+     "rank": 3,
+     "url_rank": 1
+    },
+    {
+     "question": "How should the HTML be structured to provide a tooltip that appears on focus or hover and can be dismissed?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can you change a link’s background color when it receives focus and revert it when it loses focus using JavaScript?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Does SC 3.2.6 require help to be provided on PDFs downloaded from a website?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Under SC 2.1.2 No Keyboard Trap, what must a page allow when keyboard focus can be moved to a component with a keyboard interface?",
+     "rank": 1,
+     "url_rank": 2
+    },
+    {
+     "question": "What does Level AAA add for synchronized media in WCAG 2.2?",
+     "rank": null,
+     "url_rank": null
+    },
+    {
+     "question": "Why must a site allow users to re-authenticate during a transaction if they are logged out due to inactivity?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "When is supplemental content required under WCAG 2.2 Success Criterion 3.1.5?",
+     "rank": 10,
+     "url_rank": 5
+    },
+    {
+     "question": "What is a common failure when using CSS background images for conveying information under SC 1.1.1?",
+     "rank": 3,
+     "url_rank": 3
+    },
+    {
+     "question": "What is the maximum number of flashes allowed per second on a web page to comply with WCAG 2.2?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What contrast ratio is required for visual cues that identify a control and its state in UI components?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "Can content that requires path-dependent input conform to SC 2.1.3 Keyboard (No Exception)?",
+     "rank": 2,
+     "url_rank": 2
+    },
+    {
+     "question": "How can I fix a PDF list that is only separated by line breaks so screen readers can interpret it correctly?",
+     "rank": 2,
+     "url_rank": 1
+    },
+    {
+     "question": "What frequency of flashing is disallowed by WCAG 2.2 Success Criterion 2.3.2 at Level AAA?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "How can a social security number input be grouped for accessibility?",
+     "rank": 1,
+     "url_rank": 1
+    },
+    {
+     "question": "What is a common failure of WCAG 2.2 Success Criterion 2.1.1 involving event handlers?",
+     "rank": 1,
+     "url_rank": 4
+    },
+    {
+     "question": "What are the two common failure types for WCAG 2.2 Success Criterion 1.4.2 regarding audio control?",
+     "rank": 4,
+     "url_rank": 3
+    },
+    {
+     "question": "How does Guideline 4.1 help ensure future compatibility with assistive technologies?",
+     "rank": 1,
+     "url_rank": 1
+    }
+   ]
+  }
+ }
+}
