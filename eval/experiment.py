@@ -19,8 +19,7 @@ import time
 from pathlib import Path
 
 import src.pipeline as pipeline
-from eval.latency_cost import (PRICE_INPUT_PER_M, PRICE_OUTPUT_PER_M, REWRITE_PRICE_INPUT_PER_M,
-                               REWRITE_PRICE_OUTPUT_PER_M, load_questions, percentile)
+from eval.latency_cost import cost_usd, load_questions, percentile
 
 RESULTS = Path("eval/results")
 
@@ -69,10 +68,7 @@ def passes(test, result):
 
 
 def cost_of(usage):
-    return (usage.get("prompt", 0) / 1e6 * PRICE_INPUT_PER_M
-            + usage.get("completion", 0) / 1e6 * PRICE_OUTPUT_PER_M
-            + usage.get("rewrite_prompt", 0) / 1e6 * REWRITE_PRICE_INPUT_PER_M
-            + usage.get("rewrite_completion", 0) / 1e6 * REWRITE_PRICE_OUTPUT_PER_M)
+    return cost_usd(usage)
 
 
 def run_one(question):
@@ -84,8 +80,8 @@ def run_one(question):
 def main():
     ap = argparse.ArgumentParser(description="Run one Week 8 experiment")
     ap.add_argument("--label", required=True, help="name of this experiment, e.g. E1-rewrite-low")
-    ap.add_argument("--rewrite-effort", choices=["low", "medium", "high"])
-    ap.add_argument("--answer-effort", choices=["low", "medium", "high"])
+    ap.add_argument("--rewrite-effort", choices=["minimal", "low", "medium", "high"])
+    ap.add_argument("--answer-effort", choices=["minimal", "low", "medium", "high"])
     ap.add_argument("--top-k", type=int, default=pipeline.TOP_K)
     ap.add_argument("--min-score", type=float, default=pipeline.MIN_SCORE)
     ap.add_argument("--skip-rewrite-if-clear", action="store_true")
@@ -99,7 +95,9 @@ def main():
     pipeline.MIN_SCORE = args.min_score
     pipeline.SKIP_REWRITE_IF_CLEAR = args.skip_rewrite_if_clear
     pipeline.USE_CACHE = args.cache
-    settings = {k: v for k, v in vars(args).items() if k != "label"}
+    settings = {"provider": pipeline.PROVIDER, "answer_model": pipeline.MODEL,
+                "rewrite_model": pipeline.REWRITE_MODEL,
+                **{k: v for k, v in vars(args).items() if k != "label"}}
     print(f"Experiment '{args.label}' with {settings}")
 
     pipeline.answer("warm up question about contrast")  # load models, not counted
