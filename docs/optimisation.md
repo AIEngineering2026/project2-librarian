@@ -12,7 +12,8 @@ test set (14/15 → 14/15). Final version = **E1 + E6** ("low" reasoning effort 
 
 `py -m eval.experiment --label NAME [options]` runs, for each experiment, on the **same data**
 (4,065 chunks) and the **same questions**:
-- **Speed:** end-to-end p50 / p95 latency on 20 questions, plus the average time per step (rewrite / search / rerank / answer).
+- **Speed:** end-to-end p50 / p95 latency on the **first 20 questions of `data/eval.jsonl`** (17 answerable,
+  3 out-of-scope; identical in every experiment), plus the average time per step (rewrite / search / rerank / answer).
 - **Cost:** average US$ per request from Groq token counts (gpt-oss-120b $0.15 in / $0.75 out, gpt-oss-20b $0.075 in / $0.30 out per 1M tokens).
 - **Accuracy (proxy):** 15 hard questions with automatic pass/fail checks (vague, typos, French, multi-part, exceptions, AA vs AAA, "I don't know" traps). The checks were validated against our manual judgement on 8 real answers.
 
