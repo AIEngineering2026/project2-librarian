@@ -14,6 +14,7 @@ Quick test from the project root:  py -m src.pipeline
 import json
 import os
 import re
+import time
 
 from dotenv import load_dotenv
 from groq import Groq
@@ -32,6 +33,26 @@ PER_QUERY = 10     # chunks fetched per query when there are several
 TOP_K = 5          # chunks kept and sent to the answer LLM
 MIN_SCORE = 0.0    # "I don't know" threshold on the reranker score (to tune with Maya's eval)
 IDK = "I don't know."
+
+# ---- Week 8 optimisation switches (eval/experiment.py changes these per experiment) ----
+# Final choice (see docs/optimisation.md): E1 + E6 = "low" reasoning for both models
+# -> cost per request -53%, same hard-set accuracy. None = model default (the baseline).
+REWRITE_EFFORT = "low"         # None = model default, or "low" / "medium" / "high"
+ANSWER_EFFORT = "low"          # same, for the answer model
+SKIP_REWRITE_IF_CLEAR = False  # skip the rewrite call for clear English questions using WCAG words
+USE_CACHE = False              # answer repeated questions from memory
+
+# Words that show a question is already written in WCAG vocabulary (used by SKIP_REWRITE_IF_CLEAR)
+WCAG_TERMS = [
+    "wcag", "success criterion", "contrast", "target size", "focus", "keyboard", "caption",
+    "alt text", "alternative text", "text alternative", "label", "heading", "reflow", "aria",
+    "screen reader", "flash", "timing", "time limit", "captcha", "authentication", "error",
+    "language", "lang attribute", "page title", "link purpose", "non-text", "audio", "video",
+    "dragging", "pointer", "consistent help", "redundant entry", "resize text", "text spacing",
+]
+SC_NUMBER_RE = re.compile(r"\b[1-4]\.\d{1,2}\.\d{1,2}\b")
+
+_cache = {}
 
 REWRITE_PROMPT = """You prepare search queries for a search engine over the official WCAG 2.2
 documents (W3C, written in English). You do NOT answer the question.
@@ -79,11 +100,13 @@ def rewrite(question):
     try:
         # No JSON mode: Groq's JSON mode sometimes fails with gpt-oss ("json_validate_failed"),
         # so we ask for JSON in the prompt and extract the {...} part ourselves.
+        extra = {"reasoning_effort": REWRITE_EFFORT} if REWRITE_EFFORT else {}
         response = client.chat.completions.create(
             model=REWRITE_MODEL,
             temperature=0,
             messages=[{"role": "system", "content": REWRITE_PROMPT},
                       {"role": "user", "content": question}],
+            **extra,
         )
         u = getattr(response, "usage", None)
         if u:
@@ -98,6 +121,12 @@ def rewrite(question):
     except Exception as e:
         print(f"[rewrite] failed, using the original question: {e}")
         return "English", question, [question], tokens
+
+
+def is_clear(question):
+    """True if the question is plain English (ASCII) and already uses WCAG words or an SC number."""
+    q = question.lower()
+    return question.isascii() and (bool(SC_NUMBER_RE.search(q)) or any(t in q for t in WCAG_TERMS))
 
 
 def gather_candidates(searches):
@@ -152,19 +181,33 @@ def extract_citations(text, chunks):
 
 
 def answer(question: str) -> dict:
-    # 1. rewrite
-    language, question_en, queries, rewrite_tokens = rewrite(question)
+    # 0. cache (Week 8): same question asked before -> answer instantly, no LLM call
+    key = " ".join(question.lower().split())
+    if USE_CACHE and key in _cache:
+        return {**_cache[key], "cached": True}
+
+    timings = {}  # seconds spent in each step, to see where the time goes
+    t = time.perf_counter()
+
+    # 1. rewrite (skipped for clear questions when SKIP_REWRITE_IF_CLEAR is on)
+    if SKIP_REWRITE_IF_CLEAR and is_clear(question):
+        language, question_en, queries, rewrite_tokens = "English", question, [question], {"prompt": 0, "completion": 0}
+    else:
+        language, question_en, queries, rewrite_tokens = rewrite(question)
     searches = list(dict.fromkeys([question, *queries]))   # original first, no duplicates
+    timings["rewrite"] = time.perf_counter() - t; t = time.perf_counter()
 
     # 2-3. search + rerank
     candidates = gather_candidates(searches)
+    timings["search"] = time.perf_counter() - t; t = time.perf_counter()
     chunks = rerank(list(dict.fromkeys([question_en, *queries])), candidates)
+    timings["rerank"] = time.perf_counter() - t; t = time.perf_counter()
     top_score = chunks[0]["rerank_score"] if chunks else None
 
     result = {
         "answer": IDK, "citations": [], "chunks": chunks,
         "rewrite": {"language": language, "question_en": question_en, "queries": queries},
-        "top_score": top_score, "idk_reason": None,
+        "top_score": top_score, "idk_reason": None, "timings": timings,
         "usage": {"prompt": 0, "completion": 0,
                   "rewrite_prompt": rewrite_tokens["prompt"], "rewrite_completion": rewrite_tokens["completion"]},
     }
@@ -172,19 +215,23 @@ def answer(question: str) -> dict:
     # 4. "I don't know" rule: nothing relevant enough -> don't even call the answer LLM
     if top_score is None or top_score < MIN_SCORE:
         result["idk_reason"] = "low_score"
-        return result
+        timings["answer"] = 0.0
+        return _remember(key, result)
 
     # 5. answer
     user_msg = f"Sources:\n{build_sources_text(chunks)}\n\nQuestion: {question}"
     if question_en.lower() != question.lower():
         user_msg += f"\n(In clear English: {question_en})"
     user_msg += f"\nAnswer language: {language}"
+    extra = {"reasoning_effort": ANSWER_EFFORT} if ANSWER_EFFORT else {}
     response = client.chat.completions.create(
         model=MODEL,
         temperature=0,
         messages=[{"role": "system", "content": SYSTEM_PROMPT},
                   {"role": "user", "content": user_msg}],
+        **extra,
     )
+    timings["answer"] = time.perf_counter() - t
     text = normalize_citations((response.choices[0].message.content or "").strip())
     u = getattr(response, "usage", None)
     if u:
@@ -192,11 +239,18 @@ def answer(question: str) -> dict:
 
     if text.lower().startswith("i don't know"):
         result["idk_reason"] = "llm_said_idk"
-        return result
+        return _remember(key, result)
 
     # 6. citations
     result["answer"] = text
     result["citations"] = extract_citations(text, chunks)
+    return _remember(key, result)
+
+
+def _remember(key, result):
+    """Store the result in the cache (only used when USE_CACHE is on)."""
+    if USE_CACHE:
+        _cache[key] = result
     return result
 
 
