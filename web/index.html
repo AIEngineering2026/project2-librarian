@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Librarian · WCAG 2.2 Assistant</title>
+<meta name="description" content="Answers about WCAG 2.2, straight from the official W3C documents, with sources for every claim.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  if (window.tailwind) tailwind.config = {
+    theme: { extend: { fontFamily: { sans: ["Inter", "sans-serif"], mono: ["JetBrains Mono", "monospace"] } } }
+  };
+</script>
+<style>
+  :root {
+    --blue: #1D4ED8; --violet: #7C3AED; --green: #0F766E; --green-bright: #059669; --amber: #B45309;
+  }
+  body { font-family: Inter, sans-serif; }
+  .material-symbols-outlined { font-size: inherit; line-height: 1; vertical-align: middle; }
+
+  /* Elements created by JavaScript inside the answer */
+  .num-badge { font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: .9em;
+    color: var(--blue); background: #EFF4FF; border: 1px solid #BFDBFE; border-radius: 6px; padding: 1px 6px; white-space: nowrap; }
+  .sc-pill { font-family: "JetBrains Mono", monospace; font-weight: 600; font-size: .8em;
+    border-radius: 6px; padding: 1px 6px; border: 1px solid; white-space: nowrap; }
+  .cite { font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: 11px; line-height: 1;
+    color: var(--blue); background: #EFF4FF; border: 1px solid #BFDBFE; border-radius: 999px;
+    padding: 3px 7px; margin-left: 3px; vertical-align: 2px; cursor: pointer; transition: all .15s; }
+  .cite:hover, .cite:focus-visible { background: var(--blue); color: #fff; outline: none; }
+  .answer-text p + p { margin-top: .75rem; }
+  .answer-text ul { margin: .5rem 0 .5rem 1.25rem; list-style: disc; }
+  .answer-text li + li { margin-top: .25rem; }
+
+  /* Source card highlight when its citation is hovered/clicked */
+  .src-active { background: #EFF4FF !important; border-color: #93C5FD !important; box-shadow: 0 0 0 3px rgba(29,78,216,.25); }
+
+  /* Visible focus everywhere (it's an accessibility tool!) */
+  a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 8px; }
+
+  /* Loading shimmer */
+  .skeleton { position: relative; overflow: hidden; background: rgba(219,234,254,.55); border-radius: 6px; }
+  .skeleton::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(237,233,254,.85), rgba(204,251,241,.6), transparent);
+    animation: shimmer 1.8s infinite ease-in-out; }
+  @keyframes shimmer { to { transform: translateX(100%); } }
+
+  /* Entrance animation for results */
+  .fade-up { animation: fadeUp .45s ease-out both; }
+  .fade-up-2 { animation: fadeUp .45s .08s ease-out both; }
+  .fade-up-3 { animation: fadeUp .45s .16s ease-out both; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  /* Slowly drifting background blobs */
+  .blob { animation: drift 18s ease-in-out infinite alternate; }
+  .blob-2 { animation-duration: 22s; animation-direction: alternate-reverse; }
+  @keyframes drift { to { transform: translate(40px, 30px) scale(1.08); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+
+  dialog::backdrop { background: rgba(15,23,42,.35); backdrop-filter: blur(2px); }
+</style>
+</head>
+
+<body class="min-h-screen flex flex-col text-slate-900 antialiased bg-gradient-to-br from-[#EFF4FF] via-[#F6F2FF] to-[#E8FBF4] overflow-x-hidden">
+
+<!-- Background colour blobs (decorative) -->
+<div aria-hidden="true" class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+  <div class="blob absolute -top-24 left-[12%] w-[480px] h-[380px] rounded-full bg-blue-300/30 blur-3xl"></div>
+  <div class="blob blob-2 absolute top-10 right-[10%] w-[440px] h-[360px] rounded-full bg-violet-300/25 blur-3xl"></div>
+  <div class="blob absolute top-[300px] left-[38%] w-[520px] h-[320px] rounded-full bg-emerald-200/40 blur-3xl"></div>
+  <div class="blob blob-2 absolute bottom-0 right-[20%] w-[420px] h-[320px] rounded-full bg-teal-200/30 blur-3xl"></div>
+</div>
+
+<a href="#question" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[60] bg-white px-3 py-2 rounded-lg shadow">Skip to search</a>
+
+<!-- Header -->
+<header class="fixed top-0 inset-x-0 z-50 bg-white/75 backdrop-blur-md border-b border-slate-200/70">
+  <div class="max-w-[1120px] mx-auto h-16 px-5 sm:px-6 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-3 group">
+      <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#1D4ED8] to-[#7C3AED] flex items-center justify-center shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
+        <span class="material-symbols-outlined text-white text-[20px]" style="font-variation-settings:'FILL' 1">menu_book</span>
+      </span>
+      <span class="text-[18px] font-bold tracking-tight">The Librarian</span>
+      <span class="hidden sm:inline font-mono text-[11px] font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-[#1D4ED8] border border-blue-200">WCAG 2.2</span>
+    </a>
+    <nav class="flex items-center gap-6 text-[14px] font-medium text-slate-600">
+      <button type="button" onclick="document.getElementById('about').showModal()" class="hover:text-[#1D4ED8] transition-colors">About</button>
+      <a href="https://github.com/AIEngineering2026/project2-librarian" target="_blank" rel="noopener noreferrer" class="hover:text-[#1D4ED8] transition-colors">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main class="flex-1 pt-28 pb-16">
+  <div class="max-w-[1120px] mx-auto px-5 sm:px-6">
+
+    <!-- Hero -->
+    <section class="text-center max-w-3xl mx-auto">
+      <h1 class="text-[36px] sm:text-[48px] font-extrabold tracking-tight leading-[1.12]">
+        Ask anything about
+        <span class="bg-gradient-to-r from-[#1D4ED8] via-[#7C3AED] to-[#0F766E] bg-clip-text text-transparent">WCAG&nbsp;2.2</span>
+      </h1>
+      <p class="mt-4 text-[17px] sm:text-[18px] text-slate-600 leading-relaxed max-w-xl mx-auto">
+        Answers straight from the official W3C documents, with sources for every claim.
+      </p>
+    </section>
+
+    <!-- Search -->
+    <form id="ask-form" class="mt-8 max-w-2xl mx-auto" role="search">
+      <div class="h-[60px] rounded-2xl bg-white/95 border border-slate-200 shadow-lg shadow-blue-900/5 focus-within:border-blue-400 focus-within:shadow-blue-900/10 transition-all flex items-center pl-4 pr-2 gap-3">
+        <span class="material-symbols-outlined text-[#1D4ED8] text-[24px] shrink-0" aria-hidden="true">search</span>
+        <label for="question" class="sr-only">Your question about WCAG 2.2</label>
+        <input id="question" name="question" type="text" autocomplete="off" maxlength="500"
+               placeholder="e.g. How big should a touch target be?"
+               class="flex-1 min-w-0 bg-transparent outline-none text-[16px] placeholder:text-slate-400">
+        <button id="clear-btn" type="button" aria-label="Clear question" class="hidden text-slate-400 hover:text-slate-700 p-1.5 rounded-lg">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+        <button id="ask-btn" type="submit"
+                class="shrink-0 h-11 px-5 rounded-xl bg-gradient-to-r from-[#1D4ED8] to-[#7C3AED] hover:brightness-110 text-white font-semibold text-[14px] shadow-md shadow-blue-600/25 flex items-center gap-1.5 disabled:opacity-80 disabled:cursor-not-allowed transition-all active:scale-[.97]">
+          <span id="ask-label">Ask</span>
+          <span id="ask-icon" class="material-symbols-outlined text-[18px]" aria-hidden="true">arrow_forward</span>
+        </button>
+      </div>
+    </form>
+
+    <!-- Example chips (filled by JS) -->
+    <div id="chips" class="mt-5 flex flex-wrap items-center justify-center gap-2.5 max-w-3xl mx-auto"></div>
+
+    <!-- Screen-reader announcements -->
+    <p id="status" class="sr-only" aria-live="polite"></p>
+
+    <!-- ===== EMPTY STATE ===== -->
+    <section id="view-empty" class="mt-14 grid grid-cols-1 md:grid-cols-3 gap-5 max-w-[1040px] mx-auto">
+      <article class="group bg-white/90 rounded-2xl p-6 border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-blue-300 transition-all">
+        <span class="inline-flex p-3 rounded-xl bg-blue-100 text-[#1D4ED8] text-[22px] group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">verified_user</span>
+        </span>
+        <h2 class="mt-4 text-[18px] font-bold">Official sources only</h2>
+        <p class="mt-2 text-[14px] text-slate-600 leading-relaxed">Answers come only from the W3C WCAG 2.2 Recommendation, Understanding and Techniques pages.</p>
+        <p class="mt-5 pt-4 border-t border-slate-100 font-mono text-[11px] font-semibold text-[#1D4ED8]">557 W3C PAGES INDEXED</p>
+      </article>
+      <article class="group bg-white/90 rounded-2xl p-6 border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-violet-300 transition-all">
+        <span class="inline-flex p-3 rounded-xl bg-violet-100 text-[#7C3AED] text-[22px] group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">format_quote</span>
+        </span>
+        <h2 class="mt-4 text-[18px] font-bold">Every claim cited</h2>
+        <p class="mt-2 text-[14px] text-slate-600 leading-relaxed">Numbered citations link to the exact W3C page and section, so you can check every answer yourself.</p>
+        <p class="mt-5 pt-4 border-t border-slate-100 font-mono text-[11px] font-semibold text-[#7C3AED]">CLICK [1] TO SEE THE SOURCE</p>
+      </article>
+      <article class="group bg-white/90 rounded-2xl p-6 border border-slate-200/80 shadow-sm hover:shadow-lg hover:-translate-y-1 hover:border-teal-300 transition-all">
+        <span class="inline-flex p-3 rounded-xl bg-teal-100 text-[#0F766E] text-[22px] group-hover:scale-105 transition-transform">
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">help_center</span>
+        </span>
+        <h2 class="mt-4 text-[18px] font-bold">Says when it doesn't know</h2>
+        <p class="mt-2 text-[14px] text-slate-600 leading-relaxed">If the WCAG documents don't cover your question, it tells you instead of guessing.</p>
+        <p class="mt-5 pt-4 border-t border-slate-100 font-mono text-[11px] font-semibold text-[#0F766E] flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#0F766E]"></span>HONEST BY DESIGN
+        </p>
+      </article>
+    </section>
+
+    <!-- ===== LOADING STATE ===== -->
+    <section id="view-loading" class="hidden mt-8" aria-hidden="true">
+      <div class="flex justify-center">
+        <div class="inline-flex items-center gap-2.5 py-2 px-4 bg-white/90 border border-indigo-100 rounded-full shadow-sm">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          <span id="loading-text" class="text-[14px] font-medium text-slate-700">Searching 557 W3C pages…</span>
+        </div>
+      </div>
+      <div class="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-[1040px] mx-auto">
+        <div class="lg:col-span-8 bg-white/90 rounded-2xl p-7 border border-slate-200/70 shadow-sm">
+          <div class="flex justify-between pb-5 mb-6 border-b border-slate-100"><div class="skeleton h-6 w-32"></div><div class="skeleton h-5 w-24"></div></div>
+          <div class="space-y-3.5"><div class="skeleton h-4 w-full"></div><div class="skeleton h-4 w-[92%]"></div><div class="skeleton h-4 w-[85%]"></div><div class="skeleton h-4 w-[70%]"></div></div>
+          <div class="mt-8 flex gap-2.5"><div class="skeleton h-6 w-20 rounded-full"></div><div class="skeleton h-6 w-24 rounded-full"></div></div>
+        </div>
+        <div class="lg:col-span-4 bg-white/90 rounded-2xl p-6 border border-slate-200/70 shadow-sm space-y-4">
+          <div class="skeleton h-5 w-24"></div>
+          <div class="p-4 rounded-xl bg-slate-50 space-y-2.5"><div class="skeleton h-4 w-28"></div><div class="skeleton h-3.5 w-full"></div></div>
+          <div class="p-4 rounded-xl bg-slate-50 space-y-2.5"><div class="skeleton h-4 w-32"></div><div class="skeleton h-3.5 w-4/5"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ANSWER STATE ===== -->
+    <section id="view-answer" class="hidden mt-10 grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-[1040px] mx-auto items-start">
+
+      <!-- Answer card -->
+      <article id="answer-card" class="fade-up lg:col-span-8 bg-white/95 rounded-2xl p-6 sm:p-8 border border-slate-200/70 border-l-4 shadow-md">
+        <header class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-5 border-b border-slate-100">
+          <div class="flex items-center gap-2.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_0_4px_rgba(16,185,129,.15)]"></span>
+            <h2 id="answer-heading" tabindex="-1" class="text-[18px] font-semibold outline-none">Answer</h2>
+            <span id="grounded-pill" class="font-mono text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-[#047857] border border-emerald-200"></span>
+          </div>
+          <span class="flex items-center gap-1.5 font-mono text-[12px] text-slate-500">
+            <span class="material-symbols-outlined text-[15px]" aria-hidden="true">timer</span>
+            <span id="latency"></span>
+          </span>
+        </header>
+
+        <div id="answer-text" class="answer-text text-[16px] leading-[1.7] text-slate-800"></div>
+
+        <footer class="mt-7 pt-5 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-[13px] text-slate-600">
+          <div class="flex items-center gap-2">
+            <span>Was this helpful?</span>
+            <button type="button" data-vote="up" aria-label="Yes, helpful" class="vote w-8 h-8 rounded-lg bg-slate-100 hover:bg-emerald-50 hover:text-[#047857] flex items-center justify-center transition-colors">
+              <span class="material-symbols-outlined text-[18px]">thumb_up</span>
+            </button>
+            <button type="button" data-vote="down" aria-label="No, not helpful" class="vote w-8 h-8 rounded-lg bg-slate-100 hover:bg-rose-50 hover:text-rose-700 flex items-center justify-center transition-colors">
+              <span class="material-symbols-outlined text-[18px]">thumb_down</span>
+            </button>
+            <span id="vote-thanks" class="hidden font-mono text-[11px] font-semibold text-[#047857]">Thanks for the feedback!</span>
+          </div>
+          <button id="copy-btn" type="button" class="inline-flex items-center gap-1.5 hover:text-[#1D4ED8] transition-colors">
+            <span class="material-symbols-outlined text-[16px]" aria-hidden="true">content_copy</span>
+            <span id="copy-label">Copy answer</span>
+          </button>
+        </footer>
+      </article>
+
+      <!-- Sources (right column on desktop, under the answer on mobile) -->
+      <aside class="fade-up-2 lg:col-span-4 lg:col-start-9 lg:row-start-1 lg:row-span-2 lg:sticky lg:top-24">
+        <div class="bg-white/95 rounded-2xl p-5 border border-slate-200/70 shadow-md">
+          <header class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
+            <h2 class="font-mono text-[11px] font-bold uppercase tracking-wider text-slate-600">Sources</h2>
+            <span id="sources-count" class="font-mono text-[11px] text-slate-500"></span>
+          </header>
+          <ol id="sources" class="space-y-3"></ol>
+        </div>
+      </aside>
+
+      <!-- Retrieved passages (collapsible) -->
+      <section class="fade-up-3 lg:col-span-8 lg:col-start-1 rounded-2xl overflow-hidden border border-slate-200/70 shadow-md bg-white/95">
+        <button id="passages-toggle" type="button" aria-expanded="false" aria-controls="passages"
+                class="w-full p-4 sm:px-6 bg-gradient-to-r from-blue-50/70 via-violet-50/50 to-emerald-50/60 hover:brightness-[.98] flex items-center justify-between text-left">
+          <span class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-[#1D4ED8] text-[20px]" aria-hidden="true">library_books</span>
+            <span class="text-[16px] font-semibold">Show retrieved passages (<span id="passages-count">5</span>)</span>
+          </span>
+          <span id="passages-chevron" class="material-symbols-outlined text-[22px] transition-transform" aria-hidden="true">expand_more</span>
+        </button>
+        <div id="passages" class="hidden p-4 sm:p-5 space-y-3">
+          <div id="searched-for" class="flex flex-wrap items-center gap-2 pb-1"></div>
+          <div id="passages-list" class="space-y-3"></div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ===== "I DON'T KNOW" STATE ===== -->
+    <section id="view-idk" class="hidden mt-10 max-w-2xl mx-auto">
+      <div class="fade-up relative overflow-hidden bg-white/95 rounded-2xl border border-amber-200/70 shadow-[0_4px_24px_-4px_rgba(245,158,11,.10)] p-8 sm:p-10 text-center">
+        <div aria-hidden="true" class="absolute -top-12 -right-12 w-36 h-36 bg-amber-100/60 rounded-full blur-2xl"></div>
+        <div aria-hidden="true" class="absolute -bottom-12 -left-12 w-36 h-36 bg-emerald-100/60 rounded-full blur-2xl"></div>
+        <svg aria-hidden="true" class="relative mx-auto w-20 h-20" viewBox="0 0 80 80" fill="none">
+          <circle cx="40" cy="40" r="36" fill="#F0FDF9" stroke="#CCFBEF" stroke-width="1.5"/>
+          <path d="M40 50C35.5 47 28 47 21 49V28C28 26 35.5 26 40 29C44.5 26 52 26 59 28V49C52 47 44.5 47 40 50Z" fill="#F8FAFC" stroke="#7C3AED" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M40 29V50" stroke="#7C3AED" stroke-width="2.2" stroke-linecap="round"/>
+          <line x1="26" y1="34" x2="35" y2="34" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
+          <line x1="26" y1="40" x2="33" y2="40" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="48" cy="37" r="13" fill="#EFF6FF" fill-opacity=".85" stroke="#3B82F6" stroke-width="2.6"/>
+          <path d="M48 34L49 37L52 38L49 39L48 42L47 39L44 38L47 37L48 34Z" fill="#10B981"/>
+          <path d="M57 46L66 55" stroke="#F59E0B" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>
+        <h2 id="idk-heading" tabindex="-1" class="relative mt-5 text-[22px] sm:text-[24px] font-bold tracking-tight outline-none">I couldn't find this in the WCAG 2.2 documents.</h2>
+        <p class="relative mt-2.5 text-[15px] text-slate-600 max-w-lg mx-auto leading-relaxed">
+          The Librarian only answers from the official W3C accessibility documentation. Try rephrasing, or ask about a specific success criterion.
+        </p>
+        <div id="idk-searched" class="relative mt-4 flex flex-wrap justify-center items-center gap-2"></div>
+        <div class="relative my-6 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
+        <p class="relative text-[12px] font-semibold text-slate-500 uppercase tracking-wider">Or try one of these</p>
+        <div id="idk-chips" class="relative mt-4 flex flex-wrap justify-center gap-2.5"></div>
+      </div>
+    </section>
+
+    <!-- ===== ERROR STATE ===== -->
+    <section id="view-error" class="hidden mt-10 max-w-2xl mx-auto">
+      <div class="fade-up bg-white/95 rounded-2xl border border-rose-200 p-7 text-center shadow-sm">
+        <span class="material-symbols-outlined text-rose-600 text-[32px]" aria-hidden="true">cloud_off</span>
+        <h2 id="error-heading" tabindex="-1" class="mt-2 text-[20px] font-bold outline-none">Something went wrong</h2>
+        <p id="error-text" class="mt-2 text-[14px] text-slate-600"></p>
+        <button type="button" onclick="ask(lastQuestion)" class="mt-5 px-4 py-2 rounded-xl bg-slate-900 text-white text-[14px] font-semibold hover:bg-slate-700">Try again</button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="border-t border-slate-200/70 bg-white/60 backdrop-blur-sm">
+  <p class="max-w-[1120px] mx-auto px-6 py-6 text-center font-mono text-[12px] text-slate-500">
+    The Librarian · Built for CS496 AI Engineering · Sources: W3C WCAG 2.2
+  </p>
+</footer>
+
+<!-- About dialog -->
+<dialog id="about" class="rounded-2xl p-0 max-w-lg w-[calc(100%-2rem)] shadow-2xl border border-slate-200">
+  <div class="p-7">
+    <div class="flex items-start justify-between gap-4">
+      <h2 class="text-[20px] font-bold">About The Librarian</h2>
+      <button type="button" onclick="this.closest('dialog').close()" aria-label="Close" class="text-slate-500 hover:text-slate-900 p-1 rounded-lg">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <p class="mt-3 text-[14px] text-slate-600 leading-relaxed">
+      A question-answering assistant for the Web Content Accessibility Guidelines (WCAG) 2.2,
+      built for the CS496 AI Engineering course. It uses retrieval-augmented generation (RAG):
+    </p>
+    <ol class="mt-4 space-y-2 text-[14px] text-slate-700">
+      <li class="flex gap-3"><span class="font-mono font-bold text-[#1D4ED8]">1</span>Searches 557 W3C pages by keywords and by meaning.</li>
+      <li class="flex gap-3"><span class="font-mono font-bold text-[#7C3AED]">2</span>A reranker keeps the 5 most relevant passages.</li>
+      <li class="flex gap-3"><span class="font-mono font-bold text-[#0F766E]">3</span>An LLM answers using only those passages and cites them.</li>
+      <li class="flex gap-3"><span class="font-mono font-bold text-[#B45309]">4</span>If nothing relevant is found, it says it doesn't know.</li>
+    </ol>
+    <p class="mt-5 p-3 rounded-xl bg-amber-50 border border-amber-200 text-[13px] text-amber-900">
+      It can still make mistakes. Always check the cited W3C source before relying on an answer.
+    </p>
+  </div>
+</dialog>
+
+<script>
+/* ---------- Data ---------- */
+const PRINCIPLE_STYLE = {
+  Perceivable:    { color: "#1D4ED8", bg: "#EFF4FF", border: "#BFDBFE" },
+  Operable:       { color: "#6D28D9", bg: "#F5F3FF", border: "#DDD6FE" },
+  Understandable: { color: "#0F766E", bg: "#F0FDFA", border: "#99F6E4" },
+  Robust:         { color: "#B45309", bg: "#FFFBEB", border: "#FDE68A" },
+  none:           { color: "#475569", bg: "#F1F5F9", border: "#E2E8F0" },
+};
+const EXAMPLES = [
+  { sc: "1.4.3", principle: "Perceivable",    q: "What is the minimum contrast for normal text?" },
+  { sc: "2.5.8", principle: "Operable",       q: "What is the minimum target size in WCAG 2.2?" },
+  { sc: "3.3.2", principle: "Understandable", q: "Do form inputs need visible labels?" },
+  { sc: "4.1.2", principle: "Robust",         q: "Does an icon-only button need a label?" },
+];
+
+/* ---------- Helpers ---------- */
+const $ = (id) => document.getElementById(id);
+const VIEWS = ["view-empty", "view-loading", "view-answer", "view-idk", "view-error"];
+let lastQuestion = "";
+let lastResult = null;
+
+function show(view) {
+  VIEWS.forEach((v) => $(v).classList.toggle("hidden", v !== view));
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function principleOf(sc) {
+  return sc ? { "1": "Perceivable", "2": "Operable", "3": "Understandable", "4": "Robust" }[sc[0]] : null;
+}
+
+function scPill(sc, principle) {
+  const s = PRINCIPLE_STYLE[principle || "none"];
+  return `<span class="sc-pill" style="color:${s.color};background:${s.bg};border-color:${s.border}">SC ${sc}</span>`;
+}
+
+/* ---------- Example chips ---------- */
+function chipHtml(ex) {
+  const s = PRINCIPLE_STYLE[ex.principle];
+  return `<button type="button" data-q="${escapeHtml(ex.q)}"
+    class="chip inline-flex items-center gap-2 rounded-full border text-[13px] font-medium px-3.5 py-1.5 hover:-translate-y-0.5 hover:shadow-sm transition-all"
+    style="color:${s.color};background:${s.bg};border-color:${s.border}">
+    <span class="font-mono text-[11px] font-bold px-1.5 py-0.5 rounded bg-white/70">${ex.sc}</span>${escapeHtml(ex.q)}</button>`;
+}
+$("chips").innerHTML = EXAMPLES.map(chipHtml).join("");
+$("idk-chips").innerHTML = EXAMPLES.map(chipHtml).join("");
+document.addEventListener("click", (e) => {
+  const chip = e.target.closest(".chip");
+  if (chip) { $("question").value = chip.dataset.q; updateClear(); ask(chip.dataset.q); }
+});
+
+/* ---------- Search box ---------- */
+function updateClear() { $("clear-btn").classList.toggle("hidden", !$("question").value); }
+$("question").addEventListener("input", updateClear);
+$("clear-btn").addEventListener("click", () => { $("question").value = ""; updateClear(); $("question").focus(); });
+$("ask-form").addEventListener("submit", (e) => { e.preventDefault(); ask($("question").value); });
+
+function setBusy(busy) {
+  $("ask-btn").disabled = busy;
+  $("ask-label").textContent = busy ? "Searching…" : "Ask";
+  $("ask-icon").textContent = busy ? "progress_activity" : "arrow_forward";
+  $("ask-icon").classList.toggle("animate-spin", busy);
+}
+
+/* ---------- Ask the API ---------- */
+let loadingTimers = [];
+async function ask(question) {
+  question = (question || "").trim();
+  if (!question) { $("question").focus(); return; }
+  lastQuestion = question;
+
+  show("view-loading");
+  setBusy(true);
+  $("status").textContent = "Searching the WCAG documents…";
+  $("loading-text").textContent = "Searching 557 W3C pages…";
+  loadingTimers.forEach(clearTimeout);
+  loadingTimers = [
+    setTimeout(() => ($("loading-text").textContent = "Reranking the best passages…"), 900),
+    setTimeout(() => ($("loading-text").textContent = "Writing a cited answer…"), 1900),
+  ];
+
+  try {
+    const res = await fetch("/api/ask", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || `Server error ${res.status}`);
+    lastResult = data;
+    data.idk ? renderIdk() : renderAnswer(data);
+  } catch (err) {
+    $("error-text").textContent = err.message || "Could not reach the server.";
+    show("view-error");
+    $("error-heading").focus();
+    $("status").textContent = "Something went wrong.";
+  } finally {
+    loadingTimers.forEach(clearTimeout);
+    setBusy(false);
+  }
+}
+
+/* ---------- "Searched for" chips (the rewritten search queries) ---------- */
+function searchedForHtml(queries) {
+  if (!queries || !queries.length) return "";
+  return '<span class="text-[12px] font-semibold text-slate-500">Searched for:</span>' +
+    queries.map((q) => `<span class="text-[12px] px-2.5 py-1 rounded-full bg-emerald-50 text-[#047857] border border-emerald-200">${escapeHtml(q)}</span>`).join("");
+}
+
+/* ---------- Render: "I don't know" ---------- */
+function renderIdk() {
+  $("idk-searched").innerHTML = searchedForHtml(lastResult && lastResult.searched_for);
+  show("view-idk");
+  $("idk-heading").focus();
+  $("status").textContent = "No answer found in the WCAG 2.2 documents.";
+}
+
+/* ---------- Render: answer ---------- */
+function formatInline(s) {
+  s = escapeHtml(s);
+  s = s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  // key numbers: ratios like 4.5:1 and sizes like 24 x 24 / 24 by 24 CSS pixels
+  s = s.replace(/\b\d+(?:\.\d+)?\s?:\s?1\b/g, (m) => `<span class="num-badge">${m}</span>`);
+  s = s.replace(/\b\d+\s?(?:×|x|by)\s?\d+(?:\s?CSS pixels)?/g, (m) => `<span class="num-badge">${m}</span>`);
+  // success criterion numbers: "SC 1.4.3"
+  s = s.replace(/\bSC\s?([1-4]\.\d{1,2}\.\d{1,2})\b/g, (m, sc) => scPill(sc, principleOf(sc)));
+  // citations [1] -> clickable badge
+  s = s.replace(/\[(\d+)\]/g, (m, n) => `<button type="button" class="cite" data-n="${n}" aria-label="Source ${n}">${n}</button>`);
+  return s;
+}
+
+function formatAnswer(text) {
+  let html = "", inList = false;
+  for (const raw of text.split("\n")) {
+    const line = raw.trim();
+    const item = line.match(/^(?:[-*•]|\d+\.)\s+(.*)/);
+    if (!line) { if (inList) { html += "</ul>"; inList = false; } continue; }
+    if (item) {
+      if (!inList) { html += "<ul>"; inList = true; }
+      html += `<li>${formatInline(item[1])}</li>`;
+    } else {
+      if (inList) { html += "</ul>"; inList = false; }
+      html += `<p>${formatInline(line)}</p>`;
+    }
+  }
+  return html + (inList ? "</ul>" : "");
+}
+
+function sourceHtml(p) {
+  const s = PRINCIPLE_STYLE[p.principle || "none"];
+  return `<li id="src-${p.n}" class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200/80 transition-all">
+    <div class="flex items-start justify-between gap-2">
+      <div class="flex flex-wrap items-center gap-1.5">
+        <span class="font-mono text-[11px] font-bold text-white px-2 py-0.5 rounded-md" style="background:${s.color}">[${p.n}]</span>
+        ${p.sc ? scPill(p.sc, p.principle) : ""}
+        <span class="text-[11px] text-slate-500">${escapeHtml(p.kind)}</span>
+      </div>
+      <a href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer" aria-label="Open source ${p.n} on w3.org"
+         class="text-slate-500 hover:text-[#1D4ED8] p-1 rounded-md hover:bg-blue-50">
+        <span class="material-symbols-outlined text-[18px]">open_in_new</span></a>
+    </div>
+    <a href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer"
+       class="mt-2 block text-[14px] font-semibold leading-snug hover:underline" style="color:${s.color}">${escapeHtml(p.title)}</a>
+    <p class="mt-0.5 text-[12px] text-slate-500">Section: ${escapeHtml(p.section)}</p>
+  </li>`;
+}
+
+function passageHtml(p) {
+  const s = PRINCIPLE_STYLE[p.principle || "none"];
+  const text = p.text.length > 420 ? p.text.slice(0, 420) + "…" : p.text;
+  return `<article class="p-4 rounded-xl bg-slate-50/70 border border-slate-200/70 hover:border-blue-300 transition-colors">
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="font-mono text-[11px] font-bold text-slate-500">[${p.n}]</span>
+        <a href="${escapeHtml(p.url)}" target="_blank" rel="noopener noreferrer" class="text-[14px] font-semibold hover:underline">${escapeHtml(p.title)}</a>
+        ${p.sc ? scPill(p.sc, p.principle) : ""}
+        <span class="text-[12px] text-slate-500">${escapeHtml(p.section)}</span>
+        ${p.cited ? '<span class="font-mono text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-50 text-[#047857] border border-emerald-200">CITED</span>' : ""}
+      </div>
+      <div class="flex items-center gap-2" title="Reranker score ${p.score}">
+        <span class="font-mono text-[11px] font-semibold" style="color:${s.color}">${p.relevance}% relevant</span>
+        <span class="w-16 h-1.5 rounded-full bg-slate-200 overflow-hidden"><span class="block h-full rounded-full" style="width:${p.relevance}%;background:${s.color}"></span></span>
+      </div>
+    </div>
+    <p class="text-[13px] text-slate-600 leading-relaxed">${escapeHtml(text)}</p>
+  </article>`;
+}
+
+function renderAnswer(data) {
+  $("answer-text").innerHTML = formatAnswer(data.answer);
+  $("latency").textContent = `Answered in ${(data.latency_ms / 1000).toFixed(1)} s`;
+
+  const n = data.sources.length;
+  $("grounded-pill").textContent = `Grounded in ${n} source${n === 1 ? "" : "s"}`;
+  $("grounded-pill").classList.toggle("hidden", n === 0);
+
+  // coloured left border = principle of the first source
+  const first = data.sources[0] || data.passages[0];
+  $("answer-card").style.borderLeftColor = PRINCIPLE_STYLE[(first && first.principle) || "none"].color;
+
+  $("sources-count").textContent = `${n} reference${n === 1 ? "" : "s"}`;
+  $("sources").innerHTML = n ? data.sources.map(sourceHtml).join("")
+    : '<li class="text-[13px] text-slate-500">No specific passage was cited.</li>';
+
+  $("passages-count").textContent = data.passages.length;
+  $("passages-list").innerHTML = data.passages.map(passageHtml).join("");
+  $("searched-for").innerHTML = searchedForHtml(data.searched_for);
+  setPassagesOpen(false);
+
+  $("vote-thanks").classList.add("hidden");
+  document.querySelectorAll(".vote").forEach((b) => b.classList.remove("bg-emerald-100", "text-[#047857]", "bg-rose-100", "text-rose-700"));
+  $("copy-label").textContent = "Copy answer";
+
+  // restart entrance animations
+  ["answer-card"].forEach((id) => { const el = $(id); el.classList.remove("fade-up"); void el.offsetWidth; el.classList.add("fade-up"); });
+
+  show("view-answer");
+  $("answer-heading").focus({ preventScroll: true });
+  $("view-answer").scrollIntoView({ behavior: "smooth", block: "start" });
+  $("status").textContent = "Answer ready.";
+}
+
+/* ---------- Citations <-> sources ---------- */
+function highlightSource(n, on) {
+  const el = $(`src-${n}`);
+  if (el) el.classList.toggle("src-active", on);
+}
+$("answer-text").addEventListener("mouseover", (e) => { const c = e.target.closest(".cite"); if (c) highlightSource(c.dataset.n, true); });
+$("answer-text").addEventListener("mouseout",  (e) => { const c = e.target.closest(".cite"); if (c) highlightSource(c.dataset.n, false); });
+$("answer-text").addEventListener("focusin",   (e) => { const c = e.target.closest(".cite"); if (c) highlightSource(c.dataset.n, true); });
+$("answer-text").addEventListener("focusout",  (e) => { const c = e.target.closest(".cite"); if (c) highlightSource(c.dataset.n, false); });
+$("answer-text").addEventListener("click", (e) => {
+  const c = e.target.closest(".cite");
+  if (!c) return;
+  const el = $(`src-${c.dataset.n}`);
+  if (!el) return;
+  el.scrollIntoView({ behavior: "smooth", block: "center" });
+  el.classList.add("src-active");
+  setTimeout(() => el.classList.remove("src-active"), 1600);
+});
+
+/* ---------- Passages toggle ---------- */
+function setPassagesOpen(open) {
+  $("passages").classList.toggle("hidden", !open);
+  $("passages-toggle").setAttribute("aria-expanded", String(open));
+  $("passages-chevron").classList.toggle("rotate-180", open);
+}
+$("passages-toggle").addEventListener("click", () => setPassagesOpen($("passages").classList.contains("hidden")));
+
+/* ---------- Copy & feedback ---------- */
+$("copy-btn").addEventListener("click", async () => {
+  if (!lastResult) return;
+  try {
+    await navigator.clipboard.writeText(lastResult.answer);
+    $("copy-label").textContent = "Copied!";
+  } catch { $("copy-label").textContent = "Copy failed"; }
+});
+
+document.querySelectorAll(".vote").forEach((btn) => btn.addEventListener("click", async () => {
+  if (!lastResult) return;
+  const helpful = btn.dataset.vote === "up";
+  btn.classList.add(...(helpful ? ["bg-emerald-100", "text-[#047857]"] : ["bg-rose-100", "text-rose-700"]));
+  $("vote-thanks").classList.remove("hidden");
+  try {
+    await fetch("/api/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question: lastResult.question, answer: lastResult.answer, helpful }),
+    });
+  } catch { /* feedback is best-effort */ }
+}));
+</script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+#1  My grey text on a white background looks faint, is that a problem?
+    expected : 4.5:1 (SC 1.4.3)
+    searched : ['1.4.3 Contrast (Minimum) text contrast ratio']
+    top score: 9.60 | 3.1s
+    answer   : Yes. WCAG 2.2 requires normal‑size text (or images of text) to have a contrast ratio of at least 4.5 : 1 against its background; only large‑scale text is allowed a lower 3 : 1 ratio [1]. If your grey‑on‑white text does n
+
+#2  buttons too small?
+    expected : 24x24 CSS px (SC 2.5.8)
+    searched : ['2.5.5 Target Size (Minimum) touch target size', 'buttons too small WCAG 2.2']
+    top score: 7.90 | 3.7s
+    answer   : Make sure every button meets the WCAG 2.2 minimum target size of 24 × 24 CSS pixels, or give it enough surrounding space so that an imaginary 24‑pixel‑diameter circle around the control does not intersect any adjacent co
+
+#3  What contrast do large text and icons need?
+    expected : 3:1 both (1.4.3 + 1.4.11)
+    searched : ['1.4.3 Contrast (Minimum) large text 3:1', '1.4.3 Contrast (Minimum) icons 4.5:1']
+    top score: 8.75 | 5.6s
+    answer   : Large‑scale text (and images of large‑scale text) must meet a contrast ratio of **at least 3 : 1** [1].   Icons that are required to convey meaning also need a contrast ratio of **at least 3 : 1** [5].
+
+#4  What's the difference between 1.4.3 and 1.4.6?
+    expected : AA 4.5:1 vs AAA 7:1
+    searched : ['1.4.3 Contrast (Minimum) WCAG 2.2', '1.4.6 Contrast (Enhanced) WCAG 2.2']
+    top score: 8.85 | 4.1s
+    answer   : - **1.4.3 Contrast (Minimum)** is a Level AA success criterion that requires a contrast ratio of at least 4.5 : 1 for normal text (and at least 3 : 1 for large‑scale text), with several exceptions such as decorative text
+
+#5  Does disabled button text need good contrast?
+    expected : No, inactive exempt
+    searched : ['1.4.3 Contrast (Minimum) text contrast ratio disabled button', '1.4.3 Contrast (Minimum) text contrast ratio disabled state']
+    top score: 6.28 | 3.1s
+    answer   : No. If a button is inactive/disabled, its text is exempt from the contrast requirement; the rule only applies to controls that are active [2][1].
+
+#6  Does a logo need to meet contrast rules?
+    expected : No, logos exempt
+    searched : ['1.4.11 Non-text Contrast', 'logo contrast WCAG 2.2', 'does logo need contrast WCAG']
+    top score: 9.16 | 3.8s
+    answer   : Yes. Any visual element that conveys meaning—such as a logo—must meet the 3 : 1 minimum contrast ratio against its background, just like other non‑text content [1][4].
+
+#7  Which success criteria are new in WCAG 2.2?
+    expected : 9 new SCs
+    searched : ['WCAG 2.2 new success criteria', 'WCAG 2.2 new success criteria list']
+    top score: 9.58 | 3.9s
+    answer   : The new success criteria added in WCAG 2.2 are:  - 2.4.11 Focus Not Obscured (Minimum) (AA)   - 2.4.12 Focus Not Obscured (Enhanced) (AAA)   - 2.4.13 Focus Appearance (AAA)   - 2.5.7 Dragging Movements (AA)   - 2.5.8 Tar
+
+#8  Is 4.1.1 Parsing still required?
+    expected : No, removed in 2.2
+    searched : ['4.1.1 Parsing (Required)', '4.1.1 Parsing success criterion', '4.1.1 Parsing requirement']
+    top score: 8.58 | 7.7s
+    answer   : No. The 4.1 Parsing success criterion has been removed from WCAG 2.2 and is no longer required [1][4].
+
+#9  At what width must content reflow without horizontal scrolling?
+    expected : 320 CSS px (1.4.10)
+    searched : ['1.4.10 Reflow (Minimum) viewport width', 'WCAG 2.2 1.4.10 Reflow (Minimum) horizontal scrolling', '1.4.10 Reflow (Minimum) 320px']
+    top score: 7.16 | 17.3s
+    answer   : Content must be able to reflow so that no horizontal scrolling is required when the viewport width is equivalent to **320 CSS pixels** (which corresponds to a 1280‑pixel wide viewport shown at 400 % zoom)【1†L1-L4】【4†L1-L
+
+#10 How many times per second can content flash?
+    expected : max 3 flashes / 1 s (2.3.1)
+    searched : ['2.3.3 Three Flashes or Less (Maximum 3 flashes per second)', 'WCAG 2.2 2.3.3 flash frequency', 'Maximum flash frequency WCAG 2.2']
+    top score: 6.69 | 7.9s
+    answer   : Content may flash no more than three times in any one‑second period [1][2].
+[rewrite] failed, using the original question: Error code: 400 - {'error': {'message': "Failed to validate JSON. Please adjust your prompt. See 'failed_generation' for more details.", 'type': 'invalid_request_error', 'code': 'json_validate_failed', 'failed_generation': ''}}
+
+#11 Can I use a puzzle CAPTCHA on my login page?
+    expected : Not as only option (3.3.8)
+    searched : ['Can I use a puzzle CAPTCHA on my login page?']
+    top score: -2.40 | 4.0s
+    answer   : I don't know  (low_score)
+
+#12 What contrast does WCAG 3.0 require?
+    expected : IDK
+    searched : ['Contrast (Minimum) WCAG 3.0', 'WCAG 3.0 contrast ratio requirement']
+    top score: 7.41 | 2.7s
+    answer   : I don't know  (llm_said_idk)
+
+#13 Is WCAG legally required in Tunisia?
+    expected : IDK
+    searched : ['WCAG 2.2 legal requirement Tunisia', 'WCAG 2.2 compliance law Tunisia', 'WCAG 2.2 Tunisia legislation']
+    top score: 3.75 | 7.0s
+    answer   : I don't know  (llm_said_idk)
+
+#14 minimun constrast for txt
+    expected : 4.5:1
+    searched : ['1.4.3 Contrast (Minimum) text contrast ratio']
+    top score: 9.60 | 11.3s
+    answer   : The WCAG 2.2 requires a contrast ratio of **at least 4.5 : 1** between normal‑size text (or images of text) and its background. For large‑scale text (≥ 18 pt regular or ≥ 14 pt bold) the minimum is **3 : 1** [1]. Excepti
+
+#15 Quel est le contraste minimum pour le texte ?
+    expected : 4.5:1 (answer in French)
+    searched : ['1.4.3 Contrast (Minimum) text contrast ratio']
+    top score: 9.60 | 10.6s
+    answer   : Le texte normal doit avoir un rapport de contraste d’au moins 4,5 : 1 par rapport à son arrière‑plan ; le texte « large » (≥ 18 pt non gras ou ≥ 14 pt gras) ne doit avoir qu’un contraste d’au moins 3 : 1 [1].
