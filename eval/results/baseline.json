@@ -1,0 +1,418 @@
+{
+  "summary": {
+    "label": "baseline",
+    "settings": {
+      "rewrite_effort": null,
+      "answer_effort": null,
+      "top_k": 5,
+      "min_score": 0.0,
+      "skip_rewrite_if_clear": false,
+      "cache": false
+    },
+    "p50_s": 6.43,
+    "p95_s": 11.64,
+    "avg_step_s": {
+      "rewrite": 1.24,
+      "search": 0.08,
+      "rerank": 1.51,
+      "answer": 4.21
+    },
+    "cost_per_request_usd": 0.000574,
+    "accuracy_hard": "14/15",
+    "accuracy_hard_pct": 93.3,
+    "failed": [
+      "Can I use a puzzle CAPTCHA on my login page?"
+    ],
+    "repeat_p50_s_with_cache": null
+  },
+  "speed": [
+    {
+      "question": "When should ariaNotify be used for a progress bar?",
+      "seconds": 2.8802414999809116,
+      "cost": 0.00041857499999999997,
+      "timings": {
+        "rewrite": 0.6460946999723092,
+        "search": 0.08612300001550466,
+        "rerank": 1.6009026999818161,
+        "answer": 0.5469910999527201
+      },
+      "idk": false
+    },
+    {
+      "question": "Why is offering multiple navigation methods beneficial for users with visual or cognitive impairments?",
+      "seconds": 5.378715800005011,
+      "cost": 0.0010544999999999999,
+      "timings": {
+        "rewrite": 3.280008199973963,
+        "search": 0.037391899968497455,
+        "rerank": 0.6403459999710321,
+        "answer": 1.4208420000504702
+      },
+      "idk": false
+    },
+    {
+      "question": "Why must text language and direction be identified for assistive technology to function properly?",
+      "seconds": 3.91035679995548,
+      "cost": 0.0007563,
+      "timings": {
+        "rewrite": 0.9648498999886215,
+        "search": 0.08133690000977367,
+        "rerank": 1.8575397999957204,
+        "answer": 1.0065067999530584
+      },
+      "idk": false
+    },
+    {
+      "question": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+      "seconds": 11.202724499977194,
+      "cost": 0.0005679,
+      "timings": {
+        "rewrite": 0.8368890000274405,
+        "search": 0.1356548999901861,
+        "rerank": 2.5522716999985278,
+        "answer": 7.677839400013909
+      },
+      "idk": false
+    },
+    {
+      "question": "How can an online auction be designed to comply with the no‑time‑limit requirement of Technique G5?",
+      "seconds": 11.057318300008774,
+      "cost": 0.0005991,
+      "timings": {
+        "rewrite": 0.9304184999782592,
+        "search": 0.0978559999493882,
+        "rerank": 1.8179637000430375,
+        "answer": 8.210928799933754
+      },
+      "idk": false
+    },
+    {
+      "question": "How is a general flash defined for WCAG 2.2 compliance?",
+      "seconds": 3.5021215999731794,
+      "cost": 0.000647475,
+      "timings": {
+        "rewrite": 0.5837130999425426,
+        "search": 0.07274319999851286,
+        "rerank": 2.0513301000464708,
+        "answer": 0.7942738001001999
+      },
+      "idk": false
+    },
+    {
+      "question": "How does SC 2.5.2 allow users to cancel a click‑like activation before the pointer is released?",
+      "seconds": 3.3164394000777975,
+      "cost": 0.0005352,
+      "timings": {
+        "rewrite": 0.8345627000089735,
+        "search": 0.09693030000198632,
+        "rerank": 1.381871199933812,
+        "answer": 1.0030149000231177
+      },
+      "idk": false
+    },
+    {
+      "question": "How many flashes per second are allowed by Technique G19 to avoid seizure risk?",
+      "seconds": 4.2050737999379635,
+      "cost": 0.0003369,
+      "timings": {
+        "rewrite": 0.7442542999051511,
+        "search": 0.061296100029721856,
+        "rerank": 1.267909900052473,
+        "answer": 2.131557200103998
+      },
+      "idk": false
+    },
+    {
+      "question": "How does Technique G225 keep each panel of a horizontally scrolling section readable in a 320 CSS pixel viewport?",
+      "seconds": 7.482365599949844,
+      "cost": 0.0004965,
+      "timings": {
+        "rewrite": 0.8237187000922859,
+        "search": 0.08880849997512996,
+        "rerank": 1.6468483000062406,
+        "answer": 4.922935199923813
+      },
+      "idk": false
+    },
+    {
+      "question": "Why are headings crucial for screen reader users when navigating a page?",
+      "seconds": 11.530480800080113,
+      "cost": 0.000565425,
+      "timings": {
+        "rewrite": 0.7578403999796137,
+        "search": 0.08195589995011687,
+        "rerank": 2.1209874000633135,
+        "answer": 8.569635699968785
+      },
+      "idk": false
+    },
+    {
+      "question": "What is the capital of France?",
+      "seconds": 3.8716826998861507,
+      "cost": 0.000636675,
+      "timings": {
+        "rewrite": 3.0486906999722123,
+        "search": 0.02981139998883009,
+        "rerank": 0.7931562999729067,
+        "answer": 0.0
+      },
+      "idk": true
+    },
+    {
+      "question": "How does the technique verify that an undersized target has enough spacing from other targets?",
+      "seconds": 8.42742600000929,
+      "cost": 0.001047975,
+      "timings": {
+        "rewrite": 2.4707001000642776,
+        "search": 0.02777129993773997,
+        "rerank": 0.7984187999973074,
+        "answer": 5.130425399984233
+      },
+      "idk": false
+    },
+    {
+      "question": "How should a heading be formatted to be recognized by screen readers according to Technique T3?",
+      "seconds": 10.44161440001335,
+      "cost": 0.00048375,
+      "timings": {
+        "rewrite": 1.2267072000540793,
+        "search": 0.08303139999043196,
+        "rerank": 2.108656399999745,
+        "answer": 7.023146299994551
+      },
+      "idk": false
+    },
+    {
+      "question": "Which screen reader has the largest market share?",
+      "seconds": 2.4828638999024406,
+      "cost": 0.000261825,
+      "timings": {
+        "rewrite": 1.4253549000713974,
+        "search": 0.05105999996885657,
+        "rerank": 1.0064164999639615,
+        "answer": 0.0
+      },
+      "idk": true
+    },
+    {
+      "question": "Why is SC 2.4.10 about section headings placed at Level AAA?",
+      "seconds": 6.300182600039989,
+      "cost": 0.000449175,
+      "timings": {
+        "rewrite": 0.7707285000942647,
+        "search": 0.09884009999223053,
+        "rerank": 1.3746012999908999,
+        "answer": 4.055945899919607
+      },
+      "idk": false
+    },
+    {
+      "question": "How can I provide an alternative for time‑based media that is immediately next to the non‑text content?",
+      "seconds": 5.807042600004934,
+      "cost": 0.0006525000000000001,
+      "timings": {
+        "rewrite": 0.9187230000970885,
+        "search": 0.09316169994417578,
+        "rerank": 1.4777957999613136,
+        "answer": 3.3172484000679106
+      },
+      "idk": false
+    },
+    {
+      "question": "How does Technique G112 help with the 3.1.3 Unusual Words criterion?",
+      "seconds": 9.306737200007774,
+      "cost": 0.000472425,
+      "timings": {
+        "rewrite": 0.4047366000013426,
+        "search": 0.08961779996752739,
+        "rerank": 1.6301863000262529,
+        "answer": 7.182122300029732
+      },
+      "idk": false
+    },
+    {
+      "question": "Can a web application use mouse input in addition to keyboard for the same functionality while still meeting WCAG 2.2 2.1.1?",
+      "seconds": 13.696849000058137,
+      "cost": 0.000569475,
+      "timings": {
+        "rewrite": 0.8981063000392169,
+        "search": 0.10103779996279627,
+        "rerank": 1.9006128000328317,
+        "answer": 10.797019499936141
+      },
+      "idk": false
+    },
+    {
+      "question": "How does Technique C17 relate to the Resize Text success criterion?",
+      "seconds": 6.5537491999566555,
+      "cost": 0.000392325,
+      "timings": {
+        "rewrite": 1.7564931999659166,
+        "search": 0.0764056999469176,
+        "rerank": 0.9246490000514314,
+        "answer": 3.7961146000307053
+      },
+      "idk": false
+    },
+    {
+      "question": "Who won the 2022 football World Cup?",
+      "seconds": 9.422589899972081,
+      "cost": 0.0005268,
+      "timings": {
+        "rewrite": 1.5330474999500439,
+        "search": 0.04570929997134954,
+        "rerank": 1.3182231000391766,
+        "answer": 6.525566300028004
+      },
+      "idk": true
+    }
+  ],
+  "quality": [
+    {
+      "question": "My grey text on a white background looks faint, is that a problem?",
+      "pass": true,
+      "answer": "Yes – for normal‑size text the WCAG 2.2 Level AA success criterion 1.4.3 requires a contrast ratio of at least 4.5 : 1 against the background, and grey on white often falls below that [2]. If the text is large (≥ 18 pt regular or 14 pt bold) the minimum drops to 3 : 1, but otherwise you need to darken the grey, increase the font size, or add a halo or other visual aid to reach the required contrast [1][2].",
+      "searched": [
+        "text contrast",
+        "contrast ratio",
+        "color contrast"
+      ]
+    },
+    {
+      "question": "buttons too small?",
+      "pass": true,
+      "answer": "According to WCAG 2.2 Success Criterion 2.5.8 (Level AA), the size of a target for pointer input must be at least 24 × 24 CSS pixels, unless an exception applies (e.g., sufficient spacing, an equivalent larger control, inline text, user‑agent‑controlled size, or essential presentation) [4]. So any button that is smaller than 24 × 24 CSS pixels and does not meet one of those exceptions would be considered too small [3][4].",
+      "searched": [
+        "target size",
+        "minimum target size",
+        "touch target size"
+      ]
+    },
+    {
+      "question": "What contrast do large text and icons need?",
+      "pass": true,
+      "answer": "- **Large text** (including large‑scale text and images of large‑scale text) must have a contrast ratio of at least **3 : 1** [3][4].  \n- **Icons and other meaningful non‑text graphics** must also meet a contrast ratio of at least **3 : 1** against the background [1][5].",
+      "searched": [
+        "large text contrast requirement",
+        "icon contrast requirement",
+        "non-text contrast large text"
+      ]
+    },
+    {
+      "question": "What's the difference between 1.4.3 and 1.4.6?",
+      "pass": true,
+      "answer": "- **SC 1.4.3 Contrast (Minimum) – Level AA** requires a contrast ratio of ≥ 4.5 : 1 for normal‑size text (and ≥ 3 : 1 for large text), with exemptions for decorative, inactive UI, or logo text [2].  \n- **SC 1.4.6 Contrast (Enhanced) – Level AAA** raises the requirement, using a higher ratio of ≥ 7 : 1 for normal‑size text (and ≥ 4.5 : 1 for large text) to better support users with reduced visual acuity or color‑vision deficiencies [3].",
+      "searched": [
+        "1.4.3 contrast ratio",
+        "1.4.6 non-text contrast"
+      ]
+    },
+    {
+      "question": "Does disabled button text need good contrast?",
+      "pass": true,
+      "answer": "No. Disabled (inactive) button text is exempt from the contrast requirements. Both the Level AA success criterion 1.4.11 (Non‑text Contrast) and the Level AAA criteria 1.4.6 (Contrast Enhanced) state that text that is part of an inactive user‑interface component does not have a contrast requirement [1][2][3][4].",
+      "searched": [
+        "contrast ratio for disabled text",
+        "contrast requirement for disabled controls",
+        "disabled text contrast WCAG"
+      ]
+    },
+    {
+      "question": "Does a logo need to meet contrast rules?",
+      "pass": true,
+      "answer": "Logos are exempt from the 3 : 1 contrast requirement only when their low‑contrast appearance is **essential** (for example, mandated by corporate identity or brand guidelines). If the low contrast is simply an author choice, the logo is **not** exempt and must meet the non‑text contrast rule of Success Criterion 1.4.11 (AA) (minimum 3 : 1) [2][1].",
+      "searched": [
+        "non-text contrast",
+        "contrast requirements for images",
+        "logo contrast WCAG"
+      ]
+    },
+    {
+      "question": "Which success criteria are new in WCAG 2.2?",
+      "pass": true,
+      "answer": "The new success criteria added in WCAG 2.2 are:\n\n- 2.4.11 Focus Not Obscured (Minimum) – Level AA  \n- 2.4.12 Focus Not Obscured (Enhanced) – Level AAA  \n- 2.4.13 Focus Appearance – Level AAA  \n- 2.5.7 Dragging Movements – Level AA  \n- 2.5.8 Target Size (Minimum) – Level AA  \n- 3.2.6 Consistent Help – Level A  \n- 3.3.7 Redundant Entry – Level A  \n- 3.3.8 Accessible Authentication (Minimum) – Level AA  \n- 3.3.9 Accessible Authentication (Enhanced) – Level AAA  \n\n[2]",
+      "searched": [
+        "WCAG 2.2 new success criteria",
+        "WCAG 2.2 new success criteria list"
+      ]
+    },
+    {
+      "question": "Is 4.1.1 Parsing still required?",
+      "pass": true,
+      "answer": "No. Success Criterion 4.1.1 Parsing has been removed from WCAG 2.2 and is no longer a required criterion [1][4].",
+      "searched": [
+        "4.1.1 Parsing requirement",
+        "WCAG 2.2 4.1.1 Parsing",
+        "4.1.1 Parsing status"
+      ]
+    },
+    {
+      "question": "At what width must content reflow without horizontal scrolling?",
+      "pass": true,
+      "answer": "Content must reflow so that no horizontal scrolling is needed when the viewport width is equivalent to **320 CSS pixels** (which corresponds to a 1280 CSS‑pixel wide viewport at 400 % zoom)[2][5]",
+      "searched": [
+        "1.4.10 reflow",
+        "reflow horizontal scrolling width",
+        "content reflow without horizontal scrolling"
+      ]
+    },
+    {
+      "question": "How many times per second can content flash?",
+      "pass": true,
+      "answer": "Content may flash no more than three times in any one‑second period — i.e., a maximum of three flashes per second [4][3].",
+      "searched": [
+        "flashing frequency",
+        "maximum flash frequency",
+        "flashing frequency WCAG"
+      ]
+    },
+    {
+      "question": "Can I use a puzzle CAPTCHA on my login page?",
+      "pass": false,
+      "answer": "Yes, you can use a puzzle CAPTCHA, but WCAG 2.2 Success Criterion 1.1.1 (Level A) requires that you (1) provide a text alternative that identifies and describes the purpose of the CAPTCHA [1] and (2) offer another CAPTCHA using a different modality (e.g., audio, tactile) to accommodate other disabilities [4][2]. Providing both satisfies the WCAG requirement for CAPTCHA content.",
+      "searched": [
+        "CAPTCHA accessibility WCAG",
+        "puzzle CAPTCHA WCAG 2.2",
+        "interactive content success criteria"
+      ]
+    },
+    {
+      "question": "What contrast does WCAG 3.0 require?",
+      "pass": true,
+      "answer": "I don't know.",
+      "searched": [
+        "WCAG 3.0 contrast requirement",
+        "WCAG 3.0 contrast ratio",
+        "WCAG 3.0 contrast guidelines"
+      ]
+    },
+    {
+      "question": "Is WCAG legally required in Tunisia?",
+      "pass": true,
+      "answer": "I don't know.",
+      "searched": [
+        "WCAG legal requirement Tunisia",
+        "Tunisia accessibility law WCAG",
+        "Tunisia accessibility legislation WCAG"
+      ]
+    },
+    {
+      "question": "minimun constrast for txt",
+      "pass": true,
+      "answer": "The WCAG 2.2 Level AA requirement (Success Criterion 1.4.3) says that text must have a contrast ratio of at least **4.5 : 1**; for large‑scale text the minimum is **3 : 1** [2].",
+      "searched": [
+        "contrast ratio text",
+        "text contrast WCAG 2.2"
+      ]
+    },
+    {
+      "question": "Quel est le contraste minimum pour le texte ?",
+      "pass": true,
+      "answer": "Le contraste minimum requis pour le texte (et les images de texte) est d’au moins **4,5 : 1** ; pour le texte « large » (≥ 18 pt non gras ou ≥ 14 pt gras) le minimum est de **3 : 1**[1][2].",
+      "searched": [
+        "minimum contrast ratio text",
+        "text contrast requirement"
+      ]
+    }
+  ]
+}
