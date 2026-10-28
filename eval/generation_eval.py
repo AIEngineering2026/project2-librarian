@@ -14,6 +14,8 @@ Run from the project root:
     py -m eval.generation_eval judge  --version optimised
     py -m eval.generation_eval compare baseline optimised     # Week 8 before/after table (+ the 2-point rule)
     py -m eval.generation_eval threshold --version baseline   # "I don't know" threshold sweep, no LLM calls
+    py -m eval.generation_eval show --version baseline --n 10  # print judged answers to check the judge by hand
+    py -m eval.generation_eval summary --version baseline     # recompute the scores from the saved files (no LLM calls)
 Options: --limit N (first N questions only, for a quick test), --judge-model, --sleep SECONDS.
 
 Keys (.env): GROQ_API_KEY for the pipeline. GROQ_JUDGE_API_KEY (optional) for the judge, so the judge can use
@@ -222,6 +224,14 @@ def run_answers(args):
 CITE = re.compile(r"\[(\d+)\]")
 
 
+MARKER = re.compile(r"[\s*_\-•]*(\d{1,2}|[a-zA-Z])[.)][\s*_]*|[\s*_\-•]+")
+
+
+def is_marker(text):
+    """True for a bare list number / bullet such as "1.", "**2.**", "a)", "-"."""
+    return bool(MARKER.fullmatch(text.strip()))
+
+
 def split_claims(answer):
     """Split an answer into sentences / list items, each with the [n] numbers it cites.
     A citation written after the full stop ("... 4.5:1. [1]") is moved back to its sentence."""
@@ -230,7 +240,14 @@ def split_claims(answer):
         line = line.strip()
         if not line:
             continue
-        parts += [s for s in re.split(r"(?<=[.!?])\s+(?=[\[A-Z*\-•\d(\"'])", line) if s.strip()]
+        pieces = [s for s in re.split(r"(?<=[.!?])\s+(?=[\[A-Z*\-•\d(\"'])", line) if s.strip()]
+        merged = []
+        for s in pieces:                                   # "1." / "a)" alone is a list number, not a claim:
+            if merged and is_marker(merged[-1]):           # glue it to the text that follows
+                merged[-1] = merged[-1] + " " + s
+            else:
+                merged.append(s)
+        parts += [s for s in merged if not is_marker(s)]
     claims = []
     for s in parts:
         lead = re.match(r"^((?:\s*\[\d+\])+)\s*(.*)$", s)
@@ -385,7 +402,8 @@ def summarise(version):
     answered = [j for j in judged if not j["idk"]]
     per_answer, all_cits, uncited, fully = [], [], 0, 0
     for j in answered:
-        fact = [c for c in j["claims"] if c["factual"]]
+        # list numbers judged before the split_claims fix are ignored, so old judged files stay usable
+        fact = [c for c in j["claims"] if c["factual"] and not is_marker(c["text"])]
         uncited += sum(1 for c in fact if not c["cites"])
         if fact:
             per_answer.append(sum(c["supported"] for c in fact) / len(fact))
@@ -554,6 +572,30 @@ def run_threshold(args):
         print(f"| {t:g} | {100 * acc / n:.1f}% | {100 * idk_ok / n:.1f}% | {refused} | {wrong_ans} | {saved} |")
 
 
+def run_show(args):
+    """Print judged answers one by one, to check the judge by hand (no LLM calls)."""
+    P = paths(args.version)
+    answers = {r["question"]: r for r in read_jsonl(P["answers"])}
+    judged = [j for j in read_jsonl(P["judged"]) if j["question"] in answers]
+    if args.only:
+        judged = [j for j in judged if j["correctness"] == args.only]
+    for i, j in enumerate(judged[:args.n], 1):
+        a = answers[j["question"]]
+        print("=" * 80)
+        print(f"#{i}  JUDGE: {j['correctness'].upper()}   {j.get('correctness_reason', '')}")
+        print(f"Q:   {j['question']}")
+        print(f"REF: {a['reference']}")
+        print(f"ANSWER:\n{a['answer']}")
+        for c in j["claims"]:
+            if is_marker(c["text"]):
+                continue
+            mark = "ok " if c["supported"] else ("-- " if not c["factual"] else "NO ")
+            print(f"   [{mark}] {c['text'][:110]}  cites {c['cites'] or 'nothing'}")
+    print("=" * 80)
+    print("ok = supported by its cited chunk · NO = unsupported · -- = not a factual claim")
+    print("Write down for each one: do you agree with the judge? (yes / no)")
+
+
 # ====================================================================== CLI
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -568,9 +610,13 @@ def main():
             sp.add_argument("--set", action="append", metavar="NAME=VALUE",
                             help="change a src/pipeline.py setting, e.g. --set TOP_K=3")
     cp = sub.add_parser("compare"); cp.add_argument("before"); cp.add_argument("after")
+    sh = sub.add_parser("show")
+    sh.add_argument("--version", default="baseline")
+    sh.add_argument("--n", type=int, default=10)
+    sh.add_argument("--only", choices=["correct", "partial", "incorrect", "refused", "n/a"])
     args = ap.parse_args()
     {"answer": run_answers, "judge": run_judge, "compare": run_compare, "threshold": run_threshold,
-     "summary": lambda a: summarise(a.version)}[args.cmd](args)
+     "summary": lambda a: summarise(a.version), "show": run_show}[args.cmd](args)
 
 
 if __name__ == "__main__":
