@@ -86,7 +86,9 @@ Reply with ONLY a JSON object, no other text:
 SYSTEM_PROMPT = """You are a WCAG 2.2 accessibility assistant for developers.
 Rules:
 1. Answer ONLY using the numbered sources given to you. Never use outside knowledge.
-2. After every fact, cite the source number in normal ASCII square brackets, like [1] or [2][3].
+2. EVERY sentence (and every list item) must end with the number of the source that says it, in normal
+   ASCII square brackets, like [1] or [2][3]. If you cannot cite a sentence, do not write it.
+   Do not add summaries, conclusions or advice that no source states in words.
 3. If the sources do not contain the answer, reply exactly: I don't know.
 4. Read the sources carefully: if a source says something is EXEMPT or an EXCEPTION applies,
    say so. Never state a requirement that the sources do not state for that exact case.
@@ -119,33 +121,41 @@ def get_reranker():
 
 def rewrite(question):
     """Ask a small LLM for a clean English question + 1-3 search queries.
-    If anything goes wrong, fall back to the original question (the pipeline still works)."""
-    tokens = {"prompt": 0, "completion": 0}
-    try:
-        # No JSON mode: Groq's JSON mode sometimes fails with gpt-oss ("json_validate_failed"),
-        # so we ask for JSON in the prompt and extract the {...} part ourselves.
-        extra = llm_options(REWRITE_EFFORT)
-        response = client.chat.completions.create(
-            model=REWRITE_MODEL,
-            messages=[{"role": "system", "content": REWRITE_PROMPT},
-                      {"role": "user", "content": question}],
-            **extra,
-        )
-        u = getattr(response, "usage", None)
-        if u:
-            tokens = {"prompt": u.prompt_tokens, "completion": u.completion_tokens}
-        raw = response.choices[0].message.content or ""
-        match = re.search(r"\{.*\}", raw, re.DOTALL)
-        data = json.loads(match.group(0)) if match else {}
-        language = str(data.get("language") or "English").strip()
-        question_en = str(data.get("question_en") or question).strip()
-        if data.get("off_topic") is True:
-            return language, question_en, [], tokens   # empty queries = off-topic question
-        queries = [str(q).strip() for q in data.get("queries", []) if str(q).strip()][:3]
-        return language, question_en, queries or [question_en], tokens
-    except Exception as e:
-        print(f"[rewrite] failed, using the original question: {e}")
-        return "English", question, [question], tokens
+    If the reply is empty or broken, ask once more; if it fails again, fall back to the original
+    question (the pipeline still works, but a non-English question is then searched in its own language)."""
+    tokens = {"prompt": 0, "completion": 0, "attempts": 0, "failed": False}
+    for attempt in (1, 2):
+        tokens["attempts"] = attempt
+        try:
+            # No JSON mode: Groq's JSON mode sometimes fails with gpt-oss ("json_validate_failed"),
+            # so we ask for JSON in the prompt and extract the {...} part ourselves.
+            response = client.chat.completions.create(
+                model=REWRITE_MODEL,
+                messages=[{"role": "system", "content": REWRITE_PROMPT},
+                          {"role": "user", "content": question}],
+                **llm_options(REWRITE_EFFORT),
+            )
+            u = getattr(response, "usage", None)
+            if u:   # count the tokens of every attempt (both are paid)
+                tokens["prompt"] += u.prompt_tokens
+                tokens["completion"] += u.completion_tokens
+            raw = response.choices[0].message.content or ""
+            match = re.search(r"\{.*\}", raw, re.DOTALL)
+            data = json.loads(match.group(0)) if match else {}
+            if data.get("off_topic") is True:
+                return (str(data.get("language") or "English").strip(),
+                        str(data.get("question_en") or question).strip(), [], tokens)   # off-topic
+            queries = [str(q).strip() for q in data.get("queries", []) if str(q).strip()][:3]
+            if not queries:
+                raise ValueError(f"no usable queries in the reply: {raw[:80]!r}")
+            language = str(data.get("language") or "English").strip()
+            question_en = str(data.get("question_en") or question).strip()
+            return language, question_en, queries, tokens
+        except Exception as e:
+            print(f"[rewrite] attempt {attempt} failed: {e}")
+    print("[rewrite] using the original question")
+    tokens["failed"] = True   # recorded in the result so the evals can count how often this happens
+    return "English", question, [question], tokens
 
 
 def is_clear(question):
@@ -195,6 +205,46 @@ def normalize_citations(text):
     return CITATION_RE.sub(lambda m: "".join(f"[{n.strip()}]" for n in m.group(1).split(",")), text)
 
 
+# Faithfulness guard: a sentence is split after . ! ? when the next one starts with a capital or a digit,
+# or after a citation "]" followed by a capital (when the model puts [n] after the full stop).
+SENTENCE_SPLIT_RE = re.compile(r"(?<=[.!?])\s+(?=[A-ZÀ-ÖØ-Þ0-9\"(«])|(?<=\])\s+(?=[A-ZÀ-ÖØ-Þ])")
+NO_CLAIM_RE = re.compile(r"i don't know|do not (say|state|mention|cover|address)|don't (say|state|mention|cover|address)"
+                         r"|not (mentioned|covered|addressed|specified)", re.IGNORECASE)
+
+
+def keep_cited_sentences(text):
+    """Remove the uncited sentences at the END of the answer (the model's own conclusions or advice,
+    e.g. "So: buttons smaller than 24x24 fail AA..."). Returns (new_text, number_removed).
+    Uncited sentences BEFORE the last citation are kept: they are usually the main answer with a
+    forgotten citation, and removing them would gut the answer. Sentences that only say the sources
+    don't cover something are always kept. An answer with no citation at all is left unchanged."""
+    cited = lambda s: re.search(r"\[\d+\]", s)
+    lines = text.split("\n")
+    last = max((i for i, line in enumerate(lines) if cited(line)), default=None)
+    if last is None:
+        return text, 0
+    removed = 0
+    # the last cited line: drop the uncited sentences that come after its last citation
+    parts = SENTENCE_SPLIT_RE.split(lines[last])
+    last_part = max(i for i, p in enumerate(parts) if cited(p))
+    tail = parts[last_part + 1:]
+    kept_tail = [p for p in tail if NO_CLAIM_RE.search(p)]
+    removed += len(tail) - len(kept_tail)
+    lines[last] = " ".join(parts[:last_part + 1] + kept_tail)
+    # the lines after it: keep only the "sources don't cover this" sentences
+    after = []
+    for line in lines[last + 1:]:
+        if not line.strip():
+            continue
+        parts = SENTENCE_SPLIT_RE.split(line)
+        keep = [p for p in parts if NO_CLAIM_RE.search(p)]
+        removed += len(parts) - len(keep)
+        if keep:
+            after.append(" ".join(keep))
+    new_text = "\n".join(lines[:last + 1] + after).strip()
+    return new_text, removed
+
+
 def extract_citations(text, chunks):
     """Find [1], [2]... in the answer and turn them into real chunk ids (no duplicates)."""
     ids = []
@@ -227,7 +277,8 @@ def answer(question: str) -> dict:
         timings.update(search=0.0, rerank=0.0, answer=0.0)
         return _remember(key, {
             "answer": IDK, "citations": [], "chunks": [],
-            "rewrite": {"language": language, "question_en": question_en, "queries": []},
+            "rewrite": {"language": language, "question_en": question_en, "queries": [],
+                        "attempts": rewrite_tokens.get("attempts", 0), "failed": rewrite_tokens.get("failed", False)},
             "top_score": None, "idk_reason": "off_topic", "timings": timings,
             "usage": {"prompt": 0, "completion": 0,
                       "rewrite_prompt": rewrite_tokens["prompt"], "rewrite_completion": rewrite_tokens["completion"]},
@@ -244,7 +295,8 @@ def answer(question: str) -> dict:
 
     result = {
         "answer": IDK, "citations": [], "chunks": chunks,
-        "rewrite": {"language": language, "question_en": question_en, "queries": queries},
+        "rewrite": {"language": language, "question_en": question_en, "queries": queries,
+                    "attempts": rewrite_tokens.get("attempts", 0), "failed": rewrite_tokens.get("failed", False)},
         "top_score": top_score, "idk_reason": None, "timings": timings,
         "usage": {"prompt": 0, "completion": 0,
                   "rewrite_prompt": rewrite_tokens["prompt"], "rewrite_completion": rewrite_tokens["completion"]},
@@ -278,7 +330,8 @@ def answer(question: str) -> dict:
         result["idk_reason"] = "llm_said_idk"
         return _remember(key, result)
 
-    # 6. citations
+    # 6. faithfulness guard: drop sentences that cite no source, then map citations to chunk ids
+    text, result["uncited_removed"] = keep_cited_sentences(text)
     result["answer"] = text
     result["citations"] = extract_citations(text, chunks)
     return _remember(key, result)
