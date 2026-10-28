@@ -58,5 +58,5 @@ See `docs/optimisation.md` for Week 8 results.
 - **Khadija:** answer pipeline (question rewriting, reranking, generation with citations, "I don't know"
   logic), FastAPI server and web interface, hard test set, latency/cost measurement and Week 8
   experiment runner, postmortem and optimisation report, review of the eval questions.
-- **Mayssa:** *(to complete)*
+- **Mayssa:** *Document ingestion and preprocessing, text chunking, index construction, implementation of the core retrieve() function, evaluation tooling (question generation and retrieval ablation), retrieval experiments comparing keyword, vector, hybrid, and reranked retrieval, and chunk-size evaluation.*
 - **Maya:** *(to complete)*
