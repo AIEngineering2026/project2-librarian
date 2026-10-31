@@ -2,10 +2,10 @@
 
 Two phases, so a judge crash never costs the (expensive) answers again:
   1. answer : run pipeline.answer() once per question -> eval/results/answers_<version>.jsonl
-  2. judge  : LLM judge (gpt-oss-20b) reads that file   -> eval/results/judged_<version>.jsonl
+  2. judge  : LLM judge (default gpt-5, see below) reads that file -> eval/results/judged_<version>.jsonl
               + summary eval/results/generation_<version>.json / .md
 Both phases RESUME: run the same command again and finished questions are skipped
-(useful when Groq's daily token limit stops you halfway).
+(useful when a token limit or quota stops you halfway).
 
 Run from the project root:
     py -m eval.generation_eval answer --version baseline
@@ -18,8 +18,11 @@ Run from the project root:
     py -m eval.generation_eval summary --version baseline     # recompute the scores from the saved files (no LLM calls)
 Options: --limit N (first N questions only, for a quick test), --judge-model, --sleep SECONDS.
 
-Keys (.env): GROQ_API_KEY for the pipeline. GROQ_JUDGE_API_KEY (optional) for the judge, so the judge can use
-a second account's daily limit. Settings changed with --set must already exist in src/pipeline.py
+Keys (.env): the pipeline's key (OPENAI_API_KEY since the switch to OpenAI). The judge uses OPENAI_JUDGE_API_KEY
+if set, else OPENAI_API_KEY (or GROQ_JUDGE_API_KEY / GROQ_API_KEY for a Groq judge model such as
+"openai/gpt-oss-20b"). Judge model: --judge-model, or JUDGE_MODEL=... in .env, default gpt-5. It should NOT be
+the model that writes the answers (a model tends to grade its own answers too kindly); the script warns if it is.
+Settings changed with --set must already exist in src/pipeline.py
 (the script stops if they don't, so a typo can't silently evaluate the baseline twice).
 
 Metrics (all in the summary):
@@ -49,9 +52,9 @@ sys.path.insert(0, str(ROOT))
 
 RESULTS = ROOT / "eval" / "results"
 EVAL_FILE = ROOT / "data" / "eval.jsonl"
-JUDGE_MODEL = "openai/gpt-oss-20b"
-SETTINGS = ["MODEL", "REWRITE_MODEL", "RERANKER", "CANDIDATES", "PER_QUERY", "TOP_K", "MIN_SCORE",
-            "REWRITE_EFFORT", "ANSWER_EFFORT"]       # recorded with every run if they exist in src/pipeline.py
+JUDGE_MODEL = "gpt-5"   # different from the answer model (gpt-5-mini); override with --judge-model or JUDGE_MODEL in .env
+SETTINGS = ["PROVIDER", "MODEL", "REWRITE_MODEL", "RERANKER", "CANDIDATES", "PER_QUERY", "TOP_K", "MIN_SCORE",
+            "REWRITE_EFFORT", "ANSWER_EFFORT", "SKIP_REWRITE_IF_CLEAR", "USE_CACHE"]       # recorded with every run if they exist in src/pipeline.py
 
 
 # ====================================================================== small helpers
@@ -96,8 +99,8 @@ def load_questions(limit=None):
 def rate_limit_wait(err):
     """How long to wait after a Groq RateLimitError, or None if it's the DAILY limit (waiting won't help)."""
     msg = str(err)
-    if "per day" in msg or "TPD" in msg or "RPD" in msg:
-        return None
+    if "per day" in msg or "TPD" in msg or "RPD" in msg or "insufficient_quota" in msg or "exceeded your current quota" in msg:
+        return None                             # Groq daily limit / OpenAI quota: waiting a minute won't help
     m = re.search(r"try again in (?:(\d+)m)?([\d.]+)s", msg)
     if m:
         return int(m.group(1) or 0) * 60 + float(m.group(2)) + 1
@@ -194,10 +197,12 @@ def run_answers(args):
                     return res, time.perf_counter() - t
                 with contextlib.redirect_stdout(buf):
                     r, seconds = with_retries(timed, "answer")
-                rewrite_failed = "[rewrite] failed" in buf.getvalue()
+                out = buf.getvalue()
+                rewrite_failed = bool((r.get("rewrite") or {}).get("failed")) or \
+                    "[rewrite] failed" in out or "[rewrite] using the original question" in out
                 if not rewrite_failed:
                     break
-                if "per day" in buf.getvalue() or "TPD" in buf.getvalue():
+                if any(s in buf.getvalue() for s in ("per day", "TPD", "insufficient_quota", "current quota")):
                     raise DailyLimit("rewrite model: " + buf.getvalue().strip()[:200])
                 print(f"  rewrite failed -> waiting 30s and asking again")
                 time.sleep(30)
@@ -304,22 +309,51 @@ def judge_prompt(row):
     return "\n".join(lines), claims
 
 
-def get_judge_client():
+def judge_provider(model):
+    """Groq model names contain a slash ("openai/gpt-oss-20b"); OpenAI names don't ("gpt-5")."""
+    return "groq" if "/" in model or model.startswith(("llama", "qwen", "gemma")) else "openai"
+
+
+def get_judge_client(model):
     from dotenv import load_dotenv
-    from groq import Groq
     load_dotenv(ROOT / ".env")
-    key = os.getenv("GROQ_JUDGE_API_KEY") or os.getenv("GROQ_API_KEY")
+    if judge_provider(model) == "groq":
+        from groq import Groq
+        key = os.getenv("GROQ_JUDGE_API_KEY") or os.getenv("GROQ_API_KEY")
+        if not key:
+            sys.exit("No GROQ_JUDGE_API_KEY or GROQ_API_KEY in .env")
+        return Groq(api_key=key)
+    from openai import OpenAI
+    key = os.getenv("OPENAI_JUDGE_API_KEY") or os.getenv("OPENAI_API_KEY")
     if not key:
-        sys.exit("No GROQ_JUDGE_API_KEY or GROQ_API_KEY in .env")
-    return Groq(api_key=key)
+        sys.exit("No OPENAI_JUDGE_API_KEY or OPENAI_API_KEY in .env")
+    return OpenAI(api_key=key)
+
+
+def is_reasoning_model(model):
+    """gpt-oss / gpt-5 / o-series 'think' first: they take reasoning_effort, and OpenAI's ones refuse temperature=0."""
+    name = model.split("/")[-1]
+    return name.startswith(("gpt-oss", "gpt-5", "gpt-6", "o1", "o3", "o4"))
 
 
 def call_judge(client, model, prompt):
-    kwargs = dict(model=model, temperature=0,
+    kwargs = dict(model=model,
                   messages=[{"role": "system", "content": JUDGE_SYSTEM}, {"role": "user", "content": prompt}])
-    if "gpt-oss" in model:
+    if is_reasoning_model(model):
         kwargs["reasoning_effort"] = "low"     # judging is easy; saves most of the reasoning tokens
-    resp = client.chat.completions.create(**kwargs)
+        if judge_provider(model) == "groq":
+            kwargs["temperature"] = 0
+    else:
+        kwargs["temperature"] = 0
+    try:
+        resp = client.chat.completions.create(**kwargs)
+    except Exception as e:                      # a model that refuses one of these options -> ask without it
+        bad = [k for k in ("temperature", "reasoning_effort") if k in str(e) and k in kwargs]
+        if not bad or is_rate_limit(e):
+            raise
+        for k in bad:
+            kwargs.pop(k)
+        resp = client.chat.completions.create(**kwargs)
     raw = resp.choices[0].message.content or ""
     m = re.search(r"\{.*\}", raw, re.DOTALL)
     if not m:
@@ -368,12 +402,18 @@ def run_judge(args):
     done = {r["question"] for r in read_jsonl(P["judged"])}
     todo = [a for a in answers if a["question"] not in done]
     print(f"judge {args.judge_model}: {len(done)} already judged, {len(todo)} to go")
-    client = get_judge_client() if any(not a["idk"] for a in todo) else None
+    answer_model = (json.loads(P["meta"].read_text(encoding="utf-8")).get("settings", {}).get("MODEL", "")
+                    if P["meta"].exists() else "")
+    if answer_model and answer_model.split("/")[-1] == args.judge_model.split("/")[-1]:
+        print(f"⚠️  The judge ({args.judge_model}) is the same model that wrote the answers: it may grade its own "
+              f"answers too kindly. Use another one with --judge-model.")
+    client = get_judge_client(args.judge_model) if any(not a["idk"] for a in todo) else None
     for i, row in enumerate(todo, 1):
         try:
             j = judge_row(client, args.judge_model, row)
         except DailyLimit as e:
-            print(f"\nDAILY TOKEN LIMIT reached for the judge ({e}). Run again later / with GROQ_JUDGE_API_KEY.")
+            print(f"\nTOKEN LIMIT / QUOTA reached for the judge ({e}). Run again later, or put another key in "
+                  f"OPENAI_JUDGE_API_KEY (or GROQ_JUDGE_API_KEY). Judged answers are saved.")
             break
         except Exception as e:
             print(f"  could not judge '{row['question'][:60]}': {e} (skipped; run again to retry)")
@@ -465,13 +505,18 @@ def _avg_cost(rows):
         from eval.latency_cost import (PRICE_INPUT_PER_M as A_IN, PRICE_OUTPUT_PER_M as A_OUT,
                                        REWRITE_PRICE_INPUT_PER_M as R_IN, REWRITE_PRICE_OUTPUT_PER_M as R_OUT)
     except Exception:
-        A_IN, A_OUT, R_IN, R_OUT = 0.15, 0.75, 0.075, 0.30
+        print("⚠️  could not read the prices from eval/latency_cost.py -> cost shown as n/a")
+        return None
     costs = []
     for r in rows:
         u = r.get("usage") or {}
         costs.append(u.get("prompt", 0) / 1e6 * A_IN + u.get("completion", 0) / 1e6 * A_OUT
                      + u.get("rewrite_prompt", 0) / 1e6 * R_IN + u.get("rewrite_completion", 0) / 1e6 * R_OUT)
     return round(sum(costs) / max(1, len(costs)), 6)
+
+
+def money(x):
+    return "n/a" if x is None else f"${x:.6f}"
 
 
 def pct(x):
@@ -495,7 +540,7 @@ def summary_md(s, ex):
            f"| Citation accuracy ({s['n_citations']} citations) | {pct(s['citation_accuracy'])} |",
            f"| Factual claims with no citation | {s['uncited_factual_claims']} |",
            f"| Latency p50 / p95 (end to end, all questions) | {s['latency_p50_s']} s / {s['latency_p95_s']} s |",
-           f"| Cost per request | ${s['cost_per_request_usd']:.6f} |"]
+           f"| Cost per request | {money(s['cost_per_request_usd'])} |"]
     if s["rewrite_failures"]:
         out.append(f"| ⚠️ Rewrite failures (rate limit?) | {s['rewrite_failures']} |")
     out += ["", "### Wrong or incomplete answers"]
@@ -528,8 +573,8 @@ def run_compare(args):
              "n/a" if pts("citation_accuracy") is None else f"{pts('citation_accuracy'):+.1f} pts"),
             ("Latency p50", f"{a['latency_p50_s']} s", f"{b['latency_p50_s']} s", f"{rel('latency_p50_s') or 0:+.0f}%"),
             ("Latency p95", f"{a['latency_p95_s']} s", f"{b['latency_p95_s']} s", f"{rel('latency_p95_s') or 0:+.0f}%"),
-            ("Cost / request", f"${a['cost_per_request_usd']:.6f}", f"${b['cost_per_request_usd']:.6f}",
-             f"{rel('cost_per_request_usd') or 0:+.0f}%")]
+            ("Cost / request", money(a["cost_per_request_usd"]), money(b["cost_per_request_usd"]),
+             "n/a" if rel("cost_per_request_usd") is None else f"{rel('cost_per_request_usd'):+.0f}%")]
     drop = -pts("accuracy")
     verdict = (f"✅ Accuracy {'drop' if drop > 0 else 'change'}: {abs(drop):.1f} points → within the 2-point rule."
                if drop <= 2 else f"❌ Accuracy dropped {drop:.1f} points → breaks the 2-point rule.")
@@ -554,8 +599,11 @@ def run_threshold(args):
     if not rows:
         sys.exit("judge the run first")
     base = json.loads(P["meta"].read_text(encoding="utf-8"))["settings"].get("MIN_SCORE", 0.0)
-    print(f"| MIN_SCORE | accuracy | IDK accuracy | answerable refused | out-of-scope answered | answer-LLM calls saved |\n|---|---|---|---|---|---|")
-    for t in [base + d for d in (0, 1, 2, 3, 4, 5, 6)]:
+    n, n_una = len(rows), sum(not a["answerable"] for a, _ in rows)
+    lines = ["| MIN_SCORE | accuracy | IDK accuracy | answerable refused | out-of-scope answered | answer-LLM calls saved |",
+             "|---|---|---|---|---|---|"]
+    table = []
+    for t in [base + d / 2 for d in range(0, 13)]:          # base, base+0.5, ... base+6
         acc = idk_ok = refused = wrong_ans = saved = 0
         for a, j in rows:
             score = a.get("top_score")
@@ -568,8 +616,20 @@ def run_threshold(args):
                 idk_ok += not idk
             else:
                 acc += idk; idk_ok += idk; wrong_ans += not idk
-        n = len(rows)
-        print(f"| {t:g} | {100 * acc / n:.1f}% | {100 * idk_ok / n:.1f}% | {refused} | {wrong_ans} | {saved} |")
+        table.append((t, acc, saved))
+        lines.append(f"| {t:g} | {100 * acc / n:.1f}% | {100 * idk_ok / n:.1f}% | {refused} | {wrong_ans} / {n_una} | {saved} |")
+    best_acc = max(acc for _, acc, _ in table)
+    # recommendation: best accuracy; among ties, the one that saves the most answer calls, then the lowest threshold
+    best = sorted([r for r in table if r[1] == best_acc], key=lambda r: (-r[2], r[0]))[0]
+    lines += ["", f"{n} questions ({n_una} out of scope). Thresholds below {base:g} can't be simulated "
+                  f"(the run never asked the LLM for those questions).",
+              f"Recommended MIN_SCORE = {best[0]:g}: highest accuracy ({100 * best_acc / n:.1f}%), "
+              f"saves {best[2]} answer-LLM calls on this set.",
+              "With few out-of-scope questions, prefer the lowest threshold that reaches this accuracy if you are unsure."]
+    md = "\n".join(lines)
+    out = RESULTS / f"threshold_{args.version}.md"
+    out.write_text(md + "\n", encoding="utf-8")
+    print(md + f"\n\nSaved {out} -> send the recommended value to Khadija")
 
 
 def run_show(args):
@@ -598,6 +658,9 @@ def run_show(args):
 
 # ====================================================================== CLI
 def main():
+    from dotenv import load_dotenv
+    load_dotenv(ROOT / ".env")                 # so JUDGE_MODEL=... in .env works
+    default_judge = os.getenv("JUDGE_MODEL") or JUDGE_MODEL
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = ap.add_subparsers(dest="cmd", required=True)
     for name in ("answer", "judge", "threshold", "summary"):
@@ -605,7 +668,7 @@ def main():
         sp.add_argument("--version", default="baseline")
         sp.add_argument("--limit", type=int)
         sp.add_argument("--sleep", type=float, default=1.0)
-        sp.add_argument("--judge-model", default=JUDGE_MODEL)
+        sp.add_argument("--judge-model", default=default_judge)
         if name == "answer":
             sp.add_argument("--set", action="append", metavar="NAME=VALUE",
                             help="change a src/pipeline.py setting, e.g. --set TOP_K=3")
