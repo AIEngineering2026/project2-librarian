@@ -8,13 +8,32 @@ import json
 import time
 from pathlib import Path
 
-from src.pipeline import MODEL, answer
+import src.pipeline as pipeline
+from src.pipeline import answer
 
 # Groq list prices in US$ per 1 million tokens -- CHECK https://groq.com/pricing and update if needed.
-PRICE_INPUT_PER_M = 0.15            # answer model (gpt-oss-120b)
-PRICE_OUTPUT_PER_M = 0.75
-REWRITE_PRICE_INPUT_PER_M = 0.075   # rewrite model (gpt-oss-20b)
-REWRITE_PRICE_OUTPUT_PER_M = 0.30
+# (input, output) in US$ per 1M tokens. Check https://developers.openai.com/api/docs/pricing / groq.com/pricing
+PRICES = {
+    "gpt-5-mini": (0.25, 2.00),
+    "gpt-5-nano": (0.05, 0.40),
+    "gpt-6-luna": (0.10, 0.50),
+    "openai/gpt-oss-120b": (0.15, 0.75),
+    "openai/gpt-oss-20b": (0.075, 0.30),
+}
+
+
+def price(model):
+    if model not in PRICES:
+        raise KeyError(f"No price for model '{model}': add it to PRICES in eval/latency_cost.py")
+    return PRICES[model]
+
+
+def cost_usd(usage):
+    """Cost of one request from its token counts, using the models currently set in the pipeline."""
+    a_in, a_out = price(pipeline.MODEL)
+    r_in, r_out = price(pipeline.REWRITE_MODEL)
+    return (usage.get("prompt", 0) / 1e6 * a_in + usage.get("completion", 0) / 1e6 * a_out
+            + usage.get("rewrite_prompt", 0) / 1e6 * r_in + usage.get("rewrite_completion", 0) / 1e6 * r_out)
 
 # Cost model assumption: how many questions per day today, and at 100x.
 REQUESTS_PER_DAY_TODAY = 50
@@ -77,9 +96,7 @@ def main():
         seconds = time.perf_counter() - start
         u = r.get("usage", {})
         u = {k: u.get(k, 0) for k in ("prompt", "completion", "rewrite_prompt", "rewrite_completion")}
-        cost = (u["prompt"] / 1e6 * PRICE_INPUT_PER_M + u["completion"] / 1e6 * PRICE_OUTPUT_PER_M
-                + u["rewrite_prompt"] / 1e6 * REWRITE_PRICE_INPUT_PER_M
-                + u["rewrite_completion"] / 1e6 * REWRITE_PRICE_OUTPUT_PER_M)
+        cost = cost_usd(u)
         rows.append({"question": q, "seconds": round(seconds, 3), "idk": r["answer"] == "I don't know.",
                      "prompt_tokens": u["prompt"], "completion_tokens": u["completion"], "cost_usd": cost})
         print(f"{i:2d}. {seconds:5.2f}s  {u['prompt']:5d} in / {u['completion']:4d} out  "
@@ -89,7 +106,9 @@ def main():
     secs = [r["seconds"] for r in rows]
     avg_cost = sum(r["cost_usd"] for r in rows) / len(rows)
     summary = {
-        "model": MODEL,
+        "provider": pipeline.PROVIDER,
+        "model": pipeline.MODEL,
+        "rewrite_model": pipeline.REWRITE_MODEL,
         "n_requests": len(rows),
         "p50_seconds": round(percentile(secs, 50), 2),
         "p95_seconds": round(percentile(secs, 95), 2),
@@ -100,8 +119,8 @@ def main():
         "cost_per_1000_requests_usd": round(avg_cost * 1000, 3),
         "monthly_cost_today_usd": round(avg_cost * REQUESTS_PER_DAY_TODAY * 30, 2),
         "monthly_cost_at_100x_usd": round(avg_cost * REQUESTS_PER_DAY_TODAY * 100 * 30, 2),
-        "prices_per_million": {"answer_in": PRICE_INPUT_PER_M, "answer_out": PRICE_OUTPUT_PER_M,
-                               "rewrite_in": REWRITE_PRICE_INPUT_PER_M, "rewrite_out": REWRITE_PRICE_OUTPUT_PER_M},
+        "prices_per_million": {pipeline.MODEL: price(pipeline.MODEL),
+                               pipeline.REWRITE_MODEL: price(pipeline.REWRITE_MODEL)},
     }
 
     out = Path("eval/latency_cost_results.json")

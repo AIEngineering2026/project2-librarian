@@ -19,8 +19,7 @@ import time
 from pathlib import Path
 
 import src.pipeline as pipeline
-from eval.latency_cost import (PRICE_INPUT_PER_M, PRICE_OUTPUT_PER_M, REWRITE_PRICE_INPUT_PER_M,
-                               REWRITE_PRICE_OUTPUT_PER_M, load_questions, percentile)
+from eval.latency_cost import cost_usd, load_questions, percentile
 
 RESULTS = Path("eval/results")
 
@@ -32,7 +31,8 @@ HARD = [
     {"q": "What contrast do large text and icons need?", "must": [r"large", r"icon", r"3:1"],
      "forbid": [r"large[^.\n]*?4\.5:1(?![^.\n]*aaa)"]},  # 4.5:1 for large text is the AAA value
     {"q": "What's the difference between 1.4.3 and 1.4.6?", "must": [r"4\.5:1", r"7:1"]},
-    {"q": "Does disabled button text need good contrast?", "must": [r"\bno\b|exempt|not required"]},
+    {"q": "Does disabled button text need good contrast?",
+     "must": [r"\bno\b|exempt|not required|does not require|no contrast requirement|do not need|does not need"]},
     {"q": "Does a logo need to meet contrast rules?", "must": [r"exempt|no contrast requirement|\bno\b"],
      "forbid": [r"^yes"]},
     {"q": "Which success criteria are new in WCAG 2.2?", "must": [r"2\.4\.11", r"2\.5\.8", r"3\.3\.8"]},
@@ -69,10 +69,7 @@ def passes(test, result):
 
 
 def cost_of(usage):
-    return (usage.get("prompt", 0) / 1e6 * PRICE_INPUT_PER_M
-            + usage.get("completion", 0) / 1e6 * PRICE_OUTPUT_PER_M
-            + usage.get("rewrite_prompt", 0) / 1e6 * REWRITE_PRICE_INPUT_PER_M
-            + usage.get("rewrite_completion", 0) / 1e6 * REWRITE_PRICE_OUTPUT_PER_M)
+    return cost_usd(usage)
 
 
 def run_one(question):
@@ -84,8 +81,8 @@ def run_one(question):
 def main():
     ap = argparse.ArgumentParser(description="Run one Week 8 experiment")
     ap.add_argument("--label", required=True, help="name of this experiment, e.g. E1-rewrite-low")
-    ap.add_argument("--rewrite-effort", choices=["low", "medium", "high"])
-    ap.add_argument("--answer-effort", choices=["low", "medium", "high"])
+    ap.add_argument("--rewrite-effort", choices=["minimal", "low", "medium", "high"])
+    ap.add_argument("--answer-effort", choices=["minimal", "low", "medium", "high"])
     ap.add_argument("--top-k", type=int, default=pipeline.TOP_K)
     ap.add_argument("--min-score", type=float, default=pipeline.MIN_SCORE)
     ap.add_argument("--skip-rewrite-if-clear", action="store_true")
@@ -99,7 +96,9 @@ def main():
     pipeline.MIN_SCORE = args.min_score
     pipeline.SKIP_REWRITE_IF_CLEAR = args.skip_rewrite_if_clear
     pipeline.USE_CACHE = args.cache
-    settings = {k: v for k, v in vars(args).items() if k != "label"}
+    settings = {"provider": pipeline.PROVIDER, "answer_model": pipeline.MODEL,
+                "rewrite_model": pipeline.REWRITE_MODEL,
+                **{k: v for k, v in vars(args).items() if k != "label"}}
     print(f"Experiment '{args.label}' with {settings}")
 
     pipeline.answer("warm up question about contrast")  # load models, not counted
@@ -110,7 +109,10 @@ def main():
     for i, q in enumerate(load_questions(), start=1):
         r, secs = run_one(q)
         rows.append({"question": q, "seconds": secs, "cost": cost_of(r.get("usage", {})),
-                     "timings": r.get("timings", {}), "idk": r["answer"] == pipeline.IDK})
+                     "timings": r.get("timings", {}), "idk": r["answer"] == pipeline.IDK,
+                     "uncited_removed": r.get("uncited_removed", 0),
+                     "rewrite_retried": r.get("rewrite", {}).get("attempts", 1) > 1,
+                     "rewrite_failed": r.get("rewrite", {}).get("failed", False)})
         print(f"  speed {i:2d}/20  {secs:5.2f}s  {q[:60]}")
         time.sleep(1)  # free-tier rate limit
 
@@ -120,7 +122,10 @@ def main():
         r, secs = run_one(t["q"])
         ok = passes(t, r)
         checks.append({"question": t["q"], "pass": ok, "answer": r["answer"],
-                       "searched": r.get("rewrite", {}).get("queries")})
+                       "searched": r.get("rewrite", {}).get("queries"),
+                       "uncited_removed": r.get("uncited_removed", 0),
+                       "rewrite_retried": r.get("rewrite", {}).get("attempts", 1) > 1,
+                       "rewrite_failed": r.get("rewrite", {}).get("failed", False)})
         print(f"  quality {i:2d}/15  {'PASS' if ok else 'FAIL'}  {t['q'][:60]}")
         time.sleep(1)
 
@@ -143,6 +148,11 @@ def main():
         "accuracy_hard": f"{sum(c['pass'] for c in checks)}/{len(checks)}",
         "accuracy_hard_pct": round(100 * sum(c["pass"] for c in checks) / len(checks), 1),
         "failed": [c["question"] for c in checks if not c["pass"]],
+        # faithfulness guard: how many uncited sentences were removed (0 = the model already cited everything)
+        "uncited_sentences_removed": sum(r["uncited_removed"] for r in rows) + sum(c["uncited_removed"] for c in checks),
+        # rewrite step: how often the first reply was unusable (retried) and how often both tries failed
+        "rewrite_retried": sum(x["rewrite_retried"] for x in rows + checks),
+        "rewrite_failed": sum(x["rewrite_failed"] for x in rows + checks),
         "repeat_p50_s_with_cache": repeat_p50,
     }
 
