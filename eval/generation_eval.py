@@ -123,6 +123,12 @@ def with_retries(fn, what, tries=6):
         try:
             return fn()
         except Exception as e:
+            name, msg = type(e).__name__, str(e)
+            if name in ("AuthenticationError", "PermissionDeniedError", "NotFoundError") or \
+                    any(s in msg for s in ("Error code: 401", "Error code: 403", "Error code: 404",
+                                           "invalid_api_key", "model_not_found")):
+                sys.exit(f"\n[{what}] {msg[:300]}\n-> Retrying won't help: check the API key in .env "
+                         f"(401) or the model name / access (403, 404). Nothing was saved for this question.")
             if not is_rate_limit(e):
                 if attempt == tries - 1:
                     raise
@@ -452,10 +458,11 @@ def summarise(version):
 
     rows = [answers[j["question"]] for j in judged]
     secs = [r["seconds"] for r in rows] or [0]
-    cost = _avg_cost(rows)
+    settings = json.loads(P["meta"].read_text(encoding="utf-8"))["settings"] if P["meta"].exists() else {}
+    cost = _avg_cost(rows, settings)
     s = {
         "version": version,
-        "settings": json.loads(P["meta"].read_text(encoding="utf-8"))["settings"] if P["meta"].exists() else {},
+        "settings": settings,
         "n_questions": n, "n_answerable": len(ans), "n_unanswerable": len(una),
         "accuracy": (correct + idk_ok_una) / n,
         "accuracy_lenient": (correct + 0.5 * partial + idk_ok_una) / n,
@@ -500,18 +507,32 @@ def summarise(version):
     return s
 
 
-def _avg_cost(rows):
+def load_prices():
+    """Read the PRICES table {model: (input $/1M, output $/1M)} from eval/latency_cost.py WITHOUT importing it
+    (importing it would load the whole pipeline). Returns {} if it can't be read."""
     try:
-        from eval.latency_cost import (PRICE_INPUT_PER_M as A_IN, PRICE_OUTPUT_PER_M as A_OUT,
-                                       REWRITE_PRICE_INPUT_PER_M as R_IN, REWRITE_PRICE_OUTPUT_PER_M as R_OUT)
+        tree = ast.parse((ROOT / "eval" / "latency_cost.py").read_text(encoding="utf-8"))
+        for node in tree.body:
+            if isinstance(node, ast.Assign) and any(getattr(t, "id", "") == "PRICES" for t in node.targets):
+                return ast.literal_eval(node.value)
     except Exception:
-        print("⚠️  could not read the prices from eval/latency_cost.py -> cost shown as n/a")
+        pass
+    return {}
+
+
+def _avg_cost(rows, settings):
+    """Average cost per request, with the prices of the models this run actually used (from its settings)."""
+    prices = load_prices()
+    answer_model, rewrite_model = settings.get("MODEL"), settings.get("REWRITE_MODEL")
+    if answer_model not in prices or rewrite_model not in prices:
+        print(f"⚠️  no price for {answer_model} / {rewrite_model} in PRICES (eval/latency_cost.py) -> cost shown as n/a")
         return None
+    (a_in, a_out), (r_in, r_out) = prices[answer_model], prices[rewrite_model]
     costs = []
     for r in rows:
         u = r.get("usage") or {}
-        costs.append(u.get("prompt", 0) / 1e6 * A_IN + u.get("completion", 0) / 1e6 * A_OUT
-                     + u.get("rewrite_prompt", 0) / 1e6 * R_IN + u.get("rewrite_completion", 0) / 1e6 * R_OUT)
+        costs.append(u.get("prompt", 0) / 1e6 * a_in + u.get("completion", 0) / 1e6 * a_out
+                     + u.get("rewrite_prompt", 0) / 1e6 * r_in + u.get("rewrite_completion", 0) / 1e6 * r_out)
     return round(sum(costs) / max(1, len(costs)), 6)
 
 
