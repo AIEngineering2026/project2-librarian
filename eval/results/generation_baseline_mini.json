@@ -1,0 +1,270 @@
+{
+ "summary": {
+  "version": "baseline_mini",
+  "settings": {
+   "PROVIDER": "openai",
+   "MODEL": "gpt-5-mini",
+   "REWRITE_MODEL": "gpt-5-nano",
+   "RERANKER": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+   "CANDIDATES": 20,
+   "PER_QUERY": 10,
+   "TOP_K": 5,
+   "MIN_SCORE": 0.0,
+   "REWRITE_EFFORT": null,
+   "ANSWER_EFFORT": null,
+   "SKIP_REWRITE_IF_CLEAR": false,
+   "USE_CACHE": false
+  },
+  "n_questions": 124,
+  "n_answerable": 112,
+  "n_unanswerable": 12,
+  "accuracy": 0.7419354838709677,
+  "accuracy_lenient": 0.7943548387096774,
+  "correctness_answerable": {
+   "correct": 81,
+   "partial": 13,
+   "incorrect": 2,
+   "refused": 16
+  },
+  "correct_rate_answerable": 0.7232142857142857,
+  "idk_accuracy": 0.8629032258064516,
+  "false_idk": 16,
+  "false_idk_low_score": 0,
+  "false_answer_unanswerable": 1,
+  "faithfulness": 0.9853951890034365,
+  "fully_faithful_answers": 0.9587628865979382,
+  "uncited_factual_claims": 2,
+  "citation_accuracy": 0.9909365558912386,
+  "n_citations": 331,
+  "answers_without_citation": 0,
+  "rewrite_failures": 0,
+  "latency_p50_s": 24.68,
+  "latency_p95_s": 34.67,
+  "cost_per_request_usd": 0.003208,
+  "judge_tokens": 117926,
+  "judge_model": "gpt-4.1-mini"
+ },
+ "examples": {
+  "incorrect_or_partial": [
+   {
+    "q": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+    "verdict": "partial",
+    "why": "The answer explains relevant success criteria and test rules but does not explicitly mention activating controls to expand links or confirming purpose from text alone as the reference answer does.",
+    "answer": "Level A — Success Criterion 2.4.4 Link Purpose (In Context): the purpose of each link can be determined from the link text alone or from the link text together with its programmatically determined link context, except where the purpose of the link would be ambiguous to users in general [1].  \nLevel ",
+    "reference": "Activate the control that expands the links, then confirm the link’s purpose is identifiable from its text."
+   },
+   {
+    "q": "How can I provide an alternative for time‑based media that is immediately next to the non‑text content?",
+    "verdict": "partial",
+    "why": "The answer correctly states placing a link immediately adjacent to the media but adds unnecessary detail about the collated document and level AAA not in the reference.",
+    "answer": "To satisfy Success Criterion 1.2.8 Media Alternative (Prerecorded) (Level AAA), provide a link to the collated document of captions and audio description immediately adjacent to the non‑text synchronized media, either immediately before or after the media content [2][1][5].  \nIf the collated documen",
+    "reference": "Place a link to the alternative right next to the media."
+   },
+   {
+    "q": "How does Technique C17 relate to the Resize Text success criterion?",
+    "verdict": "partial",
+    "why": "Claim 3 incorrectly states that C17 is sufficient when combined with other techniques, but the source states this about C28, not C17.",
+    "answer": "Technique C17 relates to WCAG Success Criterion 1.4.4 Resize Text [1].  \nThe objective of Technique C17 is to ensure text-based form controls resize when text size is changed in the user agent so users can enter and read the text they have entered [5].  \nTechnique C17 is documented as a technique th",
+    "reference": "It is an advisory technique for SC 1.4.4 Resize Text."
+   },
+   {
+    "q": "What happens if a web page specifies a text color but omits a background color?",
+    "verdict": "partial",
+    "why": "The answer correctly states it is a failure because contrast cannot be evaluated, but incorrectly claims white is assumed as background color.",
+    "answer": "If no background color is specified, white is assumed [4].  \nIt is a failure of Success Criterion 1.4.3 (Contrast (Minimum)) and of 1.4.6 (Contrast (Enhanced)) when text color is specified but no background color is specified because the user's default background color is unknown and cannot be evalu",
+    "reference": "It is a failure because the contrast cannot be evaluated."
+   },
+   {
+    "q": "Why must non-text content be provided in electronic text form according to WCAG 2.2?",
+    "verdict": "partial",
+    "why": "The answer correctly states the requirement for text alternatives to enable content transformation into other forms but does not explicitly mention that electronic text is presentation-neutral and can be rendered visually, audibly, tactilely, or in combination as in the reference.",
+    "answer": "WCAG 2.2 Guideline 1.1 requires providing text alternatives for any non-text content so that it can be changed into other forms people need, such as large print, braille, speech, symbols or simpler language [1].  \nSuccess Criterion 1.1.1 (Level A) requires that all non-text content presented to the ",
+    "reference": "Because electronic text is presentation‑neutral, allowing it to be rendered visually, audibly, tactilely, or in any combination to meet user needs."
+   },
+   {
+    "q": "What type of captioning service is required for live audio to meet WCAG 2.2 SC 1.2.9?",
+    "verdict": "incorrect",
+    "why": "The system answer does not specify the required live text caption service with a trained human operator as stated in the reference answer.",
+    "answer": "Level AAA — Success Criterion 1.2.9 requires that an alternative for time-based media that presents equivalent information for live audio-only content is provided [1].  \nWCAG documents techniques for providing captions for live media (for example G9 and G93), and those techniques are examples of way",
+    "reference": "A live text caption service with a trained human operator."
+   },
+   {
+    "q": "What qualifies a resource as a web page for WCAG 2.2 conformance?",
+    "verdict": "partial",
+    "why": "The system answer explains conformance scope and full page variations but does not explicitly state that a resource must be non-embedded to qualify as a web page, which is the key point in the reference answer.",
+    "answer": "Conformance is defined only for web pages, and a conformance claim may cover one page, a series of pages, or multiple related web pages [2].  \nFor the purpose of determining conformance, a \"full page\" includes each variation of the page that is automatically presented for various screen sizes, and e",
+    "reference": "A resource must be non-embedded within the scope of conformance to be considered a web page."
+   },
+   {
+    "q": "What contrast ratio is required for text for users with 20/40 visual acuity according to WCAG 2.2 SC 1.4.6?",
+    "verdict": "incorrect",
+    "why": "The system answer gives contrast ratios for normal and large-scale text but does not mention the 4.5:1 ratio specifically for users with 20/40 visual acuity as stated in the reference.",
+    "answer": "WCAG 2.2 Success Criterion 1.4.6 Contrast (Enhanced) (Level AAA) requires that the visual presentation of text and images of text have a contrast ratio of at least 7:1 for normal text [1].  \nThe criterion specifies that large-scale text and images of large-scale text need a contrast ratio of at leas",
+    "reference": "A contrast ratio of 4.5:1 is required for users with 20/40 visual acuity."
+   },
+   {
+    "q": "How can an online test be calibrated to avoid timing affecting scores?",
+    "verdict": "partial",
+    "why": "The system answer focuses on pausing or stopping auto-updating content but does not mention calibrating the test based on scores without time limits as the reference answer states.",
+    "answer": "WCAG 2.2 Success Criterion 2.2.2 (Pause, Stop, Hide) is Level A and requires that for auto-updating information that starts automatically and is presented in parallel with other content, there is a mechanism for the user to pause, stop, hide, or control the update frequency unless it is essential to",
+    "reference": "By calibrating the test based on scores when users have no time limits."
+   },
+   {
+    "q": "What qualifies a collection of web pages as a \"set\" according to WCAG 2.2?",
+    "verdict": "partial",
+    "why": "The system answer explains what a set can be in terms of conformance claims and processes but does not mention the key aspect of sharing a common purpose and being created by the same author, group, or organization as stated in the reference.",
+    "answer": "WCAG 2.2 states that a conformance claim may cover one page, a series of pages, or multiple related web pages, and those groupings constitute the \"set\" of pages for the claim [3].  \nConformance is defined only for web pages and a \"full page\" includes each variation automatically presented by the pag",
+    "reference": "A set is a group of pages that share a common purpose and are created by the same author, group, or organization."
+   },
+   {
+    "q": "What are two common failure types for SC 1.2.1 regarding audio-only and video-only content?",
+    "verdict": "partial",
+    "why": "The system answer correctly describes failures related to missing alternatives for audio-only and video-only content but does not identify the specific common failure types F30 and F67 as in the reference.",
+    "answer": "Level A Success Criterion 1.2.1 (Audio-only and Video-only [Prerecorded]): A failure is when prerecorded audio-only content does not have an alternative for time-based media that presents equivalent information [1].  \nLevel A Success Criterion 1.2.1 (Audio-only and Video-only [Prerecorded]): A failu",
+    "reference": "F30 (text alternatives that are not real alternatives, such as filenames) and F67 (long descriptions that do not present the same information)."
+   },
+   {
+    "q": "How can a control slider be made operable for users who cannot perform path-based gestures?",
+    "verdict": "partial",
+    "why": "The answer correctly references the need for a single-pointer non-path-based alternative but does not explicitly mention making the slider track clickable or adding arrow buttons as in the reference answer.",
+    "answer": "Per Level A Success Criterion 2.5.1, all functionality that uses multipoint or path-based gestures must also be operable with a single pointer without a path-based gesture unless the gesture is essential [1].  \nPer the Understanding of SC 2.5.1, provide a single-pointer non-path-based alternative fo",
+    "reference": "Make the slider track clickable or add arrow buttons so the value can be set with a single tap or click."
+   },
+   {
+    "q": "How can you change a link’s background color when it receives focus and revert it when it loses focus using JavaScript?",
+    "verdict": "partial",
+    "why": "The answer correctly explains how to change and revert the background color on focus and blur using JavaScript, but the first claim about WCAG 2.4.7 is unrelated to the question and reference answer.",
+    "answer": "Level AA — Success Criterion 2.4.7 (Focus Visible) requires that any keyboard-operable user interface has a mode of operation where the keyboard focus indicator is visible [2].  \nYou can use JavaScript to toggle the link’s background on focus and blur, for example: function toggleFocus(el) { el.styl",
+    "reference": "When the link receives focus its background turns yellow, and when it loses focus the yellow is removed."
+   },
+   {
+    "q": "What does Level AAA add for synchronized media in WCAG 2.2?",
+    "verdict": "partial",
+    "why": "The answer correctly identifies sign language interpretation and extended audio description as Level AAA additions but omits the additional Level AAA criterion for a media alternative.",
+    "answer": "Level AA — Success Criterion 1.2.5 (Audio Description, Prerecorded) requires audio description for all prerecorded video content in synchronized media [5]  \nLevel AAA adds Success Criterion 1.2.6 (Sign Language, Prerecorded), which requires sign language interpretation for all prerecorded audio cont",
+    "reference": "It requires sign language interpretation and extended audio description."
+   },
+   {
+    "q": "How can I fix a PDF list that is only separated by line breaks so screen readers can interpret it correctly?",
+    "verdict": "partial",
+    "why": "The answer addresses making reading order programmatically determinable but does not mention creating proper list tags as the reference answer does.",
+    "answer": "Level A — Success Criterion 1.3.2 Meaningful Sequence: When the sequence in which content is presented affects its meaning, a correct reading sequence can be programmatically determined [1].  \nLevel A — Success Criterion 1.3.1 Info and Relationships: Information, structure, and relationships conveye",
+    "reference": "Use the Tags panel in Adobe Acrobat Pro to create proper list tags for the content."
+   }
+  ],
+  "false_idk": [
+   {
+    "q": "Why must text language and direction be identified for assistive technology to function properly?",
+    "reason": "llm_said_idk",
+    "top_score": 7.360963821411133
+   },
+   {
+    "q": "How can an online auction be designed to comply with the no‑time‑limit requirement of Technique G5?",
+    "reason": "llm_said_idk",
+    "top_score": 8.513463973999023
+   },
+   {
+    "q": "How does Technique G112 help with the 3.1.3 Unusual Words criterion?",
+    "reason": "llm_said_idk",
+    "top_score": 7.94247579574585
+   },
+   {
+    "q": "At 400% zoom, what starting viewport width is 320 CSS pixels equivalent to (SC 1.4.10 Reflow)?",
+    "reason": "llm_said_idk",
+    "top_score": 8.801504135131836
+   },
+   {
+    "q": "What does Technique G219 address regarding drag interactions?",
+    "reason": "llm_said_idk",
+    "top_score": 7.633734226226807
+   },
+   {
+    "q": "What does Technique G11 address regarding blinking content?",
+    "reason": "llm_said_idk",
+    "top_score": 9.271919250488281
+   },
+   {
+    "q": "Why should developers avoid fully justified text for users with cognitive disabilities?",
+    "reason": "llm_said_idk",
+    "top_score": 7.702395439147949
+   },
+   {
+    "q": "What happens if only the foreground color is set in CSS and the background color is omitted?",
+    "reason": "llm_said_idk",
+    "top_score": 8.065081596374512
+   },
+   {
+    "q": "How does Technique G142 ensure that zooming preserves spatial relationships and functionality?",
+    "reason": "llm_said_idk",
+    "top_score": 7.817693710327148
+   },
+   {
+    "q": "How can a keyboard user activate an image that acts as a link using scripting?",
+    "reason": "llm_said_idk",
+    "top_score": 6.188474178314209
+   },
+   {
+    "q": "What must be done when a CAPTCHA is used to confirm human access?",
+    "reason": "llm_said_idk",
+    "top_score": 8.224617004394531
+   },
+   {
+    "q": "How can a web developer allow users to toggle diacritical marks on a page?",
+    "reason": "llm_said_idk",
+    "top_score": 8.018442153930664
+   },
+   {
+    "q": "When should a form use a single set of text instructions at the top instead of repeating format guidance for each field?",
+    "reason": "llm_said_idk",
+    "top_score": 6.665304183959961
+   },
+   {
+    "q": "What WCAG 2.2 success criteria can be violated when a script removes focus immediately after it is received?",
+    "reason": "llm_said_idk",
+    "top_score": 8.613046646118164
+   },
+   {
+    "q": "Does SC 3.2.6 require help to be provided on PDFs downloaded from a website?",
+    "reason": "llm_said_idk",
+    "top_score": 6.380788803100586
+   },
+   {
+    "q": "How can a social security number input be grouped for accessibility?",
+    "reason": "llm_said_idk",
+    "top_score": 6.182699680328369
+   }
+  ],
+  "answered_out_of_scope": [
+   {
+    "q": "What is the best colour palette for a bank website?",
+    "answer": "Level AA — Success Criterion 1.4.11 Non-text Contrast: ensure meaningful visual cues achieve 3:1 against the background [1].  \nLevel AA — Success Criterion 1.4.3 Contrast (Minimum): this applies to text, and similar issues for charts, graphs, diagrams, and text acting as graphics are covered by 1.4."
+   }
+  ],
+  "unsupported_claims": [
+   {
+    "q": "How does Technique C17 relate to the Resize Text success criterion?",
+    "claim": "Technique C17 is documented as a technique that can be sufficient when combined with other techniques to meet Success Criterion 1.4.4 Resize Text [3].",
+    "cites": [
+     3
+    ]
+   },
+   {
+    "q": "What happens if a web page specifies a text color but omits a background color?",
+    "claim": "If no background color is specified, white is assumed [4].",
+    "cites": [
+     4
+    ]
+   },
+   {
+    "q": "How should a developer cite a WCAG 2.2 technique from a support document?",
+    "claim": "References to techniques should be cited separately by citing the individual Technique document or the master WCAG 2.2 Techniques document, for example: \"Using alt attributes on img elements,\" W3C World Wide Web Consortium Note.",
+    "cites": []
+   },
+   {
+    "q": "How can you change a link’s background color when it receives focus and revert it when it loses focus using JavaScript?",
+    "claim": "You can use JavaScript to toggle the link’s background on focus and blur, for example: function toggleFocus(el) { el.style.backgroundColor = el.style.backgroundColor == \"yellow\" ?",
+    "cites": []
+   }
+  ]
+ }
+}
