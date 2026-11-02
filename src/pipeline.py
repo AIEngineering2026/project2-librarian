@@ -89,7 +89,9 @@ Rules:
 2. EVERY sentence (and every list item) must end with the number of the source that says it, in normal
    ASCII square brackets, like [1] or [2][3]. If you cannot cite a sentence, do not write it.
    Do not add summaries, conclusions or advice that no source states in words.
-3. If the sources do not contain the answer, reply exactly: I don't know.
+   This includes the FIRST sentence: never start with a bare "Yes." or "No." or an uncited definition;
+   put the yes/no inside a cited sentence, e.g. "No, disabled controls are exempt [1]."
+3. If the sources do not contain the answer, reply with exactly "I don't know." and nothing else.
 4. Read the sources carefully: if a source says something is EXEMPT or an EXCEPTION applies,
    say so. Never state a requirement that the sources do not state for that exact case.
 5. Requirements often differ by conformance level (A, AA, AAA). Always name the level and the
@@ -326,7 +328,10 @@ def answer(question: str) -> dict:
     if u:
         result["usage"]["prompt"], result["usage"]["completion"] = u.prompt_tokens, u.completion_tokens
 
-    if text.lower().startswith("i don't know"):
+    # "I don't know" anywhere in an answer that cites nothing = a refusal (e.g. "The sources do not
+    # state ... I don't know."). An answer that cites sources and admits a gap stays an answer.
+    said_idk = "i don't know" in text.lower().replace("’", "'")
+    if text.lower().startswith("i don't know") or (said_idk and not re.search(r"\[\d+\]", text)):
         result["idk_reason"] = "llm_said_idk"
         return _remember(key, result)
 
