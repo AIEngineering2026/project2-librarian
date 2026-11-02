@@ -1,14 +1,36 @@
 """The shared contract: retrieve(query, k, mode) -> list[dict] (chunk + score).
-mode: "bm25" | "vector" | "hybrid" (reciprocal rank fusion)."""
-import pickle, pathlib, re
+mode: "bm25" | "vector" | "hybrid" (reciprocal rank fusion).
+
+If data/index is missing (e.g. on Streamlit Cloud, where data/index is not in git), the index is
+built automatically from data/chunks.jsonl the first time, with src/index.py. Takes a minute or two, once."""
+import pickle, pathlib, re, sys
+
+# Streamlit Cloud: Chroma needs sqlite3 >= 3.35. If pysqlite3-binary is installed (Linux only), use it.
+try:
+    import pysqlite3  # noqa: F401
+    sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
+except ImportError:
+    pass
+
 import chromadb
 from sentence_transformers import SentenceTransformer
 
 IDX = pathlib.Path("data/index"); EMB = "sentence-transformers/all-MiniLM-L6-v2"
 _state = {}
 
+
+def _ensure_index():
+    """Build the index from data/chunks.jsonl if it is not there yet."""
+    if (IDX / "bm25.pkl").exists() and (IDX / "chroma").exists():
+        return
+    print("[retrieve] data/index not found: building it from data/chunks.jsonl (once)...")
+    from src import index
+    index.main()
+
+
 def _load():
     if not _state:
+        _ensure_index()
         chunks, bm25 = pickle.load(open(IDX / "bm25.pkl", "rb"))
         _state.update(chunks=chunks, bm25=bm25, by_id={c["id"]: c for c in chunks},
                       model=SentenceTransformer(EMB),
