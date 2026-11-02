@@ -1,13 +1,25 @@
-requests
-beautifulsoup4
-lxml
+# Small CPU-only PyTorch (the default Linux build pulls ~2 GB of GPU libraries we don't need)
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch
+
+# Search and models
 rank_bm25
 chromadb
 sentence-transformers
-streamlit
-python-dotenv
 numpy
+# Chroma needs a newer SQLite than Streamlit Cloud has (Linux only, ignored on Windows)
+pysqlite3-binary; sys_platform == "linux"
+
+# LLMs
+openai
+python-dotenv
+
+# Web app (Streamlit Cloud) + local API server
+streamlit
 fastapi
 uvicorn
-openai
-pysqlite3-binary; sys_platform == "linux"
+
+# Scraping the W3C pages (only needed to rebuild the corpus)
+requests
+beautifulsoup4
+lxml
