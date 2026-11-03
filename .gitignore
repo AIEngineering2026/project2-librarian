@@ -5,7 +5,6 @@ __pycache__/
 venv/
 chroma_db/
 data/raw/*.html
-data/index/
 .DS_Store
 data/raw/_urls.json
 

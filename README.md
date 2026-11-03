@@ -63,16 +63,16 @@ the best rerank score is below 0 (no answer call) · the answer model says it do
 
 ## Results
 
-**Retrieval** (112 answerable eval questions; a hit = a retrieved chunk contains the gold passage):
+**Retrieval** (110 answerable eval questions; a hit = a retrieved chunk contains the gold passage):
 
 | System | R@1 | R@5 | R@10 | MRR@10 | Search p50 |
 |---|---|---|---|---|---|
-| BM25 only | 0.59 | 0.85 | 0.92 | 0.69 | 12 ms |
-| Vector only | 0.47 | 0.72 | 0.80 | 0.58 | 9 ms |
-| Hybrid | 0.56 | 0.87 | 0.96 | 0.69 | 24 ms |
-| **Hybrid + reranker** | **0.72** | **0.93** | **0.96** | **0.80** | 803 ms |
+| BM25 only | 0.59 | 0.85 | 0.92 | 0.70 | 36 ms |
+| Vector only | 0.48 | 0.73 | 0.81 | 0.59 | 32 ms |
+| Hybrid | 0.56 | 0.86 | 0.96 | 0.69 | 70 ms |
+| **Hybrid + reranker** | **0.72** | **0.93** | **0.95** | **0.80** | 2,779 ms |
 
-**Week 8 optimisation** (full eval: 124 questions of `data/eval.jsonl`, same LLM judge gpt-4.1-mini for both):
+**Week 8 optimisation** (full eval: 124 questions, the eval set before 2 weak questions were removed in review; `data/eval.jsonl` now has 122; same LLM judge gpt-4.1-mini for both):
 
 | | Baseline (gpt-5-mini, default effort) | Final (gpt-6-luna, low effort) | Change |
 |---|---|---|---|
@@ -121,7 +121,7 @@ docs/       report.md, design.md, optimisation.md, postmortem.md
 
 ## Contributions
 
-- **Mayssa** (data & index): scraping, cleaning and chunking the corpus; BM25 + flat numpy vector index; `retrieve()`; smoke test, chunk-size experiment, `design.md`.
+- **Mayssa** (data & index): scraping, cleaning and chunking the corpus; drafting and reviewing the eval questions; BM25 + flat numpy vector index (committed, so Streamlit Cloud needs no build; replaced Khadija's first auto-build fix); `retrieve()`; smoke test, chunk-size experiment, `design.md`.
 - **Khadija** (pipeline, interface, optimisation & deployment): answer pipeline, OpenAI switch, Week 8 optimisation, web app and Streamlit Cloud deployment.
 - **Maya** (evaluation & documentation): retrieval eval and ablation, generation eval with an LLM judge, threshold sweep, feedback summary.
 
