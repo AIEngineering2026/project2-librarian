@@ -15,33 +15,33 @@
    "SKIP_REWRITE_IF_CLEAR": false,
    "USE_CACHE": false
   },
-  "n_questions": 124,
-  "n_answerable": 112,
+  "n_questions": 122,
+  "n_answerable": 110,
   "n_unanswerable": 12,
-  "accuracy": 0.7419354838709677,
-  "accuracy_lenient": 0.7943548387096774,
+  "accuracy": 0.7377049180327869,
+  "accuracy_lenient": 0.7909836065573771,
   "correctness_answerable": {
-   "correct": 81,
+   "correct": 79,
    "partial": 13,
    "incorrect": 2,
    "refused": 16
   },
-  "correct_rate_answerable": 0.7232142857142857,
-  "idk_accuracy": 0.8629032258064516,
+  "correct_rate_answerable": 0.7181818181818181,
+  "idk_accuracy": 0.860655737704918,
   "false_idk": 16,
   "false_idk_low_score": 0,
   "false_answer_unanswerable": 1,
-  "faithfulness": 0.9853951890034365,
-  "fully_faithful_answers": 0.9587628865979382,
-  "uncited_factual_claims": 2,
-  "citation_accuracy": 0.9909365558912386,
-  "n_citations": 331,
+  "faithfulness": 0.9885964912280701,
+  "fully_faithful_answers": 0.968421052631579,
+  "uncited_factual_claims": 1,
+  "citation_accuracy": 0.9908256880733946,
+  "n_citations": 327,
   "answers_without_citation": 0,
   "rewrite_failures": 0,
-  "latency_p50_s": 24.68,
-  "latency_p95_s": 34.67,
-  "cost_per_request_usd": 0.003208,
-  "judge_tokens": 117926,
+  "latency_p50_s": 24.73,
+  "latency_p95_s": 34.7,
+  "cost_per_request_usd": 0.003214,
+  "judge_tokens": 115971,
   "judge_model": "gpt-4.1-mini"
  },
  "examples": {
@@ -254,11 +254,6 @@
     "cites": [
      4
     ]
-   },
-   {
-    "q": "How should a developer cite a WCAG 2.2 technique from a support document?",
-    "claim": "References to techniques should be cited separately by citing the individual Technique document or the master WCAG 2.2 Techniques document, for example: \"Using alt attributes on img elements,\" W3C World Wide Web Consortium Note.",
-    "cites": []
    },
    {
     "q": "How can you change a link’s background color when it receives focus and revert it when it loses focus using JavaScript?",

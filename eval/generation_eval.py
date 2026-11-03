@@ -432,9 +432,21 @@ def run_judge(args):
 
 
 # ====================================================================== summary
+def current_answers(P):
+    """Saved answers, restricted to the questions that are in data/eval.jsonl NOW.
+    So if questions are removed from the eval set later, old runs are re-scored on the same set
+    without any new LLM call (run `summary` again)."""
+    rows = read_jsonl(P["answers"])
+    current = {q["question"] for q in read_jsonl(EVAL_FILE)}
+    kept = [r for r in rows if not current or r["question"] in current]
+    if len(kept) < len(rows):
+        print(f"({len(rows) - len(kept)} saved answers ignored: those questions are no longer in {EVAL_FILE.name})")
+    return {r["question"]: r for r in kept}
+
+
 def summarise(version):
     P = paths(version)
-    answers = {r["question"]: r for r in read_jsonl(P["answers"])}
+    answers = current_answers(P)
     judged = [j for j in read_jsonl(P["judged"]) if j["question"] in answers]
     if not judged:
         print("nothing judged yet"); return None
@@ -614,7 +626,7 @@ def run_threshold(args):
     """What if MIN_SCORE were higher? Uses saved top_score + judge verdicts, no new LLM calls.
     Only thresholds >= the one used in the run can be simulated (below it we never saw the LLM's answer)."""
     P = paths(args.version)
-    answers = {r["question"]: r for r in read_jsonl(P["answers"])}
+    answers = current_answers(P)
     judged = {j["question"]: j for j in read_jsonl(P["judged"])}
     rows = [(answers[q], judged[q]) for q in judged if q in answers]
     if not rows:

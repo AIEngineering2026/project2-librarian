@@ -1,0 +1,251 @@
+{
+ "summary": {
+  "version": "e8v2",
+  "settings": {
+   "PROVIDER": "openai",
+   "MODEL": "gpt-6-luna",
+   "REWRITE_MODEL": "gpt-5-nano",
+   "RERANKER": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+   "CANDIDATES": 20,
+   "PER_QUERY": 10,
+   "TOP_K": 5,
+   "MIN_SCORE": 0.0,
+   "REWRITE_EFFORT": "low",
+   "ANSWER_EFFORT": "low",
+   "SKIP_REWRITE_IF_CLEAR": false,
+   "USE_CACHE": false
+  },
+  "n_questions": 122,
+  "n_answerable": 110,
+  "n_unanswerable": 12,
+  "accuracy": 0.8032786885245902,
+  "accuracy_lenient": 0.8688524590163934,
+  "correctness_answerable": {
+   "correct": 88,
+   "partial": 16,
+   "incorrect": 2,
+   "refused": 4
+  },
+  "correct_rate_answerable": 0.8,
+  "idk_accuracy": 0.9508196721311475,
+  "false_idk": 4,
+  "false_idk_low_score": 0,
+  "false_answer_unanswerable": 2,
+  "faithfulness": 0.970679012345679,
+  "fully_faithful_answers": 0.9351851851851852,
+  "uncited_factual_claims": 5,
+  "citation_accuracy": 0.9863013698630136,
+  "n_citations": 219,
+  "answers_without_citation": 0,
+  "rewrite_failures": 0,
+  "latency_p50_s": 9.4,
+  "latency_p95_s": 12.78,
+  "cost_per_request_usd": 0.000404,
+  "judge_tokens": 104165,
+  "judge_model": "gpt-4.1-mini"
+ },
+ "examples": {
+  "incorrect_or_partial": [
+   {
+    "q": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+    "verdict": "partial",
+    "why": "The system answer correctly references the relevant WCAG criterion and context requirements but does not mention activating the control that expands the links as the reference answer does.",
+    "answer": "Under WCAG 2.2 Level A, Success Criterion 2.4.4, verify that the changed link text alone—or the text together with its programmatically determined link context—lets users determine the link’s purpose, unless that purpose would be ambiguous to users in general [2]. Any available page context that can",
+    "reference": "Activate the control that expands the links, then confirm the link’s purpose is identifiable from its text."
+   },
+   {
+    "q": "How can an online auction be designed to comply with the no‑time‑limit requirement of Technique G5?",
+    "verdict": "partial",
+    "why": "The answer correctly explains the general principle of Technique G5 but does not address the specific design of an online auction as in the reference answer.",
+    "answer": "Technique G5 applies when the activity does not require timed interaction for its functionality, and lets users take as much time as they need [1][2]. The sources do not explain how to design an online auction to meet that condition. [1][2]",
+    "reference": "By allowing each bidder to submit only one bid and keeping the bidding open for a full day, giving everyone ample time to complete the bid form."
+   },
+   {
+    "q": "What happens if a web page specifies a text color but omits a background color?",
+    "verdict": "partial",
+    "why": "Claim 1 correctly states it is a failure because contrast cannot be evaluated, but claim 2 incorrectly states white is assumed for contrast measurement under WCAG 2.2 SC 1.4.3, which contradicts the failure condition.",
+    "answer": "If a web page specifies a text color but omits a background color, it is a failure because the user’s default background color is unknown and sufficient contrast cannot be evaluated [1]. For contrast measurement under WCAG 2.2 Success Criterion 1.4.3 (Level AA), white is assumed when no background c",
+    "reference": "It is a failure because the contrast cannot be evaluated."
+   },
+   {
+    "q": "Why should a website avoid forcing a specific screen orientation?",
+    "verdict": "partial",
+    "why": "The system answer correctly explains the WCAG criterion about orientation locking but does not mention the key reason from the reference that some users have fixed device orientations, which is why sites must support both orientations.",
+    "answer": "WCAG 2.2 Level AA Success Criterion 1.3.4 Orientation requires content not to restrict its view and operation to portrait or landscape, unless a specific orientation is essential, such as for a bank check, piano application, or projector slides [1]. Forcing an orientation can therefore fail this cri",
+    "reference": "Some users have their devices mounted in a fixed orientation (for example on a power wheelchair), so sites must support both orientations."
+   },
+   {
+    "q": "What type of flashing content should be avoided to prevent seizures according to WCAG 2.2?",
+    "verdict": "partial",
+    "why": "The system answer correctly states the flashing frequency limits but does not specify that the flashing content most likely to cause seizures is the one to avoid, as the reference answer emphasizes.",
+    "answer": "WCAG 2.2 Level A, Success Criterion 2.3.1, requires that web pages not contain anything flashing more than three times in any one-second period, unless the flash is below the general flash and red flash thresholds [3]. The Level AAA requirement in Success Criterion 2.3.2 prohibits anything flashing ",
+    "reference": "Flashing that is most likely to cause seizures, even when viewed for only a second or two."
+   },
+   {
+    "q": "Why must non-text content be provided in electronic text form according to WCAG 2.2?",
+    "verdict": "partial",
+    "why": "The answer correctly states the requirement for text alternatives to enable conversion to needed forms but does not explicitly mention that electronic text is presentation-neutral allowing multiple renderings as in the reference.",
+    "answer": "At Level A, Success Criterion 1.1.1 requires text alternatives for non-text content presented to users, serving an equivalent purpose, so the content can be changed into forms people need, such as speech, braille, or large print [1][2]. Exceptions include decoration, visual formatting, or content no",
+    "reference": "Because electronic text is presentation‑neutral, allowing it to be rendered visually, audibly, tactilely, or in any combination to meet user needs."
+   },
+   {
+    "q": "What is a recommended technique for clarifying the purpose of a link that uses both an image and text?",
+    "verdict": "incorrect",
+    "why": "The system answer does not address combining adjacent image and text links to clarify link purpose as stated in the reference answer.",
+    "answer": "Technique G91—providing link text that describes the link’s purpose—is sufficient for WCAG 2.2 Level A Success Criterion 2.4.4 and Level AAA Success Criterion 2.4.9; techniques are examples, not requirements [5].",
+    "reference": "Combine the adjacent image and text links so they point to the same resource, making the link purpose clear."
+   },
+   {
+    "q": "What qualifies a resource as a web page for WCAG 2.2 conformance?",
+    "verdict": "partial",
+    "why": "The system answer correctly states that conformance applies to full web pages and includes variations, but it does not explicitly mention the requirement that the resource must be non-embedded within the scope of conformance as stated in the reference answer.",
+    "answer": "WCAG 2.2 conformance is defined for web pages, and applies to the full page rather than an excluded part of it; alternatives available directly from the page are considered part of that page [1][3]. A full page includes each variation automatically presented for different screen sizes, and every var",
+    "reference": "A resource must be non-embedded within the scope of conformance to be considered a web page."
+   },
+   {
+    "q": "What does Technique G11 address regarding blinking content?",
+    "verdict": "partial",
+    "why": "The answer correctly relates G11 to blinking content and 2.2.2 Pause, Stop, Hide, but it omits that G11 specifically addresses limiting blinking to less than five seconds to minimize distraction.",
+    "answer": "Technique G11 addresses minimizing distraction from blinking content by limiting its blinking to less than five seconds [1]. It relates to WCAG 2.2.2, Pause, Stop, Hide, as a sufficient technique, but using this technique is not required to meet WCAG [3].",
+    "reference": "It applies to technologies that support blinking content and relates to the 2.2.2 Pause, Stop, Hide requirement."
+   },
+   {
+    "q": "What happens if a plug‑in or applet blinks content for more than five seconds without a pause mechanism?",
+    "verdict": "partial",
+    "why": "The answer correctly states the requirement for a pause mechanism for blinking content over five seconds but does not address the user impact of distraction or inability to read other content.",
+    "answer": "Under WCAG 2.2 SC 2.2.2, Level A, automatically blinking content that lasts more than five seconds and appears alongside other content must have a mechanism to pause, stop, or hide it, unless the blinking is essential to an activity [2]. The requirement applies to all content on the page, including ",
+    "reference": "The user may not have enough time to read between blinks or may be distracted, preventing reading of other content."
+   },
+   {
+    "q": "How can a keyboard user activate an image that acts as a link using scripting?",
+    "verdict": "partial",
+    "why": "The system answer addresses accessible names and onclick handlers but does not mention tabindex or handling the Enter key as in the reference answer.",
+    "answer": "An image used as the only content in a link needs an accessible name; otherwise, this can fail WCAG 2.2 SC 2.4.4 (Level A) and SC 2.4.9 (Level AAA) [4]. For a scripted action, an image input can use an `onclick` handler, but it must have an `alt` attribute providing a text equivalent [5].",
+    "reference": "Add a tabindex to include the image in the tab order and handle the Enter key with an onkeypress event that triggers navigation."
+   },
+   {
+    "q": "What is the main goal of WCAG 2.2 Guideline 2.2 regarding time constraints?",
+    "verdict": "partial",
+    "why": "The system answer correctly identifies the goal of allowing users to complete tasks despite time limits, but it does not explicitly mention removing or extending time limits as the reference answer does.",
+    "answer": "WCAG 2.2 Level A Success Criterion 2.2.1, Timing Adjustable, helps ensure users can complete tasks without unexpected changes in content or context caused by a time limit [1].",
+    "reference": "It ensures users can finish tasks within their own response times by removing or extending time limits."
+   },
+   {
+    "q": "What qualifies a collection of web pages as a \"set\" according to WCAG 2.2?",
+    "verdict": "incorrect",
+    "why": "The system answer states that the sources do not define what qualifies pages as a 'set', but the reference answer provides a definition that is missing from the system answer.",
+    "answer": "WCAG 2.2 allows a conformance claim to cover a series of pages or multiple related web pages, but the sources do not define what qualifies pages as a “set” or as related [2]. I don’t know a more specific criterion from these sources. [2]",
+    "reference": "A set is a group of pages that share a common purpose and are created by the same author, group, or organization."
+   },
+   {
+    "q": "How can clipped or overlapped content occur when a user adjusts text spacing?",
+    "verdict": "partial",
+    "why": "The answer correctly states that clipped or overlapped content occurs when content does not adapt to user text spacing overrides per SC 1.4.12, but it does not mention the container not expanding due to overflow:hidden, absolute positioning, or insufficient borders as in the reference.",
+    "answer": "Clipped or overlapped content can occur when a user overrides text spacing to the values in WCAG 2.2 Level AA Success Criterion 1.4.12 and content does not adapt to those settings [2][4]. The criterion requires no loss of content or functionality when users apply the specified text-spacing values [4",
+    "reference": "It can happen when the container does not expand, such as with overflow:hidden, absolute positioning, or insufficient borders."
+   },
+   {
+    "q": "Why is consistent placement of navigation bars important for users of screen magnifiers?",
+    "verdict": "partial",
+    "why": "The answer correctly states the requirement for consistent navigation placement but does not explain why it is important for users of screen magnifiers as the reference answer does.",
+    "answer": "WCAG 2.2 Level AA, Success Criterion 3.2.3 requires repeated navigation mechanisms to appear in the same relative order across pages, unless the user initiates a change [1].",
+    "reference": "It helps them locate navigation bars quickly, reducing the time needed to find them on each page."
+   },
+   {
+    "q": "How can you change a link’s background color when it receives focus and revert it when it loses focus using JavaScript?",
+    "verdict": "partial",
+    "why": "The answer correctly states that JavaScript focus and blur events can change and restore background color, but it does not mention the specific color change to yellow as in the reference answer.",
+    "answer": "You can use JavaScript focus and blur event handlers to change a link’s background color on focus and restore it on blur; the sources do not provide the specific code [1][3]. WCAG 2.2 Level AA Success Criterion 2.4.7 requires keyboard focus to be visible, but does not specify how to implement the co",
+    "reference": "When the link receives focus its background turns yellow, and when it loses focus the yellow is removed."
+   },
+   {
+    "q": "What does Level AAA add for synchronized media in WCAG 2.2?",
+    "verdict": "partial",
+    "why": "The answer mentions sign language interpretation but omits extended audio description required at Level AAA.",
+    "answer": "For prerecorded synchronized media, Level AAA adds an alternative for time-based media under SC 1.2.8 and sign language interpretation for prerecorded audio under SC 1.2.6. [1][3]",
+    "reference": "It requires sign language interpretation and extended audio description."
+   },
+   {
+    "q": "How can a social security number input be grouped for accessibility?",
+    "verdict": "partial",
+    "why": "The system answer correctly describes grouping with fieldset and legend but does not mention role=group as in the reference answer.",
+    "answer": "If the social security number input needs a group-level description, place it inside a `<fieldset>` and make the first child a `<legend>` that describes the group [2][3]. Grouping is most important when related controls’ individual labels do not provide enough context [2][3].",
+    "reference": "The three segment fields can be grouped using role=group."
+   }
+  ],
+  "false_idk": [
+   {
+    "q": "Why must text language and direction be identified for assistive technology to function properly?",
+    "reason": "llm_said_idk",
+    "top_score": 4.624131202697754
+   },
+   {
+    "q": "How can an online test be calibrated to avoid timing affecting scores?",
+    "reason": "llm_said_idk",
+    "top_score": 7.990778923034668
+   },
+   {
+    "q": "When should a form use a single set of text instructions at the top instead of repeating format guidance for each field?",
+    "reason": "llm_said_idk",
+    "top_score": 7.2630181312561035
+   },
+   {
+    "q": "How should the HTML be structured to provide a tooltip that appears on focus or hover and can be dismissed?",
+    "reason": "llm_said_idk",
+    "top_score": 8.670425415039062
+   }
+  ],
+  "answered_out_of_scope": [
+   {
+    "q": "How do I center a div with CSS flexbox?",
+    "answer": "The sources describe using CSS Flexbox to lay out and reflow content, but they do not explain how to center a div [1][2]. I don't know."
+   },
+   {
+    "q": "What is the best colour palette for a bank website?",
+    "answer": "The sources do not specify a best color palette for a bank website. WCAG 2.2 Level AA Success Criterion 1.4.11 requires visual information needed to identify user interface components and states to have at least 3:1 contrast against adjacent colors, with exceptions for inactive components and compon"
+   }
+  ],
+  "unsupported_claims": [
+   {
+    "q": "Can a web application use mouse input in addition to keyboard for the same functionality while still meeting WCAG 2.2 2.1.1?",
+    "claim": "Yes.",
+    "cites": []
+   },
+   {
+    "q": "What happens if a web page specifies a text color but omits a background color?",
+    "claim": "For contrast measurement under WCAG 2.2 Success Criterion 1.4.3 (Level AA), white is assumed when no background color is specified [2].",
+    "cites": [
+     2
+    ]
+   },
+   {
+    "q": "How do I center a div with CSS flexbox?",
+    "claim": "I don't know.",
+    "cites": []
+   },
+   {
+    "q": "Can a web page replace a drag‑and‑drop interaction with a single‑click action?",
+    "claim": "Yes.",
+    "cites": []
+   },
+   {
+    "q": "What must a web page do to meet WCAG 2.2 Success Criterion 3.3.6 for error prevention at AAA level?",
+    "claim": "WCAG 2.2 Success Criterion 3.3.6 is Level AAA.",
+    "cites": []
+   },
+   {
+    "q": "How can you change a link’s background color when it receives focus and revert it when it loses focus using JavaScript?",
+    "claim": "You can use JavaScript focus and blur event handlers to change a link’s background color on focus and restore it on blur; the sources do not provide the specific code [1][3].",
+    "cites": [
+     1,
+     3
+    ]
+   },
+   {
+    "q": "What is the best colour palette for a bank website?",
+    "claim": "The sources do not specify a best color palette for a bank website.",
+    "cites": []
+   }
+  ]
+ }
+}

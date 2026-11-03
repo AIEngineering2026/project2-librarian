@@ -4,18 +4,18 @@ Settings: `{"PROVIDER": "openai", "MODEL": "gpt-5-mini", "REWRITE_MODEL": "gpt-5
 
 | Metric | Value |
 |---|---|
-| **Accuracy** (correct answers + correct "I don't know", all 124 questions) | **74.2%** |
-| Accuracy, partial = 0.5 | 79.4% |
-| Correct on answerable (112) | 72.3% (correct 81 · partial 13 · incorrect 2 · refused 16) |
-| "I don't know" accuracy | 86.3% |
+| **Accuracy** (correct answers + correct "I don't know", all 122 questions) | **73.8%** |
+| Accuracy, partial = 0.5 | 79.1% |
+| Correct on answerable (110) | 71.8% (correct 79 · partial 13 · incorrect 2 · refused 16) |
+| "I don't know" accuracy | 86.1% |
 | False "I don't know" (answerable refused) | 16 (0 by the score threshold) |
 | Out-of-scope questions answered anyway | 1 / 12 |
-| Faithfulness (claims supported by their cited chunks) | 98.5% |
-| Fully faithful answers | 95.9% |
-| Citation accuracy (331 citations) | 99.1% |
-| Factual claims with no citation | 2 |
-| Latency p50 / p95 (end to end, all questions) | 24.68 s / 34.67 s |
-| Cost per request | $0.003208 |
+| Faithfulness (claims supported by their cited chunks) | 98.9% |
+| Fully faithful answers | 96.8% |
+| Citation accuracy (327 citations) | 99.1% |
+| Factual claims with no citation | 1 |
+| Latency p50 / p95 (end to end, all questions) | 24.73 s / 34.7 s |
+| Cost per request | $0.003214 |
 
 ### Wrong or incomplete answers
 - **partial**: How can I verify that a link’s purpose is clear after using a script to change its text?: The answer explains relevant success criteria and test rules but does not explicitly mention activating controls to expand links or confirming purpose from text alone as the reference answer does.
@@ -48,7 +48,6 @@ Settings: `{"PROVIDER": "openai", "MODEL": "gpt-5-mini", "REWRITE_MODEL": "gpt-5
 ### Unsupported claims (faithfulness failures)
 - How does Technique C17 relate to the Resize Text success criterion? → "Technique C17 is documented as a technique that can be sufficient when combined with other techniques to meet Success Criterion 1.4.4 Resize Text [3]." cites [3]
 - What happens if a web page specifies a text color but omits a background color? → "If no background color is specified, white is assumed [4]." cites [4]
-- How should a developer cite a WCAG 2.2 technique from a support document? → "References to techniques should be cited separately by citing the individual Technique document or the master WCAG 2.2 Techniques document, for example: "Using " cites nothing
 - How can you change a link’s background color when it receives focus and revert it when it loses focus using JavaScript? → "You can use JavaScript to toggle the link’s background on focus and blur, for example: function toggleFocus(el) { el.style.backgroundColor = el.style.background" cites nothing
 
 ### Out-of-scope questions answered anyway
