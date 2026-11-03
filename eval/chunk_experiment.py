@@ -3,11 +3,27 @@ embeds each version and measures retrieval recall on the eval set. Needs data/ra
 Run from the project folder:  python eval/chunk_experiment.py [--sizes 150,225,375,600] [--overlap 2] [--file data/eval.jsonl]
 Sizes are in WORDS: 225 / 375 / 600 words are about 300 / 500 / 800 tokens. About 3 minutes per size.
 Recall is page-level (is the gold page among the top-k chunks?), so it can be compared across chunk sizes."""
-import json, pathlib, sys
+import json, pathlib, re, sys, time
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent))
-from eval.retrieval_eval import load_eval, evaluate
+KS = [1, 3, 5, 10]
 
 def arg(name, default): return sys.argv[sys.argv.index(name) + 1] if name in sys.argv else default
+def norm_url(u): return re.sub(r"\.html$", "", u.strip()).rstrip("/")
+
+def load_eval():
+    rows = [json.loads(l) for l in open(arg("--file", "data/eval.jsonl"), encoding="utf-8-sig") if l.strip()]
+    return [r for r in rows if r.get("answerable", True) and r.get("source_url")]
+
+def evaluate(search, rows):
+    """search(question, k) -> list of chunks. Page-level recall@k and mean latency in ms."""
+    kmax, hits, total = max(KS), {k: 0 for k in KS}, 0.0
+    if rows: search(rows[0]["question"], kmax)   # warm-up: loading a model must not count as latency
+    for r in rows:
+        t = time.perf_counter(); res = search(r["question"], kmax); total += time.perf_counter() - t
+        urls, gold = [norm_url(c["url"]) for c in res], norm_url(r["source_url"])
+        for k in KS: hits[k] += gold in urls[:k]
+    n = max(1, len(rows))
+    return {**{f"recall@{k}": hits[k] / n for k in KS}, "ms": 1000 * total / n}
 
 def main():
     from sentence_transformers import CrossEncoder
@@ -31,7 +47,7 @@ def main():
             return [cands[i] for i in sorted(range(len(cands)), key=lambda i: -sc[i])][:k]
         res = {"BM25": evaluate(lambda q, k: R.search(q, k, "bm25"), rows), "Vector": evaluate(lambda q, k: R.search(q, k, "vector"), rows),
                "Hybrid": evaluate(lambda q, k: R.search(q, k, "hybrid"), rows), "Hybrid+rerank": evaluate(rerank, rows)}
-        raw[size] = {"chunks": n, "avg_words": avg, **{k: {a: b for a, b in v.items() if a != "misses"} for k, v in res.items()}}
+        raw[size] = {"chunks": n, "avg_words": avg, **{k: v for k, v in res.items()}}
         table.append(f"| {size} (~{round(size / 0.75)} tok) | {n} | {avg:.0f} | " + " | ".join(f"{res[s]['recall@5']:.2f}" for s in res) + f" | {res['Hybrid+rerank']['recall@10']:.2f} |")
         print(table[-1])
     head = "| Chunk size (words) | Chunks | Avg words | BM25 R@5 | Vector R@5 | Hybrid R@5 | Hybrid+rerank R@5 | Hybrid+rerank R@10 |\n|---|---|---|---|---|---|---|---|"
