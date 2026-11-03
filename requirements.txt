@@ -4,11 +4,8 @@ torch
 
 # Search and models
 rank_bm25
-chromadb
 sentence-transformers
 numpy
-# Chroma needs a newer SQLite than Streamlit Cloud has (Linux only, ignored on Windows)
-pysqlite3-binary; sys_platform == "linux"
 
 # LLMs
 openai
