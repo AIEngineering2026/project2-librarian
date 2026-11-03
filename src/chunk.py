@@ -2,7 +2,7 @@
 1) split by heading  2) pack whole sentences/blocks up to --words  3) overlap by --overlap sentences
 4) drop chunks whose body text already exists (e.g. 'Key Terms' repeated on many pages).
 Size is in WORDS (~0.75 words per token, so 375 words ~ 500 tokens). Test several sizes!
-Run: python -m src.chunk [--words 375] [--overlap 2]"""
+Run: python -m src.chunk [--words 375] [--overlap 2] [--out data/chunks.jsonl]"""
 import json, re, sys, pathlib
 from bs4 import BeautifulSoup
 
@@ -57,12 +57,13 @@ def pack(us, size, overlap):
 
 def norm(s): return re.sub(r"\W+", " ", s.lower()).strip()
 
-def main():
-    size, overlap = arg("--words", 375), arg("--overlap", 2)
+def build(size, overlap, out_path=OUT):
+    """Chunk every page in data/raw into out_path. Returns (number of chunks, number of repeated chunks removed)."""
+    out_path = pathlib.Path(out_path); out_path.parent.mkdir(parents=True, exist_ok=True)
     urls = json.loads((RAW / "_urls.json").read_text())
     n = dups = 0
     seen_urls, seen_bodies = set(), set()
-    with OUT.open("w", encoding="utf-8") as out:
+    with out_path.open("w", encoding="utf-8") as out:
         for fname, url in urls.items():
             f = RAW / fname
             if not f.exists(): continue
@@ -78,7 +79,13 @@ def main():
                     seen_bodies.add(key); n += 1
                     out.write(json.dumps({"id": f"{f.stem}-{n:05d}", "text": f"{title} - {sec}\n{piece}",
                                           "title": title, "section": sec, "url": url}, ensure_ascii=False) + "\n")
-    print(f"chunks: {n} -> {OUT}  (removed {dups} repeated chunks)")
+    return n, dups
+
+def main():
+    size, overlap = arg("--words", 375), arg("--overlap", 2)
+    out = sys.argv[sys.argv.index("--out") + 1] if "--out" in sys.argv else OUT
+    n, dups = build(size, overlap, out)
+    print(f"chunks: {n} -> {out}  (removed {dups} repeated chunks)")
 
 if __name__ == "__main__":
     main()
