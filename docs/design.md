@@ -33,7 +33,7 @@ Chunk-size experiment (`eval/chunk_experiment.py`, 33 reviewed questions, page-l
 | **375** | **4,065** | **137** | 0.91 | 0.82 | 0.97 | 0.94 |
 | 600 | 3,835 | 144 | 0.91 | 0.82 | 0.94 | 0.94 |
 
-Decision: keep 375 words. Hybrid recall is the same within one question (about 3 points) at every size, and 375 words needs 24% fewer chunks than 150 words. BM25 alone improves with smaller chunks, but this did not carry over to hybrid search. [Optional: re-run on the 110-question set.]
+Decision: keep 375 words. Hybrid recall is the same within one question (about 3 points) at every size, and 375 words needs 24% fewer chunks than 150 words. BM25 alone improves with smaller chunks, but this did not carry over to hybrid search. This experiment used a 33-question set and page-level recall, so it is a rough guide.
 
 ## 3. Index (`src/index.py`, `src/retrieve.py`)
 
@@ -46,7 +46,7 @@ Why a flat file instead of a vector database: the brief allows it, and at 4,065 
 
 ## 4. Retrieval and reranking
 
-Pipeline for each question (details in README): optional rewrite into search queries, hybrid search, cross-encoder rerank (`ms-marco-MiniLM-L-6-v2`), then the answer model. [Khadija: confirm the candidate pool size, the number of chunks sent to the model and the refusal threshold.]
+Pipeline for each question (details in README): optional rewrite into search queries, hybrid search, cross-encoder rerank (`ms-marco-MiniLM-L-6-v2`), then the answer model. With one search query, 20 candidates go to the reranker; with several queries, 10 per query are merged. The reranker keeps the top 5 chunks for the answer model, and the question is refused when the best rerank score is below `MIN_SCORE = 0` (a threshold sweep showed that raising it only adds false "I don't know" answers).
 
 Ablation (`eval/ablation.py`, 110 reviewed questions, passage-level recall: a top-k chunk must contain the gold passage):
 
@@ -78,7 +78,7 @@ Observed:
 6. **Tables, code blocks and cross-references** between success criteria are flattened to text.
 
 Limitations of the evaluation:
-- The questions were drafted from the passages, so they share words with their answers. This probably favours BM25 over vector search. Questions written by people are the check. [Add the hand-written subset when available.]
+- The questions were drafted from the passages, so they share words with their answers. This probably favours BM25 over vector search. Questions written by people are the check. We did not have time to add a hand-written subset, so the recall numbers for BM25 may be a little optimistic.
 - With 110 questions, one question is 0.9 points and the 95% interval is about plus or minus 6 points, so small differences are not significant.
 - Several questions can be answered from two pages (an Understanding page and a Technique page) but are scored against one.
 - Latencies depend on the machine.
