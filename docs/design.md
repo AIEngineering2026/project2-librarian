@@ -42,7 +42,7 @@ Decision: keep 375 words. Hybrid recall is the same within one question (about 3
 - **Fusion:** reciprocal rank fusion (constant 60) over the top 30 results of each list.
 - **Safety check:** `meta.json` stores a hash of the chunk ids, and `retrieve()` refuses to run if the index does not match `chunks.jsonl`.
 
-Why a flat file instead of a vector database: the brief allows it, and at 4,065 chunks exact search takes milliseconds, so an approximate index would only add error. We first used Chroma, but it needs a newer SQLite than Streamlit Cloud provides, and the cloud has no persistent disk to build an index on. The committed file means a fresh clone or a cloud deployment needs no build step. Trade-off: memory and time grow linearly. At 100 times the corpus (about 400,000 chunks) the matrix would be about 0.6 GB, and a vector database or an approximate index would become worthwhile.
+Why a flat file instead of a vector database: the brief allows it, and at 4,065 chunks exact search takes milliseconds, so an approximate index would only add error. We first used Chroma, but on Streamlit Cloud it needed a SQLite workaround (pysqlite3-binary), and because the cloud has no persistent disk the app rebuilt the index at every start (1 to 2 minutes). The committed file means a fresh clone or a cloud deployment needs no build step. Trade-off: memory and time grow linearly. At 100 times the corpus (about 400,000 chunks) the matrix would be about 0.6 GB, and a vector database or an approximate index would become worthwhile.
 
 ## 4. Retrieval and reranking
 
@@ -78,6 +78,7 @@ Observed:
 6. **Tables, code blocks and cross-references** between success criteria are flattened to text.
 
 Limitations of the evaluation:
+- The embedding model (all-MiniLM-L6-v2) reads only the first 256 word-pieces of a chunk. The median chunk is 92 words, but about 23% of chunks are longer than 190 words, so the end of those chunks is not in the vector. BM25 and the reranker still see the whole chunk.
 - The questions were drafted from the passages, so they share words with their answers. This probably favours BM25 over vector search. Questions written by people are the check. We did not have time to add a hand-written subset, so the recall numbers for BM25 may be a little optimistic.
 - With 110 questions, one question is 0.9 points and the 95% interval is about plus or minus 6 points, so small differences are not significant.
 - Several questions can be answered from two pages (an Understanding page and a Technique page) but are scored against one.
