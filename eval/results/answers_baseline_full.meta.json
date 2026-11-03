@@ -1,0 +1,15 @@
+{
+ "version": "baseline",
+ "settings": {
+  "MODEL": "openai/gpt-oss-120b",
+  "REWRITE_MODEL": "openai/gpt-oss-20b",
+  "RERANKER": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+  "CANDIDATES": 20,
+  "PER_QUERY": 10,
+  "TOP_K": 5,
+  "MIN_SCORE": 0.0,
+  "REWRITE_EFFORT": null,
+  "ANSWER_EFFORT": null
+ },
+ "eval_file": "data\\eval.jsonl"
+}

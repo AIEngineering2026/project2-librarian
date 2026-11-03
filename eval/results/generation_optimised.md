@@ -10,10 +10,10 @@ Settings: `{"MODEL": "openai/gpt-oss-120b", "REWRITE_MODEL": "openai/gpt-oss-20b
 | "I don't know" accuracy | 96.7% |
 | False "I don't know" (answerable refused) | 1 (0 by the score threshold) |
 | Out-of-scope questions answered anyway | 0 / 4 |
-| Faithfulness (claims supported by their cited chunks) | 86.4% |
+| Faithfulness (claims supported by their cited chunks) | 86.7% |
 | Fully faithful answers | 76.0% |
 | Citation accuracy (46 citations) | 97.8% |
-| Factual claims with no citation | 15 |
+| Factual claims with no citation | 10 |
 | Latency p50 / p95 (end to end, all questions) | 6.54 s / 13.56 s |
 | Cost per request | $0.000283 |
 

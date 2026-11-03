@@ -1,0 +1,365 @@
+{
+ "summary": {
+  "version": "e8",
+  "settings": {
+   "PROVIDER": "openai",
+   "MODEL": "gpt-6-luna",
+   "REWRITE_MODEL": "gpt-5-nano",
+   "RERANKER": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+   "CANDIDATES": 20,
+   "PER_QUERY": 10,
+   "TOP_K": 5,
+   "MIN_SCORE": 0.0,
+   "REWRITE_EFFORT": "low",
+   "ANSWER_EFFORT": "low",
+   "SKIP_REWRITE_IF_CLEAR": false,
+   "USE_CACHE": false
+  },
+  "n_questions": 124,
+  "n_answerable": 112,
+  "n_unanswerable": 12,
+  "accuracy": 0.7580645161290323,
+  "accuracy_lenient": 0.842741935483871,
+  "correctness_answerable": {
+   "correct": 85,
+   "partial": 21,
+   "incorrect": 3,
+   "refused": 3
+  },
+  "correct_rate_answerable": 0.7589285714285714,
+  "idk_accuracy": 0.9516129032258065,
+  "false_idk": 3,
+  "false_idk_low_score": 0,
+  "false_answer_unanswerable": 3,
+  "faithfulness": 0.9092261904761905,
+  "fully_faithful_answers": 0.8214285714285714,
+  "uncited_factual_claims": 18,
+  "citation_accuracy": 0.98,
+  "n_citations": 200,
+  "answers_without_citation": 0,
+  "rewrite_failures": 0,
+  "latency_p50_s": 8.88,
+  "latency_p95_s": 12.6,
+  "cost_per_request_usd": 0.000387,
+  "judge_tokens": 105000,
+  "judge_model": "gpt-4.1-mini"
+ },
+ "examples": {
+  "incorrect_or_partial": [
+   {
+    "q": "Why must text language and direction be identified for assistive technology to function properly?",
+    "verdict": "partial",
+    "why": "The answer correctly explains the need to identify text language for assistive technologies to switch pronunciation rules, but it omits the importance of text direction and does not fully address the reason why assistive technologies need this information to function properly.",
+    "answer": "Level AA Success Criterion 3.1.2, Language of Parts, requires the human language of each passage or phrase to be programmatically determinable, with exceptions for proper names, technical terms, words of indeterminate language, and words or phrases adopted into the surrounding language.[2] When lang",
+    "reference": "Because user agents may fail to present text correctly if language and direction are not specified, creating barriers for users with disabilities."
+   },
+   {
+    "q": "How can I verify that a link’s purpose is clear after using a script to change its text?",
+    "verdict": "partial",
+    "why": "The answer correctly references the relevant success criterion and test rules but does not mention activating the control that expands the links or explicitly confirming the link's purpose from its text as the reference answer does.",
+    "answer": "For WCAG 2.2 Level A, Success Criterion 2.4.4, verify that the link’s purpose can be determined from its text alone or from its text together with its programmatically determined link context, unless the purpose would be ambiguous to users in general. [1] Check that the link has a non-empty accessib",
+    "reference": "Activate the control that expands the links, then confirm the link’s purpose is identifiable from its text."
+   },
+   {
+    "q": "How can an online auction be designed to comply with the no‑time‑limit requirement of Technique G5?",
+    "verdict": "partial",
+    "why": "The system answer correctly states that Technique G5 involves allowing users to complete an activity without a time limit, but it does not mention the specific auction design details from the reference answer such as allowing only one bid per user and keeping the bidding open for a full day.",
+    "answer": "Technique G5 applies when the activity does not require timed interaction for its functionality. [1] To use this technique, design the auction activity so users can take part without a time limit, giving them as much time as they need. [2]",
+    "reference": "By allowing each bidder to submit only one bid and keeping the bidding open for a full day, giving everyone ample time to complete the bid form."
+   },
+   {
+    "q": "How is a general flash defined for WCAG 2.2 compliance?",
+    "verdict": "partial",
+    "why": "Claim 1 is unsupported as it cites no source; claim 2 is supported but the answer misses the exact threshold detail from the source.",
+    "answer": "A general flash is a pair of opposing changes in relative luminance of at least 10% of the maximum relative luminance (1.0), where the darker image has relative luminance below 0.80. The opposing changes are an increase followed by a decrease, or a decrease followed by an increase. [5]",
+    "reference": "A general flash is a pair of opposing changes in relative luminance of 10% or more of the maximum relative luminance (1.0) where the darker image is below 0.80."
+   },
+   {
+    "q": "How does SC 2.5.2 allow users to cancel a click‑like activation before the pointer is released?",
+    "verdict": "partial",
+    "why": "Claim 1 is unsupported as it cites no source; claim 2 is supported and matches the reference answer.",
+    "answer": "For a click-like interaction, SC 2.5.2 (Level A) allows users to cancel by moving the pointer or finger away from the target before releasing it. Activation occurs only on release, so moving away aborts the activation. [4]",
+    "reference": "Activation happens only when the pointer is released, so users can abort (cancel) it before releasing."
+   },
+   {
+    "q": "Why should a website avoid forcing a specific screen orientation?",
+    "verdict": "partial",
+    "why": "The system answer correctly states the WCAG requirement about orientation but does not mention the reason related to users with fixed device orientations as in the reference answer.",
+    "answer": "WCAG 2.2 Success Criterion 1.3.4 Orientation (Level AA) requires that content not restrict its view and operation to portrait or landscape, unless a specific orientation is essential, such as for a bank check, piano application, projector slides, or virtual reality content. [1]",
+    "reference": "Some users have their devices mounted in a fixed orientation (for example on a power wheelchair), so sites must support both orientations."
+   },
+   {
+    "q": "What WCAG success criterion does Technique G212 address?",
+    "verdict": "partial",
+    "why": "The answer correctly identifies the success criterion 2.5.2 Pointer Cancellation and that G212 is a sufficient technique, but it does not mention the conformance level as stated in the reference answer.",
+    "answer": "Technique G212 relates to WCAG Success Criterion 2.5.2, Pointer Cancellation; the source identifies it as a sufficient technique but does not state a conformance level. [1]",
+    "reference": "It addresses 2.5.2 Pointer Cancellation (Sufficient)."
+   },
+   {
+    "q": "Why must non-text content be provided in electronic text form according to WCAG 2.2?",
+    "verdict": "partial",
+    "why": "The answer correctly states the requirement for text alternatives and their purpose to enable conversion into other forms, but it does not explicitly mention that electronic text is presentation-neutral allowing multiple renderings as in the reference.",
+    "answer": "WCAG 2.2 Level A, Success Criterion 1.1.1 requires text alternatives for non-text content so it can serve an equivalent purpose, with specified exceptions. [1] This allows the content to be changed into forms people need, such as large print, braille, speech, symbols, or simpler language. [3]",
+    "reference": "Because electronic text is presentation‑neutral, allowing it to be rendered visually, audibly, tactilely, or in any combination to meet user needs."
+   },
+   {
+    "q": "What is a recommended technique for clarifying the purpose of a link that uses both an image and text?",
+    "verdict": "incorrect",
+    "why": "The system answer does not address combining adjacent image and text links to clarify link purpose as stated in the reference answer.",
+    "answer": "Technique G91 provides link text that describes the purpose of a link; it is a sufficient technique for WCAG 2.2 Level A Success Criterion 2.4.4, but techniques are examples, not requirements. [4]",
+    "reference": "Combine the adjacent image and text links so they point to the same resource, making the link purpose clear."
+   },
+   {
+    "q": "What type of captioning service is required for live audio to meet WCAG 2.2 SC 1.2.9?",
+    "verdict": "incorrect",
+    "why": "The system answer does not specify the required live text caption service with a trained human operator as stated in the reference answer.",
+    "answer": "WCAG 2.2 SC 1.2.9 is Level AAA and requires an alternative presenting equivalent information for live audio-only content; it does not specify a captioning service. [1]",
+    "reference": "A live text caption service with a trained human operator."
+   },
+   {
+    "q": "What happens if a plug‑in or applet blinks content for more than five seconds without a pause mechanism?",
+    "verdict": "partial",
+    "why": "The system answer correctly states the requirement for a pause mechanism for blinking content over five seconds but does not address the user impact of distraction or inability to read other content as in the reference answer.",
+    "answer": "Under WCAG 2.2 Level A, Success Criterion 2.2.2, automatically blinking content that lasts more than five seconds and is presented alongside other content must have a mechanism to pause, stop, or hide it, unless the blinking is essential to an activity.[2] This applies to all content on the page, in",
+    "reference": "The user may not have enough time to read between blinks or may be distracted, preventing reading of other content."
+   },
+   {
+    "q": "What contrast ratio is required for text for users with 20/40 visual acuity according to WCAG 2.2 SC 1.4.6?",
+    "verdict": "incorrect",
+    "why": "The system answer does not mention the required 4.5:1 contrast ratio for users with 20/40 visual acuity as stated in the reference answer and incorrectly states the level and ratios without citing sources.",
+    "answer": "WCAG 2.2 SC 1.4.6 (Level AAA) requires a contrast ratio of at least 7:1 for text; large-scale text requires at least 4.5:1. The criterion does not specify a different ratio for users with 20/40 visual acuity. [1]",
+    "reference": "A contrast ratio of 4.5:1 is required for users with 20/40 visual acuity."
+   },
+   {
+    "q": "How can a keyboard user activate an image that acts as a link using scripting?",
+    "verdict": "partial",
+    "why": "The answer correctly mentions using scripting with the onclick event and relates to keyboard accessibility, but it does not mention adding tabindex or handling the Enter key as in the reference answer.",
+    "answer": "Use an anchor for the image link and attach the scripted action to its `onclick` event; Technique SCR35 relates to WCAG 2.1.1 Keyboard (Level A) when used with G90, which provides keyboard-triggered event handlers. [3]",
+    "reference": "Add a tabindex to include the image in the tab order and handle the Enter key with an onkeypress event that triggers navigation."
+   },
+   {
+    "q": "How can a script warn users 20 seconds before a time limit expires and allow them to request more time?",
+    "verdict": "partial",
+    "why": "Claim 1 correctly describes the confirm dialog 20 seconds before expiration and resetting the timer, but claim 2 incorrectly states the requirement to extend the time limit at least ten times, which is not mentioned in the reference answer.",
+    "answer": "In the SCR16 technique, show a confirmation dialog 20 seconds before the time limit expires, explaining that time is nearly up and asking whether the user needs more time; if they answer yes, reset the timer, and otherwise let it expire. [1] For WCAG 2.2 Success Criterion 2.2.1, Level A, the warning",
+    "reference": "Use a confirm dialog 20 seconds before the limit, resetting the timer if the user chooses \"yes\"."
+   },
+   {
+    "q": "How can an online test be calibrated to avoid timing affecting scores?",
+    "verdict": "partial",
+    "why": "The system answer correctly describes WCAG 2.2 timing adjustment requirements and exceptions but does not address calibrating tests based on scores without time limits as the reference answer states.",
+    "answer": "For WCAG 2.2 Success Criterion 2.2.1 (Level A), let test-takers turn off the time limit, adjust it to at least ten times the default, or extend it after a warning with at least 20 seconds’ notice and a simple action; extensions must be available at least ten times. [1] If timing is essential to the ",
+    "reference": "By calibrating the test based on scores when users have no time limits."
+   },
+   {
+    "q": "What is the main goal of WCAG 2.2 Guideline 2.2 regarding time constraints?",
+    "verdict": "partial",
+    "why": "The system answer correctly identifies specific timing criteria but does not explicitly state the main goal as ensuring users can finish tasks within their own response times by removing or extending time limits.",
+    "answer": "The sources do not state the main goal of WCAG 2.2 Guideline 2.2; they describe specific timing criteria, including Level A Success Criterion 2.2.1 on adjusting time limits and Level AAA Success Criterion 2.2.3 on timing not being essential. [3][4]",
+    "reference": "It ensures users can finish tasks within their own response times by removing or extending time limits."
+   },
+   {
+    "q": "What qualifies a collection of web pages as a \"set\" according to WCAG 2.2?",
+    "verdict": "partial",
+    "why": "The system correctly states that WCAG 2.2 does not define 'set' explicitly but misses the key detail about common purpose and authorship from the reference.",
+    "answer": "WCAG 2.2 does not define what qualifies a collection of pages as a “set” in these sources. A conformance claim may cover one page, a series of pages, or multiple related web pages. [2]",
+    "reference": "A set is a group of pages that share a common purpose and are created by the same author, group, or organization."
+   },
+   {
+    "q": "How can I inform users about a context change before a form control updates?",
+    "verdict": "partial",
+    "why": "The answer correctly references technique G13 and the need to describe the upcoming change before the form control triggers it, but it omits the detail about placing instructions before the control in the reading order and the recommendation to programmatically associate instructions where possible.",
+    "answer": "Provide instructions explaining what will happen when changing the form control causes a change of context, and place them before the control in the page’s reading order. Where possible, programmatically associate the instructions with the control. [4]",
+    "reference": "Use technique G13 to describe the upcoming change before the form control triggers it."
+   },
+   {
+    "q": "When should a form use a single set of text instructions at the top instead of repeating format guidance for each field?",
+    "verdict": "partial",
+    "why": "The answer correctly states that a single set of instructions is appropriate when it provides enough information to avoid confusion, but it misses the key point from the reference about using a single set when the form has few fields or many fields share the same format requirement.",
+    "answer": "A single set of instructions at the top is appropriate when it gives users enough information to complete the task without confusion; the sources do not require repeating format guidance for each field. [5] Provide format guidance when it helps explain expected data formats, especially for uncommon ",
+    "reference": "Use it when the form has few fields or many fields share the same format requirement."
+   },
+   {
+    "q": "How does SC 2.4.2 help users with visual disabilities when multiple pages are open?",
+    "verdict": "partial",
+    "why": "The answer correctly states that SC 2.4.2 helps users differentiate content when multiple pages are open, but it does not explicitly mention that this is done by page titles as in the reference answer.",
+    "answer": "SC 2.4.2 Page Titled (Level A) helps people with visual disabilities differentiate content when multiple web pages are open. [1]",
+    "reference": "It lets them quickly differentiate content by page titles."
+   },
+   {
+    "q": "Why is consistent placement of navigation bars important for users of screen magnifiers?",
+    "verdict": "partial",
+    "why": "The answer correctly states the requirement for consistent navigation placement but does not address the specific reason related to screen magnifier users as in the reference.",
+    "answer": "WCAG 2.2 Level AA Success Criterion 3.2.3 requires repeated navigation mechanisms to appear in the same relative order across pages, unless the user initiates a change; it does not specify a screen-magnifier-specific reason. [1]",
+    "reference": "It helps them locate navigation bars quickly, reducing the time needed to find them on each page."
+   },
+   {
+    "q": "How can I fix a PDF list that is only separated by line breaks so screen readers can interpret it correctly?",
+    "verdict": "partial",
+    "why": "The answer correctly identifies using list tags in PDFs to make lists programmatically determinable, but it does not mention using the Tags panel in Adobe Acrobat Pro as the reference answer does.",
+    "answer": "For tagged PDFs with lists, use List tags to make list information and relationships programmatically determinable; this technique relates to WCAG 2.2 Level A, Success Criterion 1.3.1, but it is not required if another method meets WCAG [2].",
+    "reference": "Use the Tags panel in Adobe Acrobat Pro to create proper list tags for the content."
+   },
+   {
+    "q": "How can a social security number input be grouped for accessibility?",
+    "verdict": "partial",
+    "why": "The answer correctly explains grouping with fieldset and legend but does not mention role=group as in the reference.",
+    "answer": "If the social security number input needs a group-level description, place it inside a `<fieldset>` and make the first child a `<legend>` describing the group. [1][4] If its individual label already provides a sufficient description and no additional group description is needed, grouping with `<fiel",
+    "reference": "The three segment fields can be grouped using role=group."
+   },
+   {
+    "q": "What are the two common failure types for WCAG 2.2 Success Criterion 1.4.2 regarding audio control?",
+    "verdict": "partial",
+    "why": "The answer correctly identifies one failure type (F23) but misses the second failure type (F93) about no pause or stop control for autoplaying HTML5 media.",
+    "answer": "- **Level A, SC 1.4.2:** Automatically playing audio that lasts more than 3 seconds has no mechanism to pause or stop it. [1][3]\n- **Level A, SC 1.4.2:** Automatically playing audio has no mechanism to control its volume independently of the system volume. [1]",
+    "reference": "F23: playing a sound longer than 3 seconds with no way to turn it off, and F93: no pause or stop control for an autoplaying HTML5 media element."
+   }
+  ],
+  "false_idk": [
+   {
+    "q": "What qualifies a resource as a web page for WCAG 2.2 conformance?",
+    "reason": "llm_said_idk",
+    "top_score": 8.939397811889648
+   },
+   {
+    "q": "What does WCAG 2.2 define as a \"section\" in web content?",
+    "reason": "llm_said_idk",
+    "top_score": 6.993090629577637
+   },
+   {
+    "q": "Does SC 3.2.6 require help to be provided on PDFs downloaded from a website?",
+    "reason": "llm_said_idk",
+    "top_score": 9.623350143432617
+   }
+  ],
+  "answered_out_of_scope": [
+   {
+    "q": "How do I center a div with CSS flexbox?",
+    "answer": "The sources describe Flexbox for reflow, but do not explain how to center a div with CSS Flexbox. I don't know. [3]"
+   },
+   {
+    "q": "How much does an accessibility audit cost?",
+    "answer": "The sources do not state how much an accessibility audit costs. I don't know. [1][2][5]"
+   },
+   {
+    "q": "What is the best colour palette for a bank website?",
+    "answer": "The sources do not identify a best color palette for a bank website. They specify contrast requirements: WCAG 2.2 Level AA Success Criterion 1.4.3 requires text contrast of at least 4.5:1, with specified exceptions, and Level AA Success Criterion 1.4.11 requires at least 3:1 contrast for relevant us"
+   }
+  ],
+  "unsupported_claims": [
+   {
+    "q": "How is a general flash defined for WCAG 2.2 compliance?",
+    "claim": "A general flash is a pair of opposing changes in relative luminance of at least 10% of the maximum relative luminance (1.0), where the darker image has relative luminance below 0.80.",
+    "cites": []
+   },
+   {
+    "q": "How does SC 2.5.2 allow users to cancel a click‑like activation before the pointer is released?",
+    "claim": "For a click-like interaction, SC 2.5.2 (Level A) allows users to cancel by moving the pointer or finger away from the target before releasing it.",
+    "cites": []
+   },
+   {
+    "q": "Can a web application use mouse input in addition to keyboard for the same functionality while still meeting WCAG 2.2 2.1.1?",
+    "claim": "Yes.",
+    "cites": []
+   },
+   {
+    "q": "What does Technique G219 address regarding drag interactions?",
+    "claim": "Technique G219 addresses providing an alternative to dragging movements that operate on content, for content using technology that supports pointer input.",
+    "cites": []
+   },
+   {
+    "q": "How does Technique ARIA25 make screen readers announce progress bar updates?",
+    "claim": "Technique ARIA25 updates text in a visually hidden container with `aria-live=\"polite\"`, which tells screen readers to announce changes to that content.",
+    "cites": []
+   },
+   {
+    "q": "How do I center a div with CSS flexbox?",
+    "claim": "The sources describe Flexbox for reflow, but do not explain how to center a div with CSS Flexbox.",
+    "cites": []
+   },
+   {
+    "q": "How much does an accessibility audit cost?",
+    "claim": "The sources do not state how much an accessibility audit costs.",
+    "cites": []
+   },
+   {
+    "q": "How much does an accessibility audit cost?",
+    "claim": "I don't know.",
+    "cites": [
+     1,
+     2,
+     5
+    ]
+   },
+   {
+    "q": "What contrast ratio is required for text for users with 20/40 visual acuity according to WCAG 2.2 SC 1.4.6?",
+    "claim": "WCAG 2.2 SC 1.4.6 (Level AAA) requires a contrast ratio of at least 7:1 for text; large-scale text requires at least 4.5:1.",
+    "cites": []
+   },
+   {
+    "q": "How can a script warn users 20 seconds before a time limit expires and allow them to request more time?",
+    "claim": "For WCAG 2.2 Success Criterion 2.2.1, Level A, the warning must give users at least 20 seconds to extend the limit with a simple action, and they must be able to extend it at least ten times.",
+    "cites": [
+     3
+    ]
+   },
+   {
+    "q": "How can a web developer allow users to toggle diacritical marks on a page?",
+    "claim": "A developer can provide links or controls to select the level of diacritical marks shown, such as none, limited marks, or all marks, and store the preference in a session cookie so subsequent pages follow it.",
+    "cites": []
+   },
+   {
+    "q": "Can a web page replace a drag‑and‑drop interaction with a single‑click action?",
+    "claim": "Yes.",
+    "cites": []
+   },
+   {
+    "q": "What does Technique SCR38 remove from a page, and is that required for conformance?",
+    "claim": "Technique SCR38 removes all scripts, styles, and plugins from the pre-enhanced version of a page.",
+    "cites": []
+   },
+   {
+    "q": "What qualifies a collection of web pages as a \"set\" according to WCAG 2.2?",
+    "claim": "WCAG 2.2 does not define what qualifies a collection of pages as a “set” in these sources.",
+    "cites": []
+   },
+   {
+    "q": "How can I inform users about a context change before a form control updates?",
+    "claim": "Provide instructions explaining what will happen when changing the form control causes a change of context, and place them before the control in the page’s reading order.",
+    "cites": []
+   },
+   {
+    "q": "What must a web page do to meet WCAG 2.2 Success Criterion 3.3.6 for error prevention at AAA level?",
+    "claim": "WCAG 2.2 Success Criterion 3.3.6, Error Prevention (All), is Level AAA.",
+    "cites": []
+   },
+   {
+    "q": "Are WCAG 2 techniques mandatory for conformance?",
+    "claim": "No.",
+    "cites": []
+   },
+   {
+    "q": "Under SC 2.1.2 No Keyboard Trap, what must a page allow when keyboard focus can be moved to a component with a keyboard interface?",
+    "claim": "WCAG 2.2 Level A, Success Criterion 2.1.2 requires that when keyboard focus can move to a component, users can also move focus away using only a keyboard interface.",
+    "cites": []
+   },
+   {
+    "q": "What is the best colour palette for a bank website?",
+    "claim": "The sources do not identify a best color palette for a bank website.",
+    "cites": []
+   },
+   {
+    "q": "Can content that requires path-dependent input conform to SC 2.1.3 Keyboard (No Exception)?",
+    "claim": "No.",
+    "cites": []
+   },
+   {
+    "q": "What are the two common failure types for WCAG 2.2 Success Criterion 1.4.2 regarding audio control?",
+    "claim": "- **Level A, SC 1.4.2:** Automatically playing audio has no mechanism to control its volume independently of the system volume.",
+    "cites": [
+     1
+    ]
+   }
+  ]
+ }
+}

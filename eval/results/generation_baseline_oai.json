@@ -1,0 +1,240 @@
+{
+ "summary": {
+  "version": "baseline_oai",
+  "settings": {
+   "PROVIDER": "openai",
+   "MODEL": "gpt-6-luna",
+   "REWRITE_MODEL": "gpt-5-nano",
+   "RERANKER": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+   "CANDIDATES": 20,
+   "PER_QUERY": 10,
+   "TOP_K": 5,
+   "MIN_SCORE": 0.0,
+   "REWRITE_EFFORT": null,
+   "ANSWER_EFFORT": null,
+   "SKIP_REWRITE_IF_CLEAR": false,
+   "USE_CACHE": false
+  },
+  "n_questions": 124,
+  "n_answerable": 112,
+  "n_unanswerable": 12,
+  "accuracy": 0.8145161290322581,
+  "accuracy_lenient": 0.8306451612903226,
+  "correctness_answerable": {
+   "correct": 89,
+   "partial": 4,
+   "incorrect": 8,
+   "refused": 11
+  },
+  "correct_rate_answerable": 0.7946428571428571,
+  "idk_accuracy": 0.9112903225806451,
+  "false_idk": 11,
+  "false_idk_low_score": 0,
+  "false_answer_unanswerable": 0,
+  "faithfulness": 0.9620462046204621,
+  "fully_faithful_answers": 0.9207920792079208,
+  "uncited_factual_claims": 6,
+  "citation_accuracy": 0.9800995024875622,
+  "n_citations": 201,
+  "answers_without_citation": 0,
+  "rewrite_failures": 0,
+  "latency_p50_s": 14.77,
+  "latency_p95_s": 21.57,
+  "cost_per_request_usd": 0.000989,
+  "judge_tokens": 111165,
+  "judge_model": "gpt-5-mini"
+ },
+ "examples": {
+  "incorrect_or_partial": [
+   {
+    "q": "What technique can I use to allow users to skip a block of repeated content on a page?",
+    "verdict": "partial",
+    "why": "The answer correctly gives the recommended link technique but adds an additional technique (expand/collapse menu) not present in the reference.",
+    "answer": "Use Technique G123: add a link at the beginning of the repeated block, or directly before it, that moves keyboard focus to the content immediately after the block [3]. An expandable and collapsible menu is another technique: users can collapse it to skip the repeated material [1].",
+    "reference": "Add a link at the beginning of the block that jumps to the end of that block."
+   },
+   {
+    "q": "What type of flashing content should be avoided to prevent seizures according to WCAG 2.2?",
+    "verdict": "partial",
+    "why": "Claim 1 misstated the relationship between flash count and area (they are alternative thresholds, not both required), while Claim 2 correctly cites the fine-pattern exception.",
+    "answer": "Under WCAG 2.2 Level A, Success Criterion 2.3.1, avoid flashing content that exceeds the flash thresholds: more than three general or red flashes in any one-second period **and** flashing area greater than 0.006 steradians (25% of a 10-degree visual field). [1][5] Fine, balanced patterns—such as whi",
+    "reference": "Flashing that is most likely to cause seizures, even when viewed for only a second or two."
+   },
+   {
+    "q": "What is a recommended technique for clarifying the purpose of a link that uses both an image and text?",
+    "verdict": "incorrect",
+    "why": "The reference specifically recommends combining adjacent image and text links to point to the same resource; the system answer gives a general guideline about link text and context but does not state the combining technique.",
+    "answer": "Use text that identifies the link’s purpose; the purpose can also be clarified by programmatically associated link context. [2][5]",
+    "reference": "Combine the adjacent image and text links so they point to the same resource, making the link purpose clear."
+   },
+   {
+    "q": "What contrast ratio is required for text for users with 20/40 visual acuity according to WCAG 2.2 SC 1.4.6?",
+    "verdict": "incorrect",
+    "why": "The system answer states 7:1 for text (4.5:1 only for large text), but the reference answer identifies 4.5:1 as the required ratio for users with 20/40 acuity.",
+    "answer": "WCAG 2.2 SC 1.4.6 (Level AAA) requires a contrast ratio of at least 7:1 for text; large-scale text requires at least 4.5:1. [1]",
+    "reference": "A contrast ratio of 4.5:1 is required for users with 20/40 visual acuity."
+   },
+   {
+    "q": "How can a keyboard user activate an image that acts as a link using scripting?",
+    "verdict": "incorrect",
+    "why": "The reference answer specifies adding a tabindex and handling the Enter key with onkeypress, which the system answer does not mention.",
+    "answer": "Use an `<a href>` around the image, and make sure the link’s functionality is keyboard-operable under WCAG 2.1.1 Level A; the source example also pairs pointer effects with `onfocus` and `onblur` so keyboard users get the corresponding image changes. [2][5]",
+    "reference": "Add a tabindex to include the image in the tab order and handle the Enter key with an onkeypress event that triggers navigation."
+   },
+   {
+    "q": "Can a web page replace a drag‑and‑drop interaction with a single‑click action?",
+    "verdict": "partial",
+    "why": "The answer correctly states that dragging functionality must have a single-pointer alternative and gives appropriate examples, but it omits the exception about drags that are essential (and only notes the user-agent exception indirectly).",
+    "answer": "Yes. Under WCAG 2.5.7 (Level AA), functionality that uses dragging must also have a single-pointer way to operate it without dragging. [2] For example, a single click can reveal controls to move an item step by step, or a menu can let users choose its destination. [4]",
+    "reference": "Yes, unless the drag is essential or the function is set by the user agent and not altered by the author."
+   },
+   {
+    "q": "How can an online test be calibrated to avoid timing affecting scores?",
+    "verdict": "incorrect",
+    "why": "The system answer describes WCAG 2.2 Timing Adjustable details rather than the reference guidance about calibrating tests using no-time-limit scores.",
+    "answer": "For an online test with a content-set time limit, Level A, WCAG 2.2 Success Criterion 2.2.1 allows users to turn off the limit or adjust it before encountering it to at least 10 times the default; alternatively, warn users at least 20 seconds before time expires and let them extend the limit at leas",
+    "reference": "By calibrating the test based on scores when users have no time limits."
+   },
+   {
+    "q": "What qualifies a collection of web pages as a \"set\" according to WCAG 2.2?",
+    "verdict": "incorrect",
+    "why": "The answer describes what a conformance claim can cover but does not state the definition of a “set” (common purpose and same author) given in the reference.",
+    "answer": "A WCAG 2.2 conformance claim may cover one page, a series of pages, or multiple related web pages; conformance itself is defined only for web pages. [3]",
+    "reference": "A set is a group of pages that share a common purpose and are created by the same author, group, or organization."
+   },
+   {
+    "q": "How can I inform users about a context change before a form control updates?",
+    "verdict": "incorrect",
+    "why": "The reference answer specifies technique G13; the system answer omits this required technique.",
+    "answer": "Under WCAG 2.2 SC 3.2.2 On Input (Level A), users must be advised of the behavior before using a form control if changing it automatically causes a change of context. [3] The sources do not specify how to provide that advice. [3]",
+    "reference": "Use technique G13 to describe the upcoming change before the form control triggers it."
+   },
+   {
+    "q": "When should a form use a single set of text instructions at the top instead of repeating format guidance for each field?",
+    "verdict": "incorrect",
+    "why": "The system answer does not state the conditions from the reference (few fields or many fields share the same format), instead only repeating what the source says about the technique and that it lacks guidance on when to replace per-field instructions.",
+    "answer": "G184 describes placing text instructions at the beginning of a form or set of fields to explain necessary input; it is sufficient for WCAG 3.3.5 Help and sufficient for 3.3.2 Labels or Instructions when used with G131. [1] The source does not say when these instructions should replace format guidanc",
+    "reference": "Use it when the form has few fields or many fields share the same format requirement."
+   },
+   {
+    "q": "What contrast ratio is required for visual cues that identify a control and its state in UI components?",
+    "verdict": "partial",
+    "why": "The answer correctly gives the 3:1 contrast requirement but says 'against the background' rather than the reference's 'with adjacent colors.'",
+    "answer": "For SC 1.4.11 Non-text Contrast (Level AA), meaningful visual cues identifying a control or its state must have at least a 3:1 contrast ratio against the background. [1][5] The requirement does not apply to inactive UI components. [5]",
+    "reference": "A minimum 3:1 contrast ratio with adjacent colors is required."
+   },
+   {
+    "q": "How can a social security number input be grouped for accessibility?",
+    "verdict": "incorrect",
+    "why": "The reference answer specifies using role=group, but the system answer recommends fieldset/legend (H71) instead.",
+    "answer": "If the SSN input is part of a related group that needs a group-level description because its individual labels are insufficient, put the related controls in a `<fieldset>` and make the first child a `<legend>` that describes the group. [5] H71 is a sufficient technique for WCAG 1.3.1 and 3.3.2, but ",
+    "reference": "The three segment fields can be grouped using role=group."
+   }
+  ],
+  "false_idk": [
+   {
+    "q": "Why must text language and direction be identified for assistive technology to function properly?",
+    "reason": "llm_said_idk",
+    "top_score": 7.949909687042236
+   },
+   {
+    "q": "How is a general flash defined for WCAG 2.2 compliance?",
+    "reason": "llm_said_idk",
+    "top_score": 6.999183654785156
+   },
+   {
+    "q": "How does SC 2.5.2 allow users to cancel a click‑like activation before the pointer is released?",
+    "reason": "llm_said_idk",
+    "top_score": 9.39893913269043
+   },
+   {
+    "q": "What type of captioning service is required for live audio to meet WCAG 2.2 SC 1.2.9?",
+    "reason": "llm_said_idk",
+    "top_score": 7.536299705505371
+   },
+   {
+    "q": "What qualifies a resource as a web page for WCAG 2.2 conformance?",
+    "reason": "llm_said_idk",
+    "top_score": 7.460240364074707
+   },
+   {
+    "q": "Why should developers avoid fully justified text for users with cognitive disabilities?",
+    "reason": "llm_said_idk",
+    "top_score": 8.092171669006348
+   },
+   {
+    "q": "What happens if only the foreground color is set in CSS and the background color is omitted?",
+    "reason": "llm_said_idk",
+    "top_score": 8.056838989257812
+   },
+   {
+    "q": "How can a web developer allow users to toggle diacritical marks on a page?",
+    "reason": "llm_said_idk",
+    "top_score": 7.702395439147949
+   },
+   {
+    "q": "What WCAG 2.2 success criteria can be violated when a script removes focus immediately after it is received?",
+    "reason": "llm_said_idk",
+    "top_score": 8.92378044128418
+   },
+   {
+    "q": "How can you change a link’s background color when it receives focus and revert it when it loses focus using JavaScript?",
+    "reason": "llm_said_idk",
+    "top_score": 9.157238960266113
+   },
+   {
+    "q": "Does SC 3.2.6 require help to be provided on PDFs downloaded from a website?",
+    "reason": "llm_said_idk",
+    "top_score": 9.094025611877441
+   }
+  ],
+  "answered_out_of_scope": [],
+  "unsupported_claims": [
+   {
+    "q": "Can a web application use mouse input in addition to keyboard for the same functionality while still meeting WCAG 2.2 2.1.1?",
+    "claim": "Yes.",
+    "cites": []
+   },
+   {
+    "q": "What type of flashing content should be avoided to prevent seizures according to WCAG 2.2?",
+    "claim": "Under WCAG 2.2 Level A, Success Criterion 2.3.1, avoid flashing content that exceeds the flash thresholds: more than three general or red flashes in any one-second period **and** flashing area greater than 0.006 steradians (25% of a 10-degree visual field).",
+    "cites": [
+     1,
+     5
+    ]
+   },
+   {
+    "q": "How does Technique ARIA25 make screen readers announce progress bar updates?",
+    "claim": "ARIA25 updates text in a visually hidden container with `aria-live=\"polite\"`, which tells screen readers to announce changes to that content.",
+    "cites": []
+   },
+   {
+    "q": "Can a web page replace a drag‑and‑drop interaction with a single‑click action?",
+    "claim": "Yes.",
+    "cites": []
+   },
+   {
+    "q": "How can I inform users about a context change before a form control updates?",
+    "claim": "The sources do not specify how to provide that advice.",
+    "cites": [
+     3
+    ]
+   },
+   {
+    "q": "Are WCAG 2 techniques mandatory for conformance?",
+    "claim": "No.",
+    "cites": []
+   },
+   {
+    "q": "What does the WCAG glossary define as a \"user interface component\"?",
+    "claim": "A “user interface component” is a part of content that users perceive as a single control for a distinct function.",
+    "cites": []
+   },
+   {
+    "q": "Can content that requires path-dependent input conform to SC 2.1.3 Keyboard (No Exception)?",
+    "claim": "No.",
+    "cites": []
+   }
+  ]
+ }
+}

@@ -1,0 +1,18 @@
+{
+ "version": "baseline_mini",
+ "settings": {
+  "PROVIDER": "openai",
+  "MODEL": "gpt-5-mini",
+  "REWRITE_MODEL": "gpt-5-nano",
+  "RERANKER": "cross-encoder/ms-marco-MiniLM-L-6-v2",
+  "CANDIDATES": 20,
+  "PER_QUERY": 10,
+  "TOP_K": 5,
+  "MIN_SCORE": 0.0,
+  "REWRITE_EFFORT": null,
+  "ANSWER_EFFORT": null,
+  "SKIP_REWRITE_IF_CLEAR": false,
+  "USE_CACHE": false
+ },
+ "eval_file": "data\\eval.jsonl"
+}
