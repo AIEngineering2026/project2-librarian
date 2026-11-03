@@ -22,7 +22,7 @@ Create a `.env` file in the project root with your OpenAI key (never commit it):
 ```
 OPENAI_API_KEY=sk-...
 ```
-The search index (BM25 + Chroma) is built automatically from `data/chunks.jsonl` the first time it is
+The search index (BM25 in memory + a flat numpy vector file, `data/index/embeddings.npy`) is committed, so nothing has to be built. If the file is missing, it is built the first time it is
 needed (1–2 minutes). To rebuild it by hand: `python -m src.index`.
 
 ## Run
@@ -39,21 +39,21 @@ retrieved passages and latency. `POST /api/feedback` with `{"question", "answer"
 Deployed on **Streamlit Community Cloud** from the `main` branch (`streamlit_app.py`).
 - Secrets (Streamlit → Settings → Secrets): `OPENAI_API_KEY`, plus `GITHUB_TOKEN` (gist permission only)
   and `GIST_ID` for the votes.
-- `data/index` is not in git: the app builds the index on its first start (`src/retrieve.py`).
+- `data/index/embeddings.npy` (6.2 MB) is committed, so the app needs no index build on start. BM25 is built in memory in under a second (`src/retrieve.py`).
 - Votes are saved to `data/feedback.jsonl` **and** to a secret GitHub gist, because Streamlit Cloud
   deletes local files when the app restarts.
-- `requirements.txt` installs CPU-only PyTorch and `pysqlite3-binary` (Chroma needs a newer SQLite).
+- `requirements.txt` installs CPU-only PyTorch (the default Linux build pulls about 2 GB of GPU libraries we do not need).
 
 Why Streamlit Cloud: Render's free tier (512 MB RAM) and Vercel's Python functions (250 MB) are too
-small for PyTorch + the two local models + Chroma.
+small for PyTorch + the two local models.
 
 ## How it answers a question
 
 | Step | What | Model / tool |
 |---|---|---|
-| 0. Index (offline) | 557 W3C pages → 4,065 chunks with title / section / URL; BM25 + vector index | `src/scrape.py`, `src/chunk.py`, `src/index.py` |
+| 0. Index (offline) | 557 W3C pages scraped (545 distinct) → 4,065 chunks with title / section / URL; BM25 + vector index | `src/scrape.py`, `src/chunk.py`, `src/index.py` |
 | 1. Rewrite | Off-topic check, clean English question, 1–3 WCAG search queries (vague questions, typos, other languages, multi-part questions); retried once if the reply is unusable | gpt-5-nano, low effort |
-| 2. Search | Hybrid BM25 + vector search (RRF) for the original question and each query | `src/retrieve.py` (rank_bm25 + Chroma, all-MiniLM-L6-v2) |
+| 2. Search | Hybrid BM25 + vector search (RRF) for the original question and each query | `src/retrieve.py` (rank_bm25 + flat numpy vectors, all-MiniLM-L6-v2) |
 | 3. Rerank | Keep the 5 most relevant chunks | cross-encoder ms-marco-MiniLM-L-6-v2 |
 | 4. Answer | Answer only from the 5 chunks, a citation `[n]` on every sentence, conformance level stated, same language as the question | gpt-6-luna, low effort |
 | 5. Checks | Uncited conclusions at the end are removed; citations mapped to chunk ids | `src/pipeline.py` |
@@ -121,7 +121,7 @@ docs/       report.md, design.md, optimisation.md, postmortem.md
 
 ## Contributions
 
-- **Mayssa** (data & index): scraping, cleaning and chunking the corpus; BM25 + Chroma index; `retrieve()`.
+- **Mayssa** (data & index): scraping, cleaning and chunking the corpus; BM25 + flat numpy vector index; `retrieve()`; smoke test, chunk-size experiment, `design.md`.
 - **Khadija** (pipeline, interface, optimisation & deployment): answer pipeline, OpenAI switch, Week 8 optimisation, web app and Streamlit Cloud deployment.
 - **Maya** (evaluation & documentation): retrieval eval and ablation, generation eval with an LLM judge, threshold sweep, feedback summary.
 
